@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>GeoAR.js demo</title>
+    <script src='https://aframe.io/releases/0.9.2/aframe.min.js'></script>
+    <script src="https://raw.githack.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script>
+    <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
+    <script>
+        THREEx.ArToolkitContext.baseURL = 'https://raw.githack.com/jeromeetienne/ar.js/master/three.js/'
+    </script>
+</head>
+
+<script>
+
+    window.onload = () => {
+       let places = staticLoadPlaces();
+       renderPlaces(places);
+   };
+
+   function staticLoadPlaces() {
+    return [
+    {
+        name: 'Magnemite',
+        location: {
+            lat: -25.497288,
+            lng: -49.325918,
+        }
+    },
+    {
+        name: 'Magnemite',
+        location: {
+            lat: -25.496687,
+            lng: -49.325676,
+        }
+    },
+    {
+        name: 'Magnemite',
+        location: {
+            lat: -25.495719,
+            lng: -49.325376,
+        }
+    },
+    {
+        name: 'Magnemite',
+        location: {
+            lat: -25.431705,
+            lng: -49.324323,
+        }
+    },
+    ];
+}
+
+function renderPlaces(places) {
+    let scene = document.querySelector('a-scene');
+
+    places.forEach((place) => {
+        let latitude = place.location.lat;
+        let longitude = place.location.lng;
+
+        let model = document.createElement('a-entity');
+        model.setAttribute('gps-entity-place', `latitude: ${latitude}; longitude: ${longitude};`);
+        model.setAttribute('gltf-model', 'magnemite/pessoa_marty.glb');
+        model.setAttribute('rotation', '0 90 0');
+        model.setAttribute('animation-mixer', '');
+        model.setAttribute('scale', '2.5 2.5 2.5');
+
+        model.addEventListener('loaded', () => {
+            window.dispatchEvent(new CustomEvent('gps-entity-place-loaded'))
+        });
+
+        scene.appendChild(model);
+    });
+}
+
+
+</script>
+<body style='margin: 0; overflow: hidden;'>
+    <a-scene
+    vr-mode-ui="enabled: false"
+    embedded
+    arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'>
+    <a-camera gps-camera rotation-reader>
+    </a-camera>
+</a-scene>
+</body>
+</html>
