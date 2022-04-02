@@ -1,0 +1,273 @@
+ <!DOCTYPE html>
+ <html>
+ <title>CROSSFIT</title>
+ <head>
+ 	<meta charset="utf-8" />
+ 	<!-- Bootstrap core JS-->
+ 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+ 	<script src="js/jquery.min.js"></script>
+ 	<script src="js/babylon.js"></script>
+ 	<script src="js/babylonjs.loaders.min.js"></script>
+ 	<script src="js/babylon.gui.min.js"></script>
+
+ 	<script src="js/howler.min.js"></script>
+
+ 	<script src="js/anime.min.js"></script>
+
+ </head>
+ <body class="objetoDigitalExtensivo" id="EXT21_3_HIS_L1_A_01_OD1">
+ 	
+ 	<canvas id='canvas_od' width="720" height="1280"></canvas>
+ 	<script>
+ 		var appInfografico3d=function(_id,_dentroModulo){
+ 			window.addEventListener('DOMContentLoaded', function(){
+ 				var debugador=false;
+ 				var offsetCamera=60;
+ 				if(window.innerHeight > window.innerWidth){
+ 					offsetCamera=60;
+ 				}
+ 				var zoomObjeto=false;
+ 				var nomeAnterior;
+ 				var canvas = document.getElementById("canvas_od");
+ 				var camera;
+ 				var target;
+ 				var advancedTexture;
+ 				var count=0;
+ 				let personagem;
+ 				let rootPersonagem;
+ 				let obstaculos=[];
+ 				var somcavando = new Howl({
+ 					src: ['resources/image/break1.mp3']
+ 				});
+
+
+ 				var engine = new BABYLON.Engine(canvas, true);
+
+ 				var createScene = function(){
+ 					var myVideo; 
+ 					var isAssigned = false;
+
+ 					scene = new BABYLON.Scene(engine);
+
+ 					camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 0, new BABYLON.Vector3(0, 0, 0), scene);
+
+ 					camera.setPosition(new BABYLON.Vector3(65, 65, 65));
+
+ 					target = new BABYLON.TransformNode('target', scene);
+
+ 					camera.fov = 0.5;
+ 					camera.pinchDeltaPercentage = 0.01;
+ 					camera.wheelDeltaPercentage = 0.01;
+
+
+
+ 					light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0, 1, 0), scene);
+ 					light2 = new BABYLON.DirectionalLight("dir01", new BABYLON.Vector3(-0.8, -0.8, -1.0), scene);
+ 					light2.position = new BABYLON.Vector3(0, 10, 0);
+ 					light.intensity = 0.6;
+ 					light2.intensity = 2;
+ 					light2.shadowMinZ = 1;
+ 					light2.shadowMaxZ = 5000;
+
+
+ 					var shadowGenerator = new BABYLON.ShadowGenerator(1024, light2);
+ 					shadowGenerator.usePoissonSampling = true;
+ 					shadowGenerator.useBlurExponentialShadowMap = true;
+
+ 					var grupo1 = new BABYLON.TransformNode();
+
+ 					var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+
+ 					var text1 = new BABYLON.GUI.TextBlock();
+ 					text1.text = "REGY CROSSFIT";
+ 					text1.color = "white";
+ 					text1.fontSize = 35;
+ 					text1.top="-45%";
+ 					advancedTexture.addControl(text1); 
+
+ 					var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "frente");
+ 					button1.width = "150px"
+ 					button1.height = "100px";
+ 					button1.color = "white";
+ 					button1.cornerRadius = 20;
+ 					button1.background = "green";
+ 					button1.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+ 					button1.onPointerUpObservable.add(function() {
+ 						let pos=rootPersonagem.position.z-1;
+ 						for (var i = 0; i < obstaculos.length; i++) {
+ 							//console.log("verifica colisao: true"+obstaculos[i].getBoundingInfo().boundingBox.maximum);
+ 							if(checkme_xyz(obstaculos[i],personagem)){
+ 								console.log("verifica true:");
+ 							}
+ 						}
+ 						anime({
+ 							targets: rootPersonagem.position,
+ 							z:pos,
+ 							easing: 'easeOutBack',
+ 							duration: 250
+ 						})
+
+ 						anime({
+ 							targets: personagem.position,
+ 							keyframes: [
+ 							{y: 1},
+ 							{y: 0}
+ 							],
+ 							easing: 'easeOutBack',
+ 							duration: 250
+ 						})
+ 					});
+ 					advancedTexture.addControl(button1); 
+
+ 					var button2 = BABYLON.GUI.Button.CreateSimpleButton("but2", "<");
+ 					button2.width = "150px"
+ 					button2.lef = "150px"
+ 					button2.height = "100px";
+ 					button2.color = "white";
+ 					button2.cornerRadius = 20;
+ 					button2.background = "green";
+ 					button2.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+ 					button2.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+ 					button2.onPointerUpObservable.add(function() {
+ 						let pos=rootPersonagem.position.x-1;
+
+ 						
+ 						anime({
+ 							targets: rootPersonagem.position,
+ 							x:pos,
+ 							easing: 'easeOutBack',
+ 							duration: 250
+ 						})
+
+ 						anime({
+ 							targets: personagem.position,
+ 							keyframes: [
+ 							{y: 1},
+ 							{y: 0}
+ 							],
+ 							easing: 'easeOutBack',
+ 							duration: 250
+ 						})
+ 					});
+ 					advancedTexture.addControl(button2); 
+ 					var button3 = BABYLON.GUI.Button.CreateSimpleButton("but2", ">");
+ 					button3.width = "150px"
+ 					button3.lef = "150px"
+ 					button3.height = "100px";
+ 					button3.color = "white";
+ 					button3.cornerRadius = 20;
+ 					button3.background = "green";
+ 					button3.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+ 					button3.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+ 					button3.onPointerUpObservable.add(function() {
+ 						let pos=rootPersonagem.position.x+1;
+
+ 						
+ 						anime({
+ 							targets: rootPersonagem.position,
+ 							x:pos,
+ 							easing: 'easeOutBack',
+ 							duration: 250
+ 						})
+
+ 						anime({
+ 							targets: personagem.position,
+ 							keyframes: [
+ 							{y: 1},
+ 							{y: 0}
+ 							],
+ 							easing: 'easeOutBack',
+ 							duration: 250
+ 						})
+ 					});
+ 					advancedTexture.addControl(button3);   
+
+ 					BABYLON.SceneLoader.ImportMesh("","resources/image/", "cenario.glb", scene, function (newMeshes, particleSystems, skeletons) {
+
+ 						for(i=0;i<newMeshes.length;i++){
+
+ 							console.log(newMeshes[i].name);
+ 							newMeshes[i].pode = true;
+ 							newMeshes[i].isPickable = true;
+ 							if(newMeshes[i].name.includes("obstaculo")){
+ 								obstaculos.push(newMeshes[i]);
+ 								//newMeshes[i].showBoundingBox = true;
+ 							}
+ 							if(newMeshes[i].name=="cenario"){
+ 								//newMeshes[i].receiveShadows = true;
+
+ 							}
+ 							if(newMeshes[i].name=="personagem"){
+ 								personagem=newMeshes[i];
+ 								//shadowGenerator.addShadowCaster(newMeshes[i]);
+
+ 							}
+ 							if(newMeshes[i].name=="rootPersonagem"){
+ 								rootPersonagem=newMeshes[i];
+
+ 							}
+ 						}
+ 					});
+ 					scene.onBeforeCameraRenderObservable.add(()=>{
+ 						//camera.setTarget(target.position)
+ 						if(rootPersonagem){
+ 							let camTargetTo = new BABYLON.Vector3(rootPersonagem.position.x*-1, rootPersonagem.position.y + 2, rootPersonagem.position.z);
+ 							camera.target = BABYLON.Vector3.Lerp(camera.target, camTargetTo, 0.025);
+ 							let camPosTo = new BABYLON.Vector3(rootPersonagem.position.x + 35, rootPersonagem.position.y + 35, rootPersonagem.position.z + 35);
+ 							camera.position = BABYLON.Vector3.Lerp(camera.position, camPosTo, 0.025);
+ 						}
+ 						
+ 					})
+ 					return scene;
+ 				}
+
+
+ 				scene = createScene();
+ 				scene.onPointerDown = function (evt, pickResult) {
+ 					if (pickResult.hit) {
+ 						if(pickResult.pickedMesh.name=="personagem" ){
+ 							console.log(pickResult.pickedMesh.name);
+ 							
+ 						}
+ 					}
+ 				};
+ 				function checkme_xyz(a, b) {
+
+ 					let ab = a.position;
+ 					let bb = b.position;
+
+ 					let bounding=b.getBoundingInfo().boundingBox.maximum;
+
+ 					return ab.x + bounding.x > bb.x
+ 					&& ab.x < bb.x + bounding.x
+ 					&& ab.y + bounding.y > bb.y
+ 					&& ab.y < bb.y + bounding.y
+ 					&& ab.z + bounding.z > bb.z
+ 					&& ab.z < bb.z + bounding.z;
+ 				}
+ 				engine.runRenderLoop(function(){
+ 					scene.render();
+
+ 				});
+ 				window.addEventListener('resize', redimensionaGame());
+
+
+ 				function redimensionaGame() {
+ 					canvas.width = window.innerWidth;
+ 					canvas.height = window.innerHeight;
+ 					engine.resize();
+
+ 				}
+
+ 				var panelIsClosed = true;
+ 				engine.resize();
+
+ 			});
+
+ redimensionaGame();
+}
+appInfografico3d("od1",false);
+
+</script>
+</body>
+</html> 
