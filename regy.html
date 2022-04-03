@@ -13,46 +13,63 @@
  	<script src="js/howler.min.js"></script>
 
  	<script src="js/anime.min.js"></script>
-
+ 	<style type="text/css">
+ 		#canvas_od {
+ 			top: 0;
+ 			left: 0;
+ 			width: 100%;
+ 			height: 100%;
+ 		}
+ 	</style>
  </head>
  <body class="objetoDigitalExtensivo" id="EXT21_3_HIS_L1_A_01_OD1">
- 	
- 	<canvas id='canvas_od' width="720" height="1280"></canvas>
+ 	<div id="divCanvas">
+ 		<canvas id='canvas_od' width="720" height="1280"></canvas>
+ 	</div>
  	<script>
  		var appInfografico3d=function(_id,_dentroModulo){
  			window.addEventListener('DOMContentLoaded', function(){
- 				var debugador=false;
- 				var offsetCamera=60;
+ 				let debugador=false;
+ 				let offsetCamera=60;
  				if(window.innerHeight > window.innerWidth){
  					offsetCamera=60;
  				}
- 				var zoomObjeto=false;
- 				var clique=true;
- 				var canvas = document.getElementById("canvas_od");
- 				var camera;
- 				var distancia=3;
- 				var target;
- 				var advancedTexture;
- 				var count=0;
+ 				let caminho="resources/image/";
+ 				let zoomObjeto=false;
+ 				let clique=true;
+ 				let canvas = document.getElementById("canvas_od");
+ 				let camera;
+ 				let distancia=2;
+ 				let distanciaCria=15;
+ 				let distApaga=20;
+ 				let distX=[distancia*5,distancia*4,distancia*3,distancia*2,distancia,0,distancia*-1,distancia*-2,distancia*-3,distancia*-4,distancia*-5];
+ 				let target;
+ 				let advancedTexture;
+ 				let count=0;
+ 				let countRuas=0;
  				let personagem;
  				let rootPersonagem;
  				let obstaculos=[];
- 				let posX=0;
+ 				let carros=[];
+ 				let comidas=[];
+ 				let arvore;
+ 				let burguer;
+ 				let rua3x3;
+ 				let posX=5;
  				let posY=0;
- 				var somcavando = new Howl({
- 					src: ['resources/image/break1.mp3']
+ 				let sommastiga = new Howl({
+ 					src: ['resources/image/bite.mp3']
  				});
 
  				let map=[
  				]
 
- 				var engine = new BABYLON.Engine(canvas, true);
+ 				let engine = new BABYLON.Engine(canvas, true);
 
- 				var createScene = function(){
- 					var myVideo; 
- 					var isAssigned = false;
-
+ 				let createScene = function(){
  					scene = new BABYLON.Scene(engine);
+ 					scene.clearColor = new BABYLON.Color3.FromHexString("#83A243");
+ 					scene.ambientColor = BABYLON.Color3.White();
 
  					camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 0, new BABYLON.Vector3(0, 0, 0), scene);
 
@@ -81,20 +98,6 @@
 
  					var grupo1 = new BABYLON.TransformNode();
 
- 					for (var i = 0; i < 10; i++) {
- 						let rand=[];
- 						for (var j = 0; j < 10; j++) {
- 							let num=Math.round(Math.random(10));
- 							rand.push(num);
- 							if(num==1){
- 								const box = BABYLON.MeshBuilder.CreateBox("box", {height: 1, width: 1, depth: 1});
- 								box.position.x=i*distancia;
- 								box.position.z=j*distancia;
- 							}
- 						}
- 						map.push(rand);
- 					}
- 					console.log(map)
 
  					var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
 
@@ -114,34 +117,32 @@
  					button1.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
  					button1.onPointerUpObservable.add(function() {
  						if(clique){
- 							console.log("clica:");
+ 							
  							clique=false;
  							setTimeout(function(){
  								clique=true
- 							},250)
+ 							},100)
  							let passa=true;
  							let posProjetada=rootPersonagem.getAbsolutePosition();
  							posProjetada.z=posProjetada.z+distancia;
- 							posY+=1;
- 							console.log(map[posX][posY]);
- 							for (var i = 0; i < obstaculos.length; i++) {
- 								if(checkme_xyz(posProjetada,obstaculos[i])){
- 									console.log("verifica true:"+i);
- 									passa=false;
- 									break;
+ 							//console.log("posX "+posX+" posY "+posY+ "  "+map[posY][posX]);
+ 							if(map[posY+1][posX]!=1){
+ 								posY+=1;
+
+ 								//rootPersonagem.position.z=posY*distancia;
+ 								if(count-posY<distanciaCria){
+ 									verificaCriaRua();
  								}
- 							}
- 							if(passa){
+ 								deletaObjetos();
  								anime({
  									targets: rootPersonagem.position,
- 									z:posProjetada.z,
+ 									z:posY*distancia,
  									easing: 'easeOutBack',
- 									duration: 250,
+ 									duration: 100,
  									complete: () => {
  										
  									}
  								})
-
  								anime({
  									targets: personagem.position,
  									keyframes: [
@@ -149,8 +150,16 @@
  									{y: 0}
  									],
  									easing: 'easeOutBack',
- 									duration: 250
+ 									duration: 100
  								})
+ 								anime({
+ 									targets: personagem.rotation,
+ 									y: Math.PI / 1,
+ 									easing: 'easeOutBack',
+ 									duration: 100
+ 								})
+ 								//personagem.rotation = new BABYLON.Vector3(0, Math.PI / 1, 0);
+ 								//personagem.rotation.z=Math.PI / 1.5;
  							}
  						}
  					});
@@ -171,40 +180,41 @@
  							clique=false;
  							setTimeout(function(){
  								clique=true
- 							},250)
+ 							},50)
  							let passa=true;
  							let posProjetada=rootPersonagem.getAbsolutePosition();
  							posProjetada.x=posProjetada.x+distancia;
  							
- 							
- 							for (var i = 0; i < obstaculos.length; i++) {
- 								if(checkme_xyz(posProjetada,obstaculos[i])){
- 									console.log("verifica true:"+i);
- 									passa=false;
- 									break;
+ 							if(map[posY][posX-1]!=1){
+ 								if(posX>0){
+ 									posX-=1;
+ 									//rootPersonagem.position.x=distX[posX];
+ 									anime({
+ 										targets: rootPersonagem.position,
+ 										x:distX[posX],
+ 										easing: 'easeOutBack',
+ 										duration: 100,
+ 										complete: () => {
+
+ 										}
+ 									})
+ 									anime({
+ 										targets: personagem.position,
+ 										keyframes: [
+ 										{y: 1},
+ 										{y: 0}
+ 										],
+ 										easing: 'easeOutBack',
+ 										duration: 100
+ 									})
+ 									anime({
+ 										targets: personagem.rotation,
+ 										y: -Math.PI/2,
+ 										easing: 'easeOutBack',
+ 										duration: 100
+ 									})
  								}
- 							}
- 							if(passa){
 
- 								anime({
- 									targets: rootPersonagem.position,
- 									x:rootPersonagem.position.x+distancia,
- 									easing: 'easeOutBack',
- 									duration: 250,
- 									complete: () => {
- 										
- 									}
- 								})
-
- 								anime({
- 									targets: personagem.position,
- 									keyframes: [
- 									{y: 1},
- 									{y: 0}
- 									],
- 									easing: 'easeOutBack',
- 									duration: 250
- 								})
  							}
  						}
  					});
@@ -224,82 +234,126 @@
  							clique=false;
  							setTimeout(function(){
  								clique=true
- 							},250)
+ 							},50)
  							let passa=true;
  							let posProjetada=rootPersonagem.getAbsolutePosition();
  							posProjetada.x=posProjetada.x-distancia;
- 							posX+=1;
- 							console.log(map[posX][posY]);
- 							/*inverte x*/
- 							for (var i = 0; i < obstaculos.length; i++) {
- 								if(checkme_xyz(posProjetada,obstaculos[i])){
- 									console.log("verifica true:"+i);
- 									passa=false;
- 									break;
+ 							if(map[posY][posX+1]!=1){
+ 								if(posX<10){
+ 									posX+=1;
+ 									//rootPersonagem.position.x=distX[posX];
+
+ 									anime({
+ 										targets: rootPersonagem.position,
+ 										x:distX[posX],
+ 										easing: 'easeOutBack',
+ 										duration: 100,
+ 										complete: () => {
+
+ 										}
+ 									})
+ 									anime({
+ 										targets: personagem.position,
+ 										keyframes: [
+ 										{y: 1},
+ 										{y: 0}
+ 										],
+ 										easing: 'easeOutBack',
+ 										duration: 100
+ 									})
+ 									anime({
+ 										targets: personagem.rotation,
+ 										y: Math.PI/2,
+ 										easing: 'easeOutBack',
+ 										duration: 100
+ 									})
  								}
- 							}
- 							if(passa){
 
- 								anime({
- 									targets: rootPersonagem.position,
- 									x:rootPersonagem.position.x-distancia,
- 									easing: 'easeOutBack',
- 									duration: 250,
- 									complete: () => {
- 										
- 									}
- 								})
-
- 								anime({
- 									targets: personagem.position,
- 									keyframes: [
- 									{y: 1},
- 									{y: 0}
- 									],
- 									easing: 'easeOutBack',
- 									duration: 250
- 								})
  							}
  						}
  					});
  					advancedTexture.addControl(button3);   
 
- 					BABYLON.SceneLoader.ImportMesh("","resources/image/", "cenario.glb", scene, function (newMeshes, particleSystems, skeletons) {
 
- 						for(i=0;i<newMeshes.length;i++){
+ 					var assetsManager = new BABYLON.AssetsManager(scene);
 
- 							
- 							newMeshes[i].pode = true;
- 							newMeshes[i].isPickable = true;
- 							if(newMeshes[i].name.includes("obstaculo")){
- 								obstaculos.push(newMeshes[i]);
- 								newMeshes[i].checkCollisions = true;
- 								console.log(newMeshes[i].getBoundingInfo().boundingBox.maximum);
- 								//newMeshes[i].showBoundingBox = true;
+ 					let meshTaskcenario = assetsManager.addMeshTask("cenario", "", caminho, "cenario.glb");
+ 					let meshTaskPersonagem = assetsManager.addMeshTask("personagem", "", caminho, "bob.glb");
+ 					assetsManager.onFinish = function (tasks) {
+
+
+ 						for (let j = 0; j < tasks.length; j++) {
+ 							if (tasks[j].name == "personagem") {
+ 								const task = tasks[j];
+ 								for (let i = 0; i < task.loadedMeshes.length; i++) {
+ 									if(task.loadedMeshes[i].name=="personagem"){
+ 										personagem=task.loadedMeshes[i];
+ 										task.loadedMeshes[i].checkCollisions = true;
+ 										personagem.rotation = new BABYLON.Vector3(0, 0, 0);
+ 									}
+ 									if(task.loadedMeshes[i].name=="rootPersonagem"){
+ 										rootPersonagem=task.loadedMeshes[i];
+ 									}
+ 								}
  							}
- 							if(newMeshes[i].name=="cenario"){
- 								//newMeshes[i].receiveShadows = true;
+ 							if (tasks[j].name == "cenario") {
+ 								const task = tasks[j];
+ 								for (let i = 0; i < task.loadedMeshes.length; i++) {
+ 									task.loadedMeshes[i].isPickable = false;
+ 									task.loadedMeshes[i].pode = true;
+ 									if(task.loadedMeshes[i].name.includes("obstaculo")){
+ 									}
+ 									if(task.loadedMeshes[i].name=="cenario"){
+ 										task.loadedMeshes[i].isVisible=false;
 
- 							}
- 							if(newMeshes[i].name=="personagem"){
- 								personagem=newMeshes[i];
- 								newMeshes[i].checkCollisions = true;
- 								//shadowGenerator.addShadowCaster(newMeshes[i]);
+ 									}
+ 									if(task.loadedMeshes[i].name=="rua3x3"){
+ 										rua3x3=task.loadedMeshes[i];
+ 										rua3x3.isVisible=false;
+ 										rua3x3.parent = null
 
- 							}
- 							if(newMeshes[i].name=="rootPersonagem"){
- 								rootPersonagem=newMeshes[i];
+ 									}
+ 									if(task.loadedMeshes[i].name=="tree_blocks"){
+
+ 										arvore=task.loadedMeshes[i];
+ 										arvore.isVisible=false;
+ 										arvore.parent = null
+ 									}
+ 									if(task.loadedMeshes[i].name=="burgerDouble" || task.loadedMeshes[i].name=="sodaCan" || task.loadedMeshes[i].name=="hotDog"){
+ 										let _comida=task.loadedMeshes[i];
+ 										_comida.isVisible=false;
+ 										_comida.parent = null;
+ 										comidas.push(_comida)
+ 									}
+ 									
+ 								}
 
  							}
  						}
- 					});
+
+ 						for (let i=0;i < 20; i++) {
+ 							criaFileira();
+ 						}
+ 						console.log(JSON.stringify(map))
+
+ 					}	
+ 					assetsManager.load();
  					scene.onBeforeCameraRenderObservable.add(()=>{
  						//camera.setTarget(target.position)
  						if(rootPersonagem){
  							let camTargetTo = new BABYLON.Vector3(rootPersonagem.position.x*-1, rootPersonagem.position.y + 2, rootPersonagem.position.z);
  							camera.target = BABYLON.Vector3.Lerp(camera.target, camTargetTo, 0.025);
- 							let camPosTo = new BABYLON.Vector3(rootPersonagem.position.x + 35, rootPersonagem.position.y + 35, rootPersonagem.position.z - 35);
+ 							let camPosTo = new BABYLON.Vector3(rootPersonagem.position.x*-1 + 15, rootPersonagem.position.y + 50, rootPersonagem.position.z - 35);
  							camera.position = BABYLON.Vector3.Lerp(camera.position, camPosTo, 0.025);
+ 							for (var i = 0; i < carros.length; i++) {
+ 								if (personagem.intersectsMesh(carros[i], false)) {
+ 									console.log("colidiu");
+ 									carros[i].dispose();
+ 									carros.splice(i, 1); 
+ 									sommastiga.play();
+ 								}
+ 								
+ 							}
  						}
  						
  					})
@@ -312,50 +366,160 @@
  					if (pickResult.hit) {
  						if(pickResult.pickedMesh.name=="personagem" ){
  							console.log(pickResult.pickedMesh.name);
- 							
+
  						}
  					}
  				};
- 				function checkme_xyz(a, b) {
-
- 					let ab = a;
- 					let bb = b.getAbsolutePosition();
- 					let tam= b.getBoundingInfo().boundingBox.maximum;
- 					let offset=2.5;
-
- 					if (ab.x < bb.x + offset &&
- 						ab.x + offset > bb.x &&
- 						ab.z < bb.z + offset &&
- 						ab.z + offset > bb.z) {
- 						return true;
+ 				function deletaObjetos(){
+ 					for (var i = 0; i < obstaculos.length; i++) {
+ 						if((personagem.getAbsolutePosition().z-obstaculos[i].getAbsolutePosition().z)>distApaga){
+ 							obstaculos[i].dispose();
+ 							obstaculos.splice(i, 1); 
+ 						}
+ 					}
+ 					for (var i = 0; i < carros.length; i++) {
+ 						if((personagem.getAbsolutePosition().z-carros[i].getAbsolutePosition().z)>distApaga){
+ 							carros[i].dispose();
+ 							carros.splice(i, 1); 
+ 						}
+ 					}
+ 					console.log("carros"+carros.length);
  				}
+ 				function verificaCriaRua(){
+ 					countRuas++;
+ 					
+ 					let randomizacaoRua=Math.round(Math.random()*15)+1;
+ 					if(countRuas>randomizacaoRua){
+ 						countRuas=0;
+ 						criaRua();
+ 					}else{
+ 						criaFileira();
+ 					}
+ 				}
+ 				function criaRua(){
+ 					const ruanova = rua3x3.clone("rua");
+ 					ruanova.isVisible=true;
+ 					ruanova.position.z=count*distancia;
+ 					obstaculos.push(ruanova);
+ 					let w=0;
+ 					for (var i = 0; i < 3; i++) {
+ 						let velocidade=Math.round(Math.random()*5000)+2000;
+ 						for (var j = 0; j < 3; j++) {
+ 							let _comida = comidas[Math.floor(Math.random() * comidas.length)];
+ 							const carro = _comida.clone("comida");
+ 							carro.isVisible=true;
+ 							let dest;
+ 							if(w==0){
+ 								carro.position.x=-30;
+ 								dest=30;
+ 								w=1;
+ 							}else{
+ 								carro.position.x=30;
+ 								dest=-30;
+ 								w=0;
+ 							}
+ 							carro.position.z=count*distancia;
+ 							anime({
+ 								targets: carro.position,
+ 								x:dest,
+ 								loop:true,
+ 								easing: 'linear',
+ 								delay:(velocidade/3)*j,
+ 								duration: velocidade
+ 							})
+ 							carros.push(carro);
+ 						}
 
 
+ 						criaFileira(true);
+ 					}
 
- 			}
- 			engine.runRenderLoop(function(){
- 				scene.render();
+ 				}
+ 				function criaFileira(_rua=false){
 
- 			});
- 			window.addEventListener('resize', redimensionaGame());
+ 					let rand=[];
+ 					for (var i = 0; i < 10; i++) {
+ 						let num;
+ 						if(_rua){
+ 							num=0;
+ 						}else if(count<3){
+ 							num=0;
+ 						}else{
+ 							num=Math.round(Math.random()*10);
+ 						}
+ 						rand.push(num);
+ 						if(num==1){
+ 							const box2 = arvore.clone("arvore");
+ 							box2.isVisible=true;
+/*
+ 							const box = BABYLON.MeshBuilder.CreateBox("box", {height: 0.2, width: distancia, depth: distancia});
+ 							box.position.x=i*distancia-(5*distancia);
+ 							box.position.z=count*distancia;
+ 							*/
+ 							box2.position.x=i*distancia-(5*distancia);
+ 							box2.position.z=count*distancia;
+ 							obstaculos.push(box2);
+ 						}
+ 					}
+ 					map.push(rand);
+ 					count++;
+ 				}
+ 				function checkme_xyz(a, b) {
+ 					if(map[posX][posY]){
+
+ 					}
 
 
- 			function redimensionaGame() {
- 				canvas.width = window.innerWidth;
- 				canvas.height = window.innerHeight;
+ 				}
+ 				engine.runRenderLoop(function(){
+ 					scene.render();
+
+ 				});
+
+ 				window.addEventListener('resize', redimensionaGame, false);
+
+
+ 				function redimensionaGame() {
+ 					resizeGame();
+ 					engine.resize();
+ 					
+
+ 				}
  				engine.resize();
 
- 			}
+ 			});
 
- 			var panelIsClosed = true;
- 			engine.resize();
-
- 		});
-
- redimensionaGame();
 }
 appInfografico3d("od1",false);
 
+</script>
+
+<script type="text/javascript">
+	
+	var orientacao;
+	var widthToHeight = 9 / 16;
+	var newWidth = window.innerWidth;
+	var newHeight = window.innerHeight;
+	var newWidthToHeight = newWidth / newHeight;
+	let canvas = document.getElementById("canvas_od");
+	let divcanvas = document.getElementById("divCanvas");
+	newWidth = newHeight * widthToHeight;
+	divcanvas.style.width = newWidth + 'px';
+	divcanvas.style.height = newHeight + 'px';
+	divcanvas.style.marginLeft = (window.innerWidth-newWidth)/2 + 'px';
+	divcanvas.style.marginTop = (window.innerHeight-newHeight)/2 + 'px';
+	function resizeGame() {
+		var newWidth = window.innerWidth;
+		var newHeight = window.innerHeight;
+		widthToHeight = 9 / 16;
+		orientacao=1; 
+
+		newWidth = newHeight * widthToHeight;
+		divcanvas.style.width = newWidth + 'px';
+		divcanvas.style.height = '100%';
+		divcanvas.style.marginLeft = (window.innerWidth-newWidth)/2 + 'px';
+		divcanvas.style.marginTop = (window.innerHeight-newHeight)/2 + 'px';
+	}
 </script>
 </body>
 </html> 
