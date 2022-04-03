@@ -27,7 +27,7 @@
  		<canvas id='canvas_od' width="720" height="1280"></canvas>
  	</div>
  	<script>
- 		var appInfografico3d=function(_id,_dentroModulo){
+ 		var appInfografico3d=function(_id,_dentroModulo,_itens){
  			window.addEventListener('DOMContentLoaded', function(){
  				let debugador=false;
  				let offsetCamera=60;
@@ -279,9 +279,25 @@
 
  					let meshTaskcenario = assetsManager.addMeshTask("cenario", "", caminho, "cenario.glb");
  					let meshTaskPersonagem = assetsManager.addMeshTask("personagem", "", caminho, "bob.glb");
+ 					for (var i = 0; i <_itens.length; i++) {
+ 						let meshComidas = assetsManager.addMeshTask("comidas", "", caminho, _itens[i].obj);
+ 					}
  					assetsManager.onFinish = function (tasks) {
 
-
+ 						for (let j = 0; j < tasks.length; j++) {
+ 							if (tasks[j].name == "comidas") {
+ 								const task = tasks[j];
+ 								for (let i = 0; i < task.loadedMeshes.length; i++) {
+ 									if(task.loadedMeshes[i].name.includes("item")){
+ 										let _comida=task.loadedMeshes[i];
+ 										_comida.isVisible=false;
+ 										_comida.parent = null;
+ 										//_comida.scaling=new BABYLON.Vector3(_itens[i].size,_itens[i].size,_itens[i].size);
+ 										comidas.push(_comida)
+ 									}
+ 								}
+ 							}
+ 						}
  						for (let j = 0; j < tasks.length; j++) {
  							if (tasks[j].name == "personagem") {
  								const task = tasks[j];
@@ -318,12 +334,6 @@
  										arvore=task.loadedMeshes[i];
  										arvore.isVisible=false;
  										arvore.parent = null
- 									}
- 									if(task.loadedMeshes[i].name=="burgerDouble" || task.loadedMeshes[i].name=="sodaCan" || task.loadedMeshes[i].name=="hotDog"){
- 										let _comida=task.loadedMeshes[i];
- 										_comida.isVisible=false;
- 										_comida.parent = null;
- 										comidas.push(_comida)
  									}
  									
  								}
@@ -490,7 +500,8 @@
  			});
 
 }
-appInfografico3d("od1",false);
+let comidas=[{obj:"hotdog.glb",size:1},{obj:"bolo.glb",size:2}];
+appInfografico3d("od1",false,comidas);
 
 </script>
 
