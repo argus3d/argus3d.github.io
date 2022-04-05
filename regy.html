@@ -15,9 +15,10 @@
  	<script src="js/anime.min.js"></script>
  	<style type="text/css">
  		body {    
-    margin: 0 !important;
-    padding: 0 !important;
-}
+ 			margin: 0 !important;
+ 			padding: 0 !important;
+ 			background-color: #000000;
+ 		}
  		#canvas_od {
  			top: 0;
  			left: 0;
@@ -35,9 +36,9 @@
  		var appInfografico3d=function(_id,_dentroModulo,_itens){
  			window.addEventListener('DOMContentLoaded', function(){
  				let debugador=false;
- 				let offsetCamera=60;
+ 				let offsetCamera=[15,50,35];
  				if(window.innerHeight > window.innerWidth){
- 					offsetCamera=60;
+ 					//offsetCamera=60;
  				}
  				let caminho="resources/image/";
  				let zoomObjeto=false;
@@ -107,7 +108,7 @@
  					camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 0, new BABYLON.Vector3(0, 0, 0), scene);
  					camera.setPosition(new BABYLON.Vector3(65, 65, -65));
  					target = new BABYLON.TransformNode('target', scene);
- 					camera.fov = 0.5;
+ 					camera.fov = 0.4;
  					camera.pinchDeltaPercentage = 0.01;
  					camera.wheelDeltaPercentage = 0.01;
  					light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0, 1, 0), scene);
@@ -234,6 +235,7 @@
  										arvore=task.loadedMeshes[i];
  										arvore.isVisible=false;
  										arvore.parent = null
+ 										arvore.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
  									}
  									
  								}
@@ -371,13 +373,16 @@
  						if(num==1){
  							const box2 = arvore.clone("arvore");
  							box2.isVisible=true;
-/*
+ 							/*
  							const box = BABYLON.MeshBuilder.CreateBox("box", {height: 0.2, width: distancia, depth: distancia});
  							box.position.x=i*distancia-(5*distancia);
  							box.position.z=count*distancia;
  							*/
+ 							let randRot=[-1,1,2,-2];
+ 							const random = Math.floor(Math.random() * randRot.length);
  							box2.position.x=i*distancia-(5*distancia);
  							box2.position.z=count*distancia;
+ 							box2.rotation.y = Math.PI/randRot[random];
  							obstaculos.push(box2);
  						}
  					}
