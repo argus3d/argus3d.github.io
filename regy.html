@@ -14,6 +14,52 @@
 
  	<script src="js/anime.min.js"></script>
  	<style type="text/css">
+ 		@font-face {
+ 			font-family: Luckiest Guy;
+ 			src: url(resources/image/LuckiestGuy-Regular.ttf);
+ 		}
+ 		@keyframes batecoracao
+ 		{
+ 			0%
+ 			{
+ 				transform: scale( .75 );
+ 			}
+ 			20%
+ 			{
+ 				transform: scale( 1 );
+ 			}
+ 			40%
+ 			{
+ 				transform: scale( .75 );
+ 			}
+ 			60%
+ 			{
+ 				transform: scale( 1 );
+ 			}
+ 			80%
+ 			{
+ 				transform: scale( .75 );
+ 			}
+ 			100%
+ 			{
+ 				transform: scale( .75 );
+ 			}
+ 		}
+ 		#gui {
+ 			position: absolute;
+ 		}
+ 		#heartBeat
+ 		{
+ 			width: 20%;
+ 			height: 20%;
+ 			float: left;
+ 			animation: batecoracao 1s infinite;
+ 		}
+ 		#gui_passos{
+ 			margin-right: 20px;
+ 			font-size: 3em;
+ 			float: right;
+ 		}
  		body {    
  			margin: 0 !important;
  			padding: 0 !important;
@@ -26,75 +72,95 @@
  			height: 100%;
  			touch-action: manipulation;
  		}
+ 		.avoid-clicks {
+ 			pointer-events: none;
+ 		}
+ 		h3 {
+ 			font-size: 35pt;
+ 			font-family: 'Luckiest Guy';
+ 			color: #fff;
+ 			-webkit-font-smoothing: antialiased;
+ 			-moz-osx-font-smoothing: grayscale;
+ 			text-shadow:   0px -3px 0 #212121,  
+ 			0px -3px 0 #212121,
+ 			0px  3px 0 #212121,
+ 			0px  3px 0 #212121,
+ 			-3px  0px 0 #212121,  
+ 			3px  0px 0 #212121,
+ 			-3px  0px 0 #212121,
+ 			3px  0px 0 #212121,
+ 			-3px -3px 0 #212121,  
+ 			3px -3px 0 #212121,
+ 			-3px  3px 0 #212121,
+ 			3px  3px 0 #212121,
+ 			-3px  9px 0 #212121,
+ 			0px  9px 0 #212121,
+ 			6px  9px 0 #212121,
+ 			0 9px 1px rgba(0,0,0,.1),
+ 			0 0 6px rgba(0,0,0,.1),
+ 			0 3px 3px rgba(0,0,0,.3),
+ 			0 6px 6px rgba(0,0,0,.2),
+ 			0 9px 9px rgba(0,0,0,.25),
+ 			0 12px 12px rgba(0,0,0,.2),
+ 			0 18px 18px rgba(0,0,0,.15);
+ 		}
  	</style>
  </head>
  <body class="objetoDigitalExtensivo" id="EXT21_3_HIS_L1_A_01_OD1">
  	<div id="divCanvas">
+ 		<div id="gui" class="avoid-clicks">
+ 			<div id="heartBeat">
+ 				<img style="width: 100%"  id="heartImg" src="resources/image/vida3.png"/>
+ 			</div>
+ 			<div id="gui_passos">
+ 				<h3 id="texto_passos">0</h3>
+ 			</div>
+ 		</div>
  		<canvas id='canvas_od' width="720" height="1280"></canvas>
  	</div>
  	<script>
- 		var appInfografico3d=function(_id,_dentroModulo,_itens){
+ 		var appInfografico3d=function(_id,_dentroModulo,_itens,_meshObstaculos){
  			window.addEventListener('DOMContentLoaded', function(){
+
+ 				var orientacao;
+ 				var widthToHeight = 9 / 16;
+ 				var newWidth = window.innerWidth;
+ 				var newHeight = window.innerHeight;
+ 				var newWidthToHeight = newWidth / newHeight;
+ 				let div_canvas=document.getElementById("divCanvas");
+ 				let div_gui=document.getElementById("gui");
+
+ 				newWidth = newHeight * widthToHeight;
+ 				tamanhoDivs();
+
  				let debugador=false;
  				let offsetCamera=[15,50,35];
  				if(window.innerHeight > window.innerWidth){
  					//offsetCamera=60;
  				}
  				let caminho="resources/image/";
- 				let zoomObjeto=false;
- 				let clique=true;
+ 				
  				let canvas = document.getElementById("canvas_od");
+ 				let heartImg = document.getElementById("heartImg");
+ 				let textPassos = document.getElementById("texto_passos");
  				let camera;
+ 				let sommastiga = new Howl({
+ 					src: ['resources/image/bite.mp3']
+ 				});
  				let distancia=2;
  				let distanciaCria=15;
  				let distApaga=20;
  				let distX=[distancia*5,distancia*4,distancia*3,distancia*2,distancia,0,distancia*-1,distancia*-2,distancia*-3,distancia*-4,distancia*-5];
- 				let target;
- 				let advancedTexture;
- 				let count=0;
- 				let passo=0;
- 				let countRuas=0;
- 				let countEscala=1;
- 				let personagem={
- 					pernaL:null,
- 					pernaLpos:[0,0,0],
- 					pernaR:null,
- 					pernaRpos:[0,0,0],
- 					bracoL:null,
- 					bracoLpos:[0,0,0],
- 					bracoR:null,
- 					bracoRpos:[0,0,0],
- 					corpo:null,
- 					corpopos:[0,0,0],
- 					cabeca:null,
- 					cabecapos:[0,0,0],
- 				};
- 				let rootPersonagem;
- 				let obstaculos=[];
- 				let carros=[];
- 				let comidas=[];
- 				let arvore;
- 				let burguer;
- 				let rua3x3;
- 				let posX=5;
- 				let posY=0;
- 				let tampa;
- 				let sommastiga = new Howl({
- 					src: ['resources/image/bite.mp3']
- 				});
- 				let map=[
- 				]
+ 				let target,advancedTexture,clique,count,passo,countRuas,countEscala,vidas,personagem,rootPersonagem,obstaculos,meshObstaculos,carros,comidas,arvore,burguer,rua3x3,posX,posY,tampa,map;
 
  				var mc = new Hammer(canvas);
  				mc.on("panleft panright tap pressup", function(ev) {
  					if(ev.type=="tap"){
  						personagemMove(ev.type);
- 						console.log(ev.type +" gesture detected. deltatime:"+ev.deltaTime+"  isFirst "+ev.isFirst+"  isFinal "+ev.isFinal);
  					}
  					if(ev.type=="panleft" || ev.type=="panright"){
  						if(ev.isFinal){
  							personagemMove(ev.type);
- 							console.log(ev.type +" gesture detected. deltatime:"+ev.deltaTime+"  isFirst "+ev.isFirst+"  isFinal "+ev.isFinal);
  						}
  					}
  				});
@@ -102,6 +168,43 @@
  				let engine = new BABYLON.Engine(canvas, true);
 
  				let createScene = function(){
+ 					clique=true;
+ 					count=0;
+ 					passo=0;
+ 					countRuas=0;
+ 					countEscala=1;
+ 					vidas=3;
+ 					heartImg.src=caminho+"vida"+vidas+".png";
+
+ 					personagem={
+ 						pernaL:null,
+ 						pernaLpos:[0,0,0],
+ 						pernaR:null,
+ 						pernaRpos:[0,0,0],
+ 						bracoL:null,
+ 						bracoLpos:[0,0,0],
+ 						bracoR:null,
+ 						bracoRpos:[0,0,0],
+ 						corpo:null,
+ 						corpopos:[0,0,0],
+ 						cabeca:null,
+ 						cabecapos:[0,0,0],
+ 					};
+ 					rootPersonagem;
+ 					obstaculos=[];
+ 					meshObstaculos=[];
+ 					carros=[];
+ 					comidas=[];
+ 					arvore;
+ 					burguer;
+ 					rua3x3;
+ 					posX=5;
+ 					posY=0;
+ 					textPassos.innerText =posY;
+ 					tampa;
+ 					map=[];
+
+
  					scene = new BABYLON.Scene(engine);
  					scene.clearColor = new BABYLON.Color3.FromHexString("#83A243");
  					scene.ambientColor = BABYLON.Color3.White();
@@ -122,26 +225,31 @@
  					shadowGenerator.usePoissonSampling = true;
  					shadowGenerator.useBlurExponentialShadowMap = true;
  					var grupo1 = new BABYLON.TransformNode();
- 					var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
- 					var text1 = new BABYLON.GUI.TextBlock();
- 					text1.text = "REGY CROSSFIT";
- 					text1.color = "white";
- 					text1.fontSize = 35;
- 					text1.top="-45%";
- 					advancedTexture.addControl(text1); 
- 					
-
  					var assetsManager = new BABYLON.AssetsManager(scene);
 
- 					let meshTaskcenario = assetsManager.addMeshTask("cenario", "", caminho, "cenario.glb");
  					let meshTaskPersonagem = assetsManager.addMeshTask("personagem", "", caminho, "bob.glb");
  					let meshTaskTampa = assetsManager.addMeshTask("tampa", "", caminho, "tampa.glb");
+ 					let meshTaskRua = assetsManager.addMeshTask("rua", "", caminho, "rua3x3.glb");
+
  					for (var i = 0; i <_itens.length; i++) {
  						let meshComidas = assetsManager.addMeshTask("comidas", "", caminho, _itens[i].obj);
+ 					}
+ 					for (var i = 0; i <_meshObstaculos.length; i++) {
+ 						let meshObj = assetsManager.addMeshTask("obst", "", caminho, _meshObstaculos[i].obj);
  					}
  					assetsManager.onFinish = function (tasks) {
 
  						for (let j = 0; j < tasks.length; j++) {
+ 							if (tasks[j].name == "rua") {
+ 								const task = tasks[j];
+ 								for (let i = 0; i < task.loadedMeshes.length; i++) {
+ 									if(task.loadedMeshes[i].name=="rua3x3"){
+ 										rua3x3=task.loadedMeshes[i];
+ 										rua3x3.isVisible=false;
+ 										rua3x3.parent = null
+ 									}
+ 								}
+ 							}
  							if (tasks[j].name == "tampa") {
  								const task = tasks[j];
  								for (let i = 0; i < task.loadedMeshes.length; i++) {
@@ -153,6 +261,18 @@
  										tampa=task.loadedMeshes[i];
  										tampa.material=material_black;
 
+ 									}
+ 								}
+ 							}
+ 							if (tasks[j].name == "obst") {
+ 								const task = tasks[j];
+ 								for (let i = 0; i < task.loadedMeshes.length; i++) {
+ 									if(task.loadedMeshes[i].name.includes("obstaculo")){
+ 										let _obs=task.loadedMeshes[i];
+ 										_obs.isVisible=false;
+ 										_obs.parent = null;
+ 										_obs.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
+ 										meshObstaculos.push(_obs)
  									}
  								}
  							}
@@ -213,34 +333,7 @@
  									}
  								}
  							}
- 							if (tasks[j].name == "cenario") {
- 								const task = tasks[j];
- 								for (let i = 0; i < task.loadedMeshes.length; i++) {
- 									task.loadedMeshes[i].isPickable = false;
- 									task.loadedMeshes[i].pode = true;
- 									if(task.loadedMeshes[i].name.includes("obstaculo")){
- 									}
- 									if(task.loadedMeshes[i].name=="cenario"){
- 										task.loadedMeshes[i].isVisible=false;
 
- 									}
- 									if(task.loadedMeshes[i].name=="rua3x3"){
- 										rua3x3=task.loadedMeshes[i];
- 										rua3x3.isVisible=false;
- 										rua3x3.parent = null
-
- 									}
- 									if(task.loadedMeshes[i].name=="tree_blocks"){
-
- 										arvore=task.loadedMeshes[i];
- 										arvore.isVisible=false;
- 										arvore.parent = null
- 										arvore.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
- 									}
- 									
- 								}
-
- 							}
  						}
 
  						for (let i=0;i < 20; i++) {
@@ -260,19 +353,29 @@
  							for (var i = 0; i < carros.length; i++) {
  								if (personagem.corpo.intersectsMesh(carros[i], false)) {
  									console.log("colidiu");
- 									countEscala+=0.5;
+ 									countEscala+=0.35;
  									personagem.corpo.scaling=new BABYLON.Vector3(countEscala,countEscala,countEscala);
- 									personagem.cabecapos[1]+=0.15;
+ 									personagem.cabecapos[1]+=0.10;
  									personagem.cabeca.position.y=personagem.cabecapos[1];
- 									personagem.bracoRpos[0]+=0.20;
+ 									personagem.bracoRpos[0]+=0.10;
  									personagem.bracoR.position.x=personagem.bracoRpos[0];
  									personagem.bracoR.rotation=new BABYLON.Vector3(0,0,Math.PI/4);
- 									personagem.bracoLpos[0]-=0.20;
+ 									personagem.bracoLpos[0]-=0.10;
  									personagem.bracoL.position.x=personagem.bracoLpos[0];
  									personagem.bracoL.rotation=new BABYLON.Vector3(0,0,-Math.PI/4);
  									carros[i].dispose();
  									carros.splice(i, 1); 
  									sommastiga.play();
+
+ 									vidas-=1;
+ 									if(vidas<0){
+ 										scene = createScene();
+
+ 									}else{
+ 										heartImg.src=caminho+"vida"+vidas+".png";
+ 									}
+ 									
+
  								}
  								
  							}
@@ -334,11 +437,9 @@
  							if(w==0){
  								carro.position.x=-30;
  								dest=30;
- 								w=1;
  							}else{
  								carro.position.x=30;
  								dest=-30;
- 								w=0;
  							}
  							carro.position.z=count*distancia;
  							anime({
@@ -351,8 +452,11 @@
  							})
  							carros.push(carro);
  						}
-
-
+ 						if(w==0){
+ 							w=1
+ 						}else{
+ 							w=0;
+ 						}
  						criaFileira(true);
  					}
 
@@ -371,7 +475,8 @@
  						}
  						rand.push(num);
  						if(num==1){
- 							const box2 = arvore.clone("arvore");
+ 							let _obs = meshObstaculos[Math.floor(Math.random() * meshObstaculos.length)];
+ 							const box2 = _obs.clone("arvore");
  							box2.isVisible=true;
  							/*
  							const box = BABYLON.MeshBuilder.CreateBox("box", {height: 0.2, width: distancia, depth: distancia});
@@ -402,6 +507,7 @@
  							if(map[posY+1][posX]!=1){
  								posY+=1;
  								tampa.position.z=posY*distancia;
+ 								textPassos.innerText =posY;
  								if(count-posY<distanciaCria){
  									verificaCriaRua();
  								}
@@ -517,7 +623,7 @@
  						{y: personagem.cabecapos[1]+1},
  						{y: personagem.cabecapos[1]}
  						],
- 						easing: 'linear',
+ 						easing: 'easeOutBack',
  						duration: 200
  					})
  					anime({
@@ -550,10 +656,7 @@
  				}
  				function checkme_xyz(a, b) {
  					if(map[posX][posY]){
-
  					}
-
-
  				}
  				engine.runRenderLoop(function(){
  					scene.render();
@@ -561,51 +664,39 @@
  				});
 
  				window.addEventListener('resize', redimensionaGame, false);
-
-
  				function redimensionaGame() {
- 					resizeGame();
+ 					resizeDiv();
  					engine.resize();
+ 				}
+ 				function resizeDiv() {
+ 					var newWidth = window.innerWidth;
+ 					var newHeight = window.innerHeight;
+ 					widthToHeight = 9 / 16;
+ 					orientacao=1; 
 
+ 					newWidth = newHeight * widthToHeight;
+ 					tamanhoDivs();
+ 				}
+ 				function tamanhoDivs(){
+
+ 					div_canvas.style.width = newWidth + 'px';
+ 					div_canvas.style.height = newHeight + 'px';
+ 					div_canvas.style.marginLeft = (window.innerWidth-newWidth)/2 + 'px';
+ 					div_canvas.style.marginTop = (window.innerHeight-newHeight)/2 + 'px';
+
+ 					div_gui.style.width = newWidth + 'px';
+ 					div_gui.style.height = newHeight + 'px';
 
  				}
  				engine.resize();
 
  			});
-
 }
 let comidas=[{obj:"hotdog.glb",size:1},{obj:"bolo.glb",size:2}];
-appInfografico3d("od1",false,comidas);
+let objobstaculos=[{obj:"tree_blocks.glb",size:1}];
+appInfografico3d("od1",false,comidas,objobstaculos);
 
 </script>
 
-<script type="text/javascript">
-
-
-	var orientacao;
-	var widthToHeight = 9 / 16;
-	var newWidth = window.innerWidth;
-	var newHeight = window.innerHeight;
-	var newWidthToHeight = newWidth / newHeight;
-	let canvas = document.getElementById("canvas_od");
-	let divcanvas = document.getElementById("divCanvas");
-	newWidth = newHeight * widthToHeight;
-	divcanvas.style.width = newWidth + 'px';
-	divcanvas.style.height = newHeight + 'px';
-	divcanvas.style.marginLeft = (window.innerWidth-newWidth)/2 + 'px';
-	divcanvas.style.marginTop = (window.innerHeight-newHeight)/2 + 'px';
-	function resizeGame() {
-		var newWidth = window.innerWidth;
-		var newHeight = window.innerHeight;
-		widthToHeight = 9 / 16;
-		orientacao=1; 
-
-		newWidth = newHeight * widthToHeight;
-		divcanvas.style.width = newWidth + 'px';
-		divcanvas.style.height = '100%';
-		divcanvas.style.marginLeft = (window.innerWidth-newWidth)/2 + 'px';
-		divcanvas.style.marginTop = (window.innerHeight-newHeight)/2 + 'px';
-	}
-</script>
 </body>
 </html> 
