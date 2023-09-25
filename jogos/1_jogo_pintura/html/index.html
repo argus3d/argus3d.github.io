@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script type='text/javascript' src='tinycolor.js'></script>
+    <script type='text/javascript'>
+        var color = tinycolor("red");
+    </script>
+    <title>Drawing tools</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        canvas {
+            border: 2px solid black;
+
+        }
+
+        #divCanvas {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #colourInput {
+            position: absolute;
+            top: 100px;
+            left: 100px;
+            width: 100px;
+            height: 100px;
+        }
+        #contornodesenho{
+            position: absolute;
+            pointer-events: none;
+        }
+    </style>
+    <script src="pintura.js" defer></script>
+</head>
+
+<body>
+
+    <div id="divCanvas">
+        <canvas id="canvas" height="621" width="800"></canvas>
+        <img src="contorno.png" id="contornodesenho">
+        <input type="color" id="colourInput" value="#3d34a5" />
+    </div>
+
+
+
+</body>
+
+</html>
