@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8" />
+	<title>Jogo Quiz</title>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+
+
+	<script src="jogoquiz.js"></script>
+	<style type="text/css">
+		*{
+			margin: 0;
+			left: 0;
+			top:0;
+		}
+		@font-face {
+			font-family: Lilita;
+			src: url(resources/image/LilitaOne-Regular.ttf);
+		}
+		canvas{
+			top: 0;left: 0;width: 100%;height: 100%;
+		}
+		body  {
+			background-image: url("resources/image/AdobeStock_254406875.jpeg");
+			background-color: #cccccc;
+			background-repeat: repeat;
+			background-position: right top;
+		}
+	</style>
+</head>
+<body>
+	<div id="divCanvas">
+		<canvas id="quiz" width="1280" height="720"></canvas>
+	</div>
+	<script>
+
+		var	itens_associar=[
+		{
+			botao:['bt1.png','bt2.png'],
+			botaoCerto:'bt2.png',
+			pergunta:'A RAÇA PASTOR-ALEMÃO É CONSIDERADA HOJE A RAÇA CANINA MAIS INTELIGENTE DO MUNDO.',
+			resposta: 'PARABÉNS! VOCÊ ACERTOU! O PASTOR-ALEMÃO É A TERCEIRA RAÇA CANINA MAIS INTELIGENTE (DEPOIS DO BORDER COLLIE E DO POODLE). ',
+            fotoscachorro:'pastor_alemao.png'
+		},{
+			botao:['bt1.png','bt2.png'],
+			botaoCerto:'bt1.png',
+			pergunta:'O CHIHUAHUA É O MENOR CÃO DO MUNDO.',
+			resposta:'PARABÉNS! VOCÊ ACERTOU! OS CHIHUAUAS, DE ORIGEM MEXICANA, SÃO OS MENORES CÃES DO MUNDO, MEDINDO ENTRE 12 E 20 CM! ',
+            fotoscachorro:'chihuahua.png'
+		},{
+			botao:['bt1.png','bt2.png'],
+			botaoCerto:'bt1.png',
+			pergunta:'OS VIRA-LATAS SÃO OS CÃES MAIS POPULARES DO BRASIL.',
+			resposta:'PARABÉNS! VOCÊ ACERTOU! OS VIRA-LATAS SÃO QUASE METADE DOS CÃES DO BRASIL! ',
+            fotoscachorro:'vira_lata.png'
+		},{
+			botao:['bt1.png','bt2.png'],
+			botaoCerto:'bt2.png',
+			pergunta:'O MALTÊS É UM BOM CÃO DE GUARDA, POR SER GRANDE E PESADO.',
+			resposta:'PARABÉNS! VOCÊ ACERTOU! O MALTÊS É UM CÃO PEQUENO, DE COLO. APESAR DISSO ELE É, SIM, UM ÓTIMO CÃO DE GUARDA, POR SER BASTANTE ALERTA.',
+            fotoscachorro:'maltes.png'
+		},{
+			botao:['bt1.png','bt2.png'],
+			botaoCerto:'bt2.png',
+			pergunta:'OS POODLES SÃO TODOS CÃES EM MINIATURA, DE COLO.',
+			resposta:'PARABÉNS! VOCÊ ACERTOU! HÁ POODLES DE TODOS OS TAMANHOS... ALGUNS SÃO TÃO GRANDES QUANTO UM PASTOR-ALEMÃO! ',
+            fotoscachorro:'poodle.png'
+		},{
+			botao:['bt1.png','bt2.png'],
+			botaoCerto:'bt2.png',
+			pergunta:'BULDOGUES SÃO BONS ANIMAIS DE VIGILÂNCIA, POR SEREM FEROZES E MAL-HUMORADOS.',
+			resposta:'PARABÉNS! VOCÊ ACERTOU! APESAR DA CARA DE MAU, OS BULDOGUES SÃO CÃES BASTANTE AFETUOSOS E BRINCALHÕES E NÃO SÃO BONS ANIMAIS DE VIGILÂNCIA.',
+            fotoscachorro:'buldogue.png'
+		},{
+			botao:['bt1.png','bt2.png'],
+			botaoCerto:'bt1.png',
+			pergunta:'O PEQUINÊS É ANIMAL DE COLO, ORIGINÁRIO DA CHINA.',
+			resposta:'PARABÉNS! VOCÊ ACERTOU! O PEQUINÊS É UM CÃO TRADICIONAL CHINÊS. É UM ANIMAL PEQUENO E LEVE.',
+            fotoscachorro:'pequines.png'
+		},{
+			botao:['bt1.png','bt2.png'],
+			botaoCerto:'bt1.png',
+			pergunta:'O PINSCHER, APESAR DE SER UM DOS MENORES CÃES DO MUNDO, É UM ÓTIMO CÃO DE GUARDA. ',
+			resposta:'PARABÉNS! VOCÊ ACERTOU! APESAR DE SEU PEQUENO TAMANHO, O PINSCHER É UM ANIMAL MUITO VALENTE E BRIGÃO! ELE É INTELIGENTE E ALERTA, SENDO UM ÓTIMO CÃO DE GUARDA.',
+            fotoscachorro:'pinscher.png'
+		},{
+			botao:['bt1.png','bt2.png'],
+			botaoCerto:'bt1.png',
+			pergunta:'O DOGUE ALEMÃO É UMA DAS RAÇAS DE CÃES MAIS ALTAS DO MUNDO.',
+			resposta:'PARABÉNS! VOCÊ ACERTOU! VÁRIOS DOGUES ALEMÃES JÁ ENTRARAM PARA O LIVRO DOS RECORDES, COMO OS MAIS ALTOS DO MUNDO!',
+            fotoscachorro:'dogue_alemao.png'
+		},{
+			botao:['bt1.png','bt2.png'],
+			botaoCerto:'bt2.png',
+			pergunta:'O LABRADOR É O MELHOR CÃO FAREJADOR DO MUNDO.',
+			resposta:'PARABÉNS! VOCÊ ACERTOU! EMBORA SEJA UM DOS MELHORES FAREJADORES, O LABRADOR AINDA FICA ATRÁS DE OUTRAS RAÇAS, COMO O BLOODHOUND E O BASSET HOUND. ',
+            fotoscachorro:'labrador-retriever.png'
+		}
+		];
+
+		AppQuiz(
+			'quiz', /*canvasID*/
+			'fundo.png', /*fundoID*/
+			[217,84], /*tamanho bt*/
+			[550,550], /*margem botoes*/
+			50, /*espaco entre botoes*/
+			1280, /*area para os botoes antes de quebrar pra outra linha*/
+			[980,340], /*posicaoIconeCertoErrado*/
+			[680,390], /*posicao da pergunta*/
+			3000, /*tempo em milisegundos antes de passar pra proxima pergunta */
+			800, /*largura da pergunta caso seja texto*/
+			35, /*tamanho da fonte da pergunta*/
+			35, /*tamanho da fonte dos botoes*/
+			false, /*respostaCerta*/
+			true, /*mostra imagem certa no final da pergunta*/
+			itens_associar, /*_itens*/
+			true, /*respostas diferentes pra cada pergunta*/
+			false, /*esconde pontos no fim do jogo*/
+			"gui_associar.png", /*imagem de fundo dos pontos*/
+			false, /*nao embaralhar respostas*/
+			null, /*audio do enunciado*/
+			'bt_iniciar.png', /*_btiniciar*/
+			true /*para nao embaralhar a ordem das perguntas colocar true*/
+			);
+		</script>
+		<script type="text/javascript">
+			var $divCanvas = $('#divCanvas');
+			retornaOrientacaoVideo($divCanvas);
+			function resizeGame() {
+				retornaOrientacaoVideo($divCanvas);
+			}
+			window.addEventListener('resize', resizeGame, false);
+			window.addEventListener('orientationchange', resizeGame, false);
+
+			function retornaOrientacaoVideo(_this) {
+				var widthToHeight = 16 / 9;
+				var newWidth = window.innerWidth - 75;
+				var newHeight = window.innerHeight - 75;
+				var newWidthToHeight = newWidth / newHeight;
+				$imgAtual = $(_this);
+
+				if (newWidthToHeight > widthToHeight) {
+					newWidth = newHeight * widthToHeight;
+					$imgAtual.css("marginLeft", (window.innerWidth - newWidth) / 2 + 'px');
+					$imgAtual.css("marginTop", (window.innerHeight - newHeight) / 2 + 'px');
+				} else {
+					newHeight = newWidth / widthToHeight;
+					$imgAtual.css("marginLeft", (window.innerWidth - newWidth) / 2 + 'px');
+					$imgAtual.css("marginTop", (window.innerHeight - newHeight) / 2 + 'px');
+				}
+				$imgAtual.css("width", newWidth + 'px');
+				$imgAtual.css("height", newHeight + 'px');
+			}
+		</script>
+	</body>
+	</html>
