@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8" />
+	<title>Jogo Quiz</title>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+
+
+	<script src="jogoquiz.js"></script>
+	<style type="text/css">
+		*{
+			margin: 0;
+			left: 0;
+			top:0;
+		}
+		@font-face {
+			font-family: Lilita;
+			src: url(resources/image/LilitaOne-Regular.ttf);
+		}
+		canvas{
+			top: 0;left: 0;width: 100%;height: 100%;
+		}
+		body  {
+			background-image: url("resources/image/AdobeStock_254406875.jpeg");
+			background-color: #cccccc;
+			background-repeat: repeat;
+			background-position: right top;
+		}
+	</style>
+</head>
+<body>
+	<div id="divCanvas">
+		<canvas id="quiz" width="1280" height="720"></canvas>
+	</div>
+	<script>
+
+		var	itens_associar=[
+		{
+			botao:['bt1.png','bt2.png'],
+			botaoCerto:'bt2.png',
+			pergunta:'O BULLYING NÃO É CONSIDERADO VIOLÊNCIA.',
+			resposta: 'PARABÉNS, VOCÊ ACERTOU! O BULLYING É CONSIDERADO UMA VIOLÊNCIA, POIS SE TRATA DE UMA AGRESSÃO FÍSICA, VERBAL OU PSICOLÓGICA. '
+		},{
+			botao:['bt1.png','bt2.png'],
+			botaoCerto:'bt2.png',
+			pergunta:'BULLYING É UMA BRINCADEIRA.',
+			resposta:'PARABÉNS, VOCÊ ACERTOU! EM UMA BRINCADEIRA, TODOS SE DIVERTEM, MAS A VÍTIMA DE BULLYING SOFRE E NÃO ACHA NADA DIVERTIDO PASSAR POR ISSO. '
+		},{
+			botao:['bt1.png','bt2.png'],
+			botaoCerto:'bt1.png',
+			pergunta:'PODE OCORRER BULLYING EM QUALQUER LUGAR.',
+			resposta:'PARABÉNS, VOCÊ ACERTOU! BULLYING PODE ACONTECER EM QUALQUER LUGAR: NA ESCOLA, NO PARQUE, NA RUA, NO CONDOMÍNIO E ATÉ PELA INTERNET, NAS REDES SOCIAIS.'
+		},{
+			botao:['bt1.png','bt2.png'],
+			botaoCerto:'bt1.png',
+			pergunta:'BULLYING PODE ACONTECER DE MANEIRA SILENCIOSA, POR MEIO DE BILHETES, GESTOS ETC.',
+			resposta:'PARABÉNS, VOCÊ ACERTOU! O BULLYING PODE SER SILENCIOSO, OCORRENDO POR MEIO DE GESTOS E MENSAGENS ESCRITAS.'
+		},{
+			botao:['bt1.png','bt2.png'],
+			botaoCerto:'bt2.png',
+			pergunta:'APENAS NA ESCOLA OCORRE BULLYING.',
+			resposta:'PARABÉNS, VOCÊ ACERTOU! O BULLYING PODE OCORRER EM QUALQUER LUGAR.'
+		},{
+			botao:['bt1.png','bt2.png'],
+			botaoCerto:'bt2.png',
+			pergunta:'BULLYING ENVOLVE APENAS VIOLÊNCIA FÍSICA.',
+			resposta:'PARABÉNS, VOCÊ ACERTOU! BULLYING PODE ENVOLVER, ALÉM DA VIOLÊNCIA FÍSICA, A VIOLÊNCIA VERBAL, CAUSANDO DANOS SOCIAIS E PSICOLÓGICOS.'
+		},{
+			botao:['bt1.png','bt2.png'],
+			botaoCerto:'bt1.png',
+			pergunta:'O BULLYING NA INFÂNCIA PODE CAUSAR CONSEQUÊNCIAS NEGATIVAS NA VIDA ADULTA.',
+			resposta:'PARABÉNS, VOCÊ ACERTOU! AS HUMILHAÇÕES DO BULLYING PODEM CAUSAR INSEGURANÇA, BAIXA AUTOESTIMA, ANSIEDADE E DEPRESSÃO DURANTE A VIDA ADULTA.'
+		},{
+			botao:['bt1.png','bt2.png'],
+			botaoCerto:'bt2.png',
+			pergunta:'BULLYING É UMA PRÁTICA INOCENTE QUE NÃO FAZ MAL A NINGUÉM.',
+			resposta:'PARABÉNS, VOCÊ ACERTOU! BULLYING É ALTAMENTE PREJUDICIAL E DE INOCENTE NÃO TEM NADA, POIS CAUSA SÉRIOS PROBLEMAS ÀS VÍTIMAS.'
+		},{
+			botao:['bt1.png','bt2.png'],
+			botaoCerto:'bt1.png',
+			pergunta:'O BULLYING É FEITO COM INTENÇÃO E REPETIDAMENTE.',
+			resposta:'PARABÉNS, VOCÊ ACERTOU! PARA SER CARACTERIZADO BULLYING, O ATO DE VIOLÊNCIA PRECISA SER INTENCIONAL E REPETIDO COM FREQUÊNCIA.'
+		},{
+			botao:['bt1.png','bt2.png'],
+			botaoCerto:'bt1.png',
+			pergunta:'A VÍTIMA DE BULLYING SE SENTE INTIMIDADA E COM MEDO DAS AMEAÇAS.',
+			resposta:'PARABÉNS, VOCÊ ACERTOU! A VÍTIMA DE BULLYING SOFRE TANTO QUE NÃO TEM CORAGEM DE PEDIR AJUDA, POIS TEM MEDO DAS AMEAÇAS DE SEU AGRESSOR.'
+		},{
+			botao:['bt1.png','bt2.png'],
+			botaoCerto:'bt2.png',
+			pergunta:'A MELHOR FORMA DE COMBATER O BULLYING É FAZENDO BULLYING CONTRA O AGRESSOR.',
+			resposta:'PARABÉNS, VOCÊ ACERTOU! NÃO SE COMBATE A VIOLÊNCIA COM MAIS VIOLÊNCIA. A MELHOR FORMA DE COMBATER O BULLYING É PELO DIÁLOGO. É PRECISO PEDIR AJUDA A ADULTOS DE CONFIANÇA.'
+		},{
+			botao:['bt1.png','bt2.png'],
+			botaoCerto:'bt1.png',
+			pergunta:'APELIDOS PEJORATIVOS, QUE RIDICULARIZAM A VÍTIMA, PODEM SER CONSIDERADOS BULLYING.',
+			resposta:'PARABÉNS, VOCÊ ACERTOU! APELIDOS PEJORATIVOS SÃO USADOS PARA HUMILHAR E, PORTANTO, SÃO CONSIDERADOS BULLYING.'
+		},{
+			botao:['bt1.png','bt2.png'],
+			botaoCerto:'bt2.png',
+			pergunta:'QUALQUER BRIGA OU DISCUSSÃO PODE SER CARACTERIZADA COMO BULLYING.',
+			resposta:'PARABÉNS, VOCÊ ACERTOU! O QUE CARACTERIZA O BULLYING É A REPETIÇÃO FREQUENTE DA HUMILHAÇÃO E A PERSEGUIÇÃO. BRIGAS E DISCUSSÕES DEVEM SER EVITADAS, MAS NÃO SÃO BULLYING QUANDO OCORREM ISOLADAMENTE.'
+		},{
+			botao:['bt1.png','bt2.png'],
+			botaoCerto:'bt1.png',
+			pergunta:'CRIANÇAS QUE SOFREM BULLYING MUDAM O COMPORTAMENTO E PODEM VIR A TER NOTAS BAIXAS NA ESCOLA.',
+			resposta:'PARABÉNS, VOCÊ ACERTOU! CRIANÇAS QUE SOFREM BULLYING PODEM TER DIVERSOS PROBLEMAS, COMO MEDO, INSEGURANÇA E ANSIEDADE, O QUE PREJUDICA OS ESTUDOS E AS ISOLA DAS OUTRAS CRIANÇAS.'
+		},{
+			botao:['bt1.png','bt2.png'],
+			botaoCerto:'bt1.png',
+			pergunta:'QUEM FAZ BULLYING NÃO SE IMPORTA COM O SOFRIMENTO QUE ESTÁ CAUSANDO AO OUTRO.',
+			resposta:'PARABÉNS, VOCÊ ACERTOU! O AGRESSOR SE DIVERTE AO FAZER BULLYING PORQUE NÃO SE COLOCA NO LUGAR DA VITIMA E NÃO PERCEBE OU NÃO SE IMPORTA COM O MAL QUE ESTÁ CAUSANDO. '
+		}
+		];
+
+		AppQuiz(
+			'quiz', /*canvasID*/
+			'fundo.png', /*fundoID*/
+			[217,84], /*tamanho bt*/
+			[550,550], /*margem botoes*/
+			50, /*espaco entre botoes*/
+			1280, /*area para os botoes antes de quebrar pra outra linha*/
+			[980,340], /*posicaoIconeCertoErrado*/
+			[680,390], /*posicao da pergunta*/
+			3000, /*tempo em milisegundos antes de passar pra proxima pergunta */
+			800, /*largura da pergunta caso seja texto*/
+			35, /*tamanho da fonte da pergunta*/
+			35, /*tamanho da fonte dos botoes*/
+			false, /*respostaCerta*/
+			true, /*mostra imagem certa no final da pergunta*/
+			itens_associar, /*_itens*/
+			true, /*respostas diferentes pra cada pergunta*/
+			false, /*esconde pontos no fim do jogo*/
+			"gui_associar.png", /*imagem de fundo dos pontos*/
+			false, /*nao embaralhar respostas*/
+			null, /*audio do enunciado*/
+			'bt_iniciar.png', /*_btiniciar*/
+			true /*para nao embaralhar a ordem das perguntas colocar true*/
+			);
+		</script>
+		<script type="text/javascript">
+			var $divCanvas = $('#divCanvas');
+			retornaOrientacaoVideo($divCanvas);
+			function resizeGame() {
+				retornaOrientacaoVideo($divCanvas);
+			}
+			window.addEventListener('resize', resizeGame, false);
+			window.addEventListener('orientationchange', resizeGame, false);
+
+			function retornaOrientacaoVideo(_this) {
+				var widthToHeight = 16 / 9;
+				var newWidth = window.innerWidth - 75;
+				var newHeight = window.innerHeight - 75;
+				var newWidthToHeight = newWidth / newHeight;
+				$imgAtual = $(_this);
+
+				if (newWidthToHeight > widthToHeight) {
+					newWidth = newHeight * widthToHeight;
+					$imgAtual.css("marginLeft", (window.innerWidth - newWidth) / 2 + 'px');
+					$imgAtual.css("marginTop", (window.innerHeight - newHeight) / 2 + 'px');
+				} else {
+					newHeight = newWidth / widthToHeight;
+					$imgAtual.css("marginLeft", (window.innerWidth - newWidth) / 2 + 'px');
+					$imgAtual.css("marginTop", (window.innerHeight - newHeight) / 2 + 'px');
+				}
+				$imgAtual.css("width", newWidth + 'px');
+				$imgAtual.css("height", newHeight + 'px');
+			}
+		</script>
+	</body>
+	</html>
