@@ -9,19 +9,34 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+	<link href="https://db.onlinewebfonts.com/c/d29e5b2a70883f04b6d8cce692f3616b?family=Marvin+W01+Regular"
+		rel="stylesheet">
 
 	<style type="text/css">
 		@import url(https://fonts.googleapis.com/css?family=Patua+One);
+
+		@import url(https://db.onlinewebfonts.com/c/d29e5b2a70883f04b6d8cce692f3616b?family=Marvin+W01+Regular);
 
 		html {
 			margin: 0;
 			left: 0;
 			top: 0;
+			font-family: "Marvin W01 Regular";
 		}
 
 		@font-face {
 			font-family: Lilita;
 			src: url(resources/image/LilitaOne-Regular.ttf);
+		}
+
+		@font-face {
+			font-family: "Marvin W01 Regular";
+			src: url("https://db.onlinewebfonts.com/t/d29e5b2a70883f04b6d8cce692f3616b.eot");
+			src: url("https://db.onlinewebfonts.com/t/d29e5b2a70883f04b6d8cce692f3616b.eot?#iefix")format("embedded-opentype"),
+				url("https://db.onlinewebfonts.com/t/d29e5b2a70883f04b6d8cce692f3616b.woff2")format("woff2"),
+				url("https://db.onlinewebfonts.com/t/d29e5b2a70883f04b6d8cce692f3616b.woff")format("woff"),
+				url("https://db.onlinewebfonts.com/t/d29e5b2a70883f04b6d8cce692f3616b.ttf")format("truetype"),
+				url("https://db.onlinewebfonts.com/t/d29e5b2a70883f04b6d8cce692f3616b.svg#Marvin W01 Regular")format("svg");
 		}
 
 		canvas {
@@ -39,7 +54,7 @@
 			align-content: center;
 			width: 100%;
 			height: 100vh;
-			background-image: url("resources/v2_caca_palavras1.jpg");
+			background-image: url("resources/fundo.jpg");
 			background-repeat: no-repeat;
 			background-attachment: fixed;
 			background-size: cover;
@@ -50,7 +65,7 @@
 			left: 0;
 			width: 100vw;
 			height: 100vh;
-			background-image: url("resources/v2_caca_palavras_quadros.jpg");
+			background-image: url("resources/fundo.jpg");
 			background-repeat: no-repeat;
 			background-attachment: fixed;
 			background-size: cover;
@@ -65,17 +80,22 @@
 		}
 
 		h1 {
-			-webkit-text-stroke: 1px black;
-			color: white;
-			text-shadow:
-				3px 3px 0 #000,
-				-1px -1px 0 #000,
-				1px -1px 0 #000,
-				-1px 1px 0 #000,
-				1px 1px 0 #000;
-			font-family: 'Patua One', cursive;
+			color: black;
+			font-size: 32px;
+			text-align: center;
+			font-family: "Marvin W01 Regular";
+			padding: 20px;
+		}
 
-			font-size: 40px;
+		.box {
+			width: 75%;
+			height: 75%;
+			background-color: white;
+			display: flex;
+			flex-wrap: wrap;
+			align-content: center;
+			justify-content: center;
+			border-radius: 25px;
 		}
 	</style>
 
@@ -83,21 +103,25 @@
 
 <body>
 	<div id="telaInicio">
-		<h1 style="width: 50%;">ACHE AS PALAVRAS DO QUADRO. CLIQUE NA PRIMEIRA LETRA E ARRASTE ATÉ A
-			ÚLTIMA.
-		</h1>
+		<div class="box">
+			<h1>ACHE AS PALAVRAS DO CAÇA-PALAVRAS. CLIQUE NA PRIMEIRA LETRA E ARRASTE ATÉ A
+				ÚLTIMA.
+			</h1>
+			<img src="resources/btinicio.png" onclick="trocaTela('divCanvas','telaInicio')">
 
-		<button class="button is-danger start-btn" onclick="trocaTela('divCanvas','telaInicio')">INICIAR</button>
+		</div>
+
 	</div>
 	<div id="divCanvas" style="display: none;">
 	</div>
 	<div id="telaFim" style="display: none;">
-		<h1 class="title is-1" style="width: 50%;">PARABÉNS!
-			VOCÊ ACHOU TODAS AS PALAVRAS!
+		<div class="box">
+			<h1>PARABÉNS!
+				VOCÊ ACHOU TODAS AS PALAVRAS!
+			</h1>
+			<img src="resources/btreinicio.png" onclick="location.reload();">
 
-		</h1>
-
-		<button class="button is-primary start-btn" onclick="location.reload();">JOGAR NOVAMENTE</button>
+		</div>
 	</div>
 	<script>
 		function trocaTela(mostra, esconde) {
