@@ -2,118 +2,193 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, user-scalable=no" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <script type='text/javascript' src='tinycolor.js'></script>
-    <script type='text/javascript'>
-        var color = tinycolor("red");
-    </script>
-    <title>Drawing tools</title>
-    <style>
-        body {
-            margin: 0;
-            background-color: beige;
-        }
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, user-scalable=no" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<script type='text/javascript' src='tinycolor.js'></script>
+	<script type='text/javascript'>
+		var color = tinycolor("red");
+	</script>
+	<title>Drawing tools</title>
+	<style>
+		body{
+			background-color: lightblue;
+			background: url(assets/fundo.jpg) no-repeat center center fixed;
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
+			width: 100%;
+			height: 100%;
+			padding: 0;
+			margin: 0;
+			top:0;
+			left: 0;
+			position: absolute;
+			float: left;
+			font-family: "Segoe WP", "Segoe UI", Verdana, Arial,dtjakob,pinkchicken;
+			touch-action: none;
+			-ms-touch-action: none;
+			font-family: dtjakobLeve;
+		}
+		.s80{
+			width: 80%;
+		}
+		.s70{
+			width: 70%;
+		}
+		.s60{
+			width: 60%;
+		}
+		.s50{
+			width: 50%;
+		}
+		.s20{
+			width: 20%;
+		}
+		.s10{
+			width: 10%;
+			height: auto;
+		}
+		.telaInicial{
+			width: 100%;
+			height:100vh;
+			display:flex;
+			flex-direction: column; 
+			align-items: center; 
 
-        canvas {
-            border: 2px solid black;
-            background-color: white;
-            position: absolute;
-            top: 0;
-            left: 0;
+		}
+		.telaInicioTitulo{
+			width: 100%;
+			display:flex;
+			flex-direction: column; 
+			align-items: center; 
+			justify-content: center;
+			flex-grow: 4;
+		}
+		.telaInicioBottom{
+			width: 100%;
+			display:flex;
+			flex-direction: row; 
+			justify-content: space-between;
 
-        }
+		}
 
-        #contornodesenho {
+		canvas {
+			border: 2px solid black;
+			background-color: white;
+			position: absolute;
+			top: 0;
+			left: 0;
 
-            pointer-events: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
+		}
+		#contornodesenho {
 
-        #divCanvas {
-            position: relative;
-            width: 100%;
+			pointer-events: none;
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
 
-
-        }
-
-        .container {
-            width: 100%;
-            display: flex;
-            flex-wrap: wrap;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            align-content: center;
-
-        }
-
-        .imglapis {
-            width: 50%;
-        }
-
-        .cores {
-            left: 0px;
-            top: 0px;
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-evenly;
-            align-items: center;
-            z-index: 5;
-            padding-bottom: 20px;
-        }
-
-        .lapis {
-            max-width: 5%;
-        }
-
-        @media only screen and (max-width: 600px) {
-            .lapis {
-                max-width: 15%;
-            }
-        }
+		#divCanvas {
+			position: relative;
+			width: 100%;
 
 
-        .active {
-            transform: translate(0, -15px);
-        }
+		}
 
-        #colourInput {
-            position: absolute;
-            top: 100px;
-            left: 100px;
-            width: 100px;
-            height: 100px;
-        }
-    </style>
-    <script src="pintura.js" defer></script>
+		.container {
+			width: 100%;
+			display: flex;
+			flex-wrap: wrap;
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;
+			align-content: center;
+
+		}
+
+		.imglapis {
+			width: 50%;
+		}
+
+		.cores {
+			left: 0px;
+			top: 0px;
+			width: 100%;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-evenly;
+			align-items: center;
+			z-index: 5;
+			padding-bottom: 20px;
+		}
+
+		.lapis {
+			max-width: 5%;
+		}
+
+		@media only screen and (max-width: 600px) {
+			.lapis {
+				max-width: 15%;
+			}
+		}
+
+
+		.active {
+			transform: translate(0, -15px);
+		}
+
+		#colourInput {
+			position: absolute;
+			top: 100px;
+			left: 100px;
+			width: 100px;
+			height: 100px;
+		}
+	</style>
+	<script src="pintura.js" defer></script>
 </head>
 
 <body>
-    <div class="container">
-        <div class="cores">
-            <div class="lapis active" data-cor="#e286ae"><img src="lapis1.png" class="imglapis"></div>
-            <div class="lapis" data-cor="#df6a5f"><img src="lapis2.png" class="imglapis"></div>
-            <div class="lapis" data-cor="#eca168"><img src="lapis3.png" class="imglapis"></div>
-            <div class="lapis" data-cor="#f7e528"><img src="lapis4.png" class="imglapis"></div>
-            <div class="lapis" data-cor="#4aaa40"><img src="lapis5.png" class="imglapis"></div>
-            <div class="lapis" data-cor="#51a5dc"><img src="lapis6.png" class="imglapis"></div>
-            <div class="lapis" data-cor="#ffffff"><img src="eraser.png" class="imglapis"></div>
-        </div>
-        <div id="divCanvas">
-            <canvas id="canvas" height="621" width="800"></canvas>
-            <img src="contorno.png" id="contornodesenho">
+	<div class="telaInicial">
+		<div class="telaInicioTitulo">
+			<img class="s80" src="assets/titulo.png">
+			<img class="s20" src="assets/bt_inicio.png" onClick="iniciaJogo();">
+		</div>
+		<div class="telaInicioBottom">
+			<img class="s10" src="assets/ico1.png">
+			<img class="s10" src="assets/ico2.png">
+		</div>
+	</div>
+	<div class="container" style="display: none">
+		<div class="cores">
+			<div class="lapis active" data-cor="#e286ae"><img src="assets/lapis1.png" class="imglapis"></div>
+			<div class="lapis" data-cor="#df6a5f"><img src="assets/lapis2.png" class="imglapis"></div>
+			<div class="lapis" data-cor="#eca168"><img src="assets/lapis3.png" class="imglapis"></div>
+			<div class="lapis" data-cor="#f7e528"><img src="assets/lapis4.png" class="imglapis"></div>
+			<div class="lapis" data-cor="#4aaa40"><img src="assets/lapis5.png" class="imglapis"></div>
+			<div class="lapis" data-cor="#51a5dc"><img src="assets/lapis6.png" class="imglapis"></div>
+			<div class="lapis" data-cor="#ffffff"><img src="assets/eraser.png" class="imglapis"></div>
+		</div>
+		<div id="divCanvas">
+			<canvas id="canvas" height="621" width="800"></canvas>
+			<img src="assets/contorno.png" id="contornodesenho">
 
-        </div>
+		</div>
+		<script type="text/javascript">
+			var tela1=document.querySelector(".telaInicial");
+			var tela2=document.querySelector(".container");
+			function iniciaJogo(){
+				tela1.style.display="none";
+				tela2.style.display="flex";
+			}
+		</script>
         <!--
         <input type="color" id="colourInput" value="#3d34a5" />
--->
+    -->
 
-    </div>
+</div>
 
 
 
