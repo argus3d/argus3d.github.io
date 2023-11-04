@@ -5,12 +5,35 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, user-scalable=no" />
 	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<link href="https://db.onlinewebfonts.com/c/d29e5b2a70883f04b6d8cce692f3616b?family=Marvin+W01+Regular"
+	rel="stylesheet">
+
 	<script type='text/javascript' src='tinycolor.js'></script>
 	<script type='text/javascript'>
 		var color = tinycolor("red");
 	</script>
 	<title>Drawing tools</title>
 	<style>
+		@import url(https://fonts.googleapis.com/css?family=Patua+One);
+
+		@import url(https://db.onlinewebfonts.com/c/d29e5b2a70883f04b6d8cce692f3616b?family=Marvin+W01+Regular);
+		@font-face {
+			font-family: Lilita;
+			src: url(resources/image/LilitaOne-Regular.ttf);
+		}
+
+		@font-face {
+			font-family: "Marvin W01 Regular";
+			src: url("https://db.onlinewebfonts.com/t/d29e5b2a70883f04b6d8cce692f3616b.eot");
+			src: url("https://db.onlinewebfonts.com/t/d29e5b2a70883f04b6d8cce692f3616b.eot?#iefix")format("embedded-opentype"),
+			url("https://db.onlinewebfonts.com/t/d29e5b2a70883f04b6d8cce692f3616b.woff2")format("woff2"),
+			url("https://db.onlinewebfonts.com/t/d29e5b2a70883f04b6d8cce692f3616b.woff")format("woff"),
+			url("https://db.onlinewebfonts.com/t/d29e5b2a70883f04b6d8cce692f3616b.ttf")format("truetype"),
+			url("https://db.onlinewebfonts.com/t/d29e5b2a70883f04b6d8cce692f3616b.svg#Marvin W01 Regular")format("svg");
+		}
+		html{
+			font-family: "Marvin W01 Regular";
+		}
 		body{
 			background-color: lightblue;
 			background: url(assets/fundo.jpg) no-repeat center center fixed;
@@ -26,10 +49,9 @@
 			left: 0;
 			position: absolute;
 			float: left;
-			font-family: "Segoe WP", "Segoe UI", Verdana, Arial,dtjakob,pinkchicken;
+			font-family: "Marvin W01 Regular";
 			touch-action: none;
 			-ms-touch-action: none;
-			font-family: dtjakobLeve;
 		}
 		.s80{
 			width: 80%;
@@ -44,7 +66,7 @@
 			width: 50%;
 		}
 		.s20{
-			width: 20%;
+			width: 18%;
 		}
 		.s10{
 			width: 10%;
@@ -153,7 +175,8 @@
 <body>
 	<div class="telaInicial">
 		<div class="telaInicioTitulo">
-			<img class="s80" src="assets/titulo.png">
+			<img class="s70" src="assets/titulo.png">
+			<h1 style="width: 50%; color: white">CLIQUE SOBRE A COR E PASSE SOBRE O DESENHO. USE A BORRACHA PARA APAGAR.</h1>
 			<img class="s20" src="assets/bt_inicio.png" onClick="iniciaJogo();">
 		</div>
 		<div class="telaInicioBottom">
