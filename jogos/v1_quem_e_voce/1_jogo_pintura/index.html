@@ -9,113 +9,32 @@
 	rel="stylesheet">
 
 	<script type='text/javascript' src='tinycolor.js'></script>
+	<link rel="stylesheet" type="text/css" href="estilo.css">
 	<script type='text/javascript'>
 		var color = tinycolor("red");
 	</script>
-	<title>Drawing tools</title>
+	<title></title>
 	<style>
-		@import url(https://fonts.googleapis.com/css?family=Patua+One);
-
-		@import url(https://db.onlinewebfonts.com/c/d29e5b2a70883f04b6d8cce692f3616b?family=Marvin+W01+Regular);
-		@font-face {
-			font-family: Lilita;
-			src: url(resources/image/LilitaOne-Regular.ttf);
-		}
-
-		@font-face {
-			font-family: "Marvin W01 Regular";
-			src: url("https://db.onlinewebfonts.com/t/d29e5b2a70883f04b6d8cce692f3616b.eot");
-			src: url("https://db.onlinewebfonts.com/t/d29e5b2a70883f04b6d8cce692f3616b.eot?#iefix")format("embedded-opentype"),
-			url("https://db.onlinewebfonts.com/t/d29e5b2a70883f04b6d8cce692f3616b.woff2")format("woff2"),
-			url("https://db.onlinewebfonts.com/t/d29e5b2a70883f04b6d8cce692f3616b.woff")format("woff"),
-			url("https://db.onlinewebfonts.com/t/d29e5b2a70883f04b6d8cce692f3616b.ttf")format("truetype"),
-			url("https://db.onlinewebfonts.com/t/d29e5b2a70883f04b6d8cce692f3616b.svg#Marvin W01 Regular")format("svg");
-		}
-		html{
-			font-family: "Marvin W01 Regular";
-		}
-		body{
-			background-color: lightblue;
-			background: url(assets/fundo.jpg) no-repeat center center fixed;
-			-webkit-background-size: cover;
-			-moz-background-size: cover;
-			-o-background-size: cover;
-			background-size: cover;
-			width: 100%;
-			height: 100%;
-			padding: 0;
-			margin: 0;
-			top:0;
-			left: 0;
-			position: absolute;
-			float: left;
-			font-family: "Marvin W01 Regular";
-			touch-action: none;
-			-ms-touch-action: none;
-		}
-		.s80{
-			width: 80%;
-		}
-		.s70{
-			width: 70%;
-		}
-		.s60{
-			width: 60%;
-		}
-		.s50{
-			width: 50%;
-		}
-		.s20{
-			width: 18%;
-		}
-		.s10{
-			width: 10%;
-			height: auto;
-		}
-		.telaInicial{
-			width: 100%;
-			height:100vh;
-			display:flex;
-			flex-direction: column; 
-			align-items: center; 
-
-		}
-		.telaInicioTitulo{
-			width: 100%;
-			display:flex;
-			flex-direction: column; 
-			align-items: center; 
-			justify-content: center;
-			flex-grow: 4;
-		}
-		.telaInicioBottom{
-			width: 100%;
-			display:flex;
-			flex-direction: row; 
-			justify-content: space-between;
-
-		}
-
 		canvas {
-			border: 2px solid black;
 			background-color: white;
-			position: absolute;
 			top: 0;
 			left: 0;
-
 		}
 		#contornodesenho {
-
+			width: 800px;
+			height:621px;
 			pointer-events: none;
-			position: absolute;
-			top: 0;
-			left: 0;
+			position: relative;
+			margin-top: 10%;
 		}
 
 		#divCanvas {
-			position: relative;
+			position: absolute;
 			width: 100%;
-
+			height:100vh;
+			text-align: center;
+			top:0px;
+			left:0px;
 
 		}
 
@@ -130,14 +49,12 @@
 
 		}
 
-		.imglapis {
-			width: 50%;
-		}
+		
 
 		.cores {
 			left: 0px;
 			top: 0px;
-			width: 100%;
+			width: 85%;
 			display: flex;
 			flex-direction: row;
 			justify-content: space-evenly;
@@ -146,13 +63,19 @@
 			padding-bottom: 20px;
 		}
 
+		.imglapis {
+			width: 50%;
+		}
 		.lapis {
 			max-width: 5%;
 		}
 
-		@media only screen and (max-width: 600px) {
+		@media only screen and (max-width: 1000px) {
 			.lapis {
 				max-width: 15%;
+			}
+			#contornodesenho {
+				margin-top: 60%;
 			}
 		}
 
@@ -168,6 +91,42 @@
 			width: 100px;
 			height: 100px;
 		}
+
+
+		.slidecontainer {
+			width: 100%;
+		}
+
+		.slider {
+			-webkit-appearance: none;
+			width: 100%;
+			height: 25px;
+			background: #d3d3d3;
+			outline: none;
+			opacity: 0.7;
+			-webkit-transition: .2s;
+			transition: opacity .2s;
+		}
+
+		.slider:hover {
+			opacity: 1;
+		}
+
+		.slider::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			appearance: none;
+			width: 25px;
+			height: 25px;
+			background: #04AA6D;
+			cursor: pointer;
+		}
+
+		.slider::-moz-range-thumb {
+			width: 25px;
+			height: 25px;
+			background: #04AA6D;
+			cursor: pointer;
+		}
 	</style>
 	<script src="pintura.js" defer></script>
 </head>
@@ -175,13 +134,13 @@
 <body>
 	<div class="telaInicial">
 		<div class="telaInicioTitulo">
-			<img class="s70" src="assets/titulo.png">
-			<h1 style="width: 50%; color: white">CLIQUE SOBRE A COR E PASSE SOBRE O DESENHO. USE A BORRACHA PARA APAGAR.</h1>
+			<img class="titulo" src="assets/titulo.png">
+			<h1 class="subtitulo">CLIQUE SOBRE A COR E PASSE SOBRE O DESENHO. USE A BORRACHA PARA APAGAR.</h1>
 			<img class="s20" src="assets/bt_inicio.png" onClick="iniciaJogo();">
 		</div>
 		<div class="telaInicioBottom">
-			<img class="s10" src="assets/ico1.png">
-			<img class="s10" src="assets/ico2.png">
+			<img class="logo1" src="assets/ico1.png">
+			<img class="logo2" src="assets/ico2.png">
 		</div>
 	</div>
 	<div class="container" style="display: none">
@@ -192,12 +151,14 @@
 			<div class="lapis" data-cor="#f7e528"><img src="assets/lapis4.png" class="imglapis"></div>
 			<div class="lapis" data-cor="#4aaa40"><img src="assets/lapis5.png" class="imglapis"></div>
 			<div class="lapis" data-cor="#51a5dc"><img src="assets/lapis6.png" class="imglapis"></div>
-			<div class="lapis" data-cor="#ffffff"><img src="assets/eraser.png" class="imglapis"></div>
+			<div class="lapis borracha" data-cor="#ffffff"><img src="assets/eraser.png" class="imglapis"></div>
+			<input type="range" min="5" max="100" value="10" class="sliderPincel">
 		</div>
 		<div id="divCanvas">
 			<canvas id="canvas" height="621" width="800"></canvas>
+		</div>
+		<div style="display:flex;justify-content: center;align-content: center;height: 100vh;width: 100%;position: absolute;left: 0px;top: 0px;pointer-events: none;">
 			<img src="assets/contorno.png" id="contornodesenho">
-
 		</div>
 		<script type="text/javascript">
 			var tela1=document.querySelector(".telaInicial");
