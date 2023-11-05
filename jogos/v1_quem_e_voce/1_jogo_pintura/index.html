@@ -39,26 +39,29 @@
 			display: flex;
 			flex-direction: column;
 			justify-content: space-evenly;
-			align-items: center;
+			align-items: flex-start;  
 			z-index: 5;
 			padding-bottom: 20px;
-			height: 100vh;
+			height: 80vh;
 		}
 		.imglapis {
 			width: 50%;
 		}
 		.lapis {
-			max-width: 15%;
+			max-width: 20%;
 			transform: rotate(-90deg);
 		}
+		.divSlider{
+			width: 100px;
+			height:100px;
+			position: absolute; 
+			right: 25px;
+			top: 20px;
+			bottom:initial;
+		}
 		#contornodesenho {
-			
-
 			pointer-events: none;
-			position: relative;
-			
-
-			
+			position: relative;	
 		}
 
 		@media only screen and (max-width: 600px) {
@@ -66,9 +69,9 @@
 				max-width: 15%;
 			}
 			#contornodesenho {
-			align-self: center; 
-			max-width: 100%;
-			max-height: : 100%;
+				align-self: center; 
+				max-width: 100%;
+				max-height: : 100%;
 			}
 			.container {
 				justify-content: center;
@@ -81,10 +84,17 @@
 			.lapis {
 				transform: rotate(0deg);
 			}
+			.divSlider{
+				width: 100px;
+				height:100px;
+				bottom:0px;
+				right: initial;
+				top: initial;
+			}
 		}
 
 		.active {
-			/*transform: translate(0, -15px);*/
+			opacity: 0.5;
 		}
 
 		#colourInput {
@@ -167,13 +177,17 @@
 			<div class="lapis" data-cor="#4aaa40"><img src="assets/lapis5.png" class="imglapis"></div>
 			<div class="lapis" data-cor="#51a5dc"><img src="assets/lapis6.png" class="imglapis"></div>
 			<div class="lapis borracha" data-cor="#ffffff"><img src="assets/eraser.png" class="imglapis"></div>
-			<input type="range" min="5" max="100" value="10" class="sliderPincel" style="width: 100px">
+			
+			
 		</div>
 		<div id="divCanvas">
 			<canvas id="canvas" height="621" width="800"></canvas>
 		</div>
 		<div class="divContorno">
 			<img src="assets/contorno.png" id="contornodesenho">
+		</div>
+		<div class="divSlider">
+			<input type="range" min="5" max="100" value="10" class="sliderPincel" style="width: 100px">
 		</div>
 	</div>
 	<script type="text/javascript">

@@ -1,1 +1,301 @@
-function _0x15d9(){const _0x336892=['altura','value','resize','beginPath','428050njykpO','remove','shadowColor','removeEventListener','637122hgHbFz','77184VHLasb','mousedown','lineCap','strokeStyle','atan2','99534TzfKqf','preventDefault','mousemove','click','colour','lineJoin','#e286ae','offsetY','buttons','sin','canvas','lineWidth','add','currentTarget','getElementById','distance','getAttribute','top','mouseup','.sliderPincel','mouseout','248152MYFAbi','1334920LbAGTz','clientY','getContext','height','borracha','classList','stroke','contornodesenho','push','darken','innerWidth','targetTouches','shadowBlur','innerHeight','divCanvas','25MNZpHQ','contains','round','thickness','touchend','4200714FtfNWy','input','active','touchcancel','moveTo','toHexString','clearRect','querySelectorAll','random','1072uLQEtf','getBoundingClientRect','forEach','log','querySelector','offsetX','addEventListener','data-cor'];_0x15d9=function(){return _0x336892;};return _0x15d9();}const _0x3f6769=_0x23fe;(function(_0x538d43,_0x525505){const _0x57e072=_0x23fe,_0x148331=_0x538d43();while(!![]){try{const _0x110746=parseInt(_0x57e072(0x115))/0x1+-parseInt(_0x57e072(0x13f))/0x2+-parseInt(_0x57e072(0x149))/0x3+parseInt(_0x57e072(0x116))/0x4+parseInt(_0x57e072(0x125))/0x5*(parseInt(_0x57e072(0x143))/0x6)+parseInt(_0x57e072(0x12a))/0x7+-parseInt(_0x57e072(0x133))/0x8*(parseInt(_0x57e072(0x144))/0x9);if(_0x110746===_0x525505)break;else _0x148331['push'](_0x148331['shift']());}catch(_0x170c67){_0x148331['push'](_0x148331['shift']());}}}(_0x15d9,0x4d474));var canvas=document[_0x3f6769(0x157)](_0x3f6769(0x153)),divcanvas=document[_0x3f6769(0x157)](_0x3f6769(0x124));const context=canvas[_0x3f6769(0x118)]('2d');var contorno=document[_0x3f6769(0x157)](_0x3f6769(0x11d)),cores=document[_0x3f6769(0x131)]('.lapis');const slider=document[_0x3f6769(0x137)](_0x3f6769(0x15c));var strokeWidth=0xa;slider[_0x3f6769(0x139)](_0x3f6769(0x12b),function(){const _0x40fe8d=_0x3f6769,_0x2def8c=this[_0x40fe8d(0x13c)];strokeWidth=_0x2def8c;}),cores[_0x3f6769(0x135)](_0x332933=>{const _0x303ce0=_0x3f6769;_0x332933['addEventListener'](_0x303ce0(0x14c),function(){const _0x12990d=_0x303ce0;_0x332933[_0x12990d(0x11b)][_0x12990d(0x126)](_0x12990d(0x11a))?context[_0x12990d(0x130)](0x0,0x0,rectcanvas['largura'],rectcanvas[_0x12990d(0x13b)]):(colour=_0x332933[_0x12990d(0x159)](_0x12990d(0x13a)),cores[_0x12990d(0x135)](_0x97f23d=>{const _0xbf6625=_0x12990d;_0x97f23d[_0xbf6625(0x11b)][_0xbf6625(0x140)](_0xbf6625(0x12c));}),_0x332933['classList'][_0x12990d(0x155)]('active'));});});let colour=_0x3f6769(0x14f);const varyBrightness=0x5;var rectcanvas={'largura':window['innerWidth'],'altura':window[_0x3f6769(0x123)]};let latestPoint,drawing=![],currentAngle;function resizeCanvas(){const _0x385ad4=_0x3f6769;rectcanvas={'largura':window[_0x385ad4(0x120)],'altura':window[_0x385ad4(0x123)]},canvas['width']=rectcanvas['largura'],canvas[_0x385ad4(0x119)]=rectcanvas[_0x385ad4(0x13b)];}function _0x23fe(_0x3f8c32,_0x38b9bc){const _0x15d938=_0x15d9();return _0x23fe=function(_0x23feee,_0x5c689d){_0x23feee=_0x23feee-0x115;let _0x5a4ddb=_0x15d938[_0x23feee];return _0x5a4ddb;},_0x23fe(_0x3f8c32,_0x38b9bc);}resizeCanvas(),window[_0x3f6769(0x139)](_0x3f6769(0x13d),resizeCanvas);const varyColour=_0x1d0454=>{const _0x2a41d4=_0x3f6769,_0x296abd=Math['round'](Math[_0x2a41d4(0x132)]()*0x2*varyBrightness),_0x196d7f=tinycolor(_0x1d0454),_0x4397ca=_0x296abd>varyBrightness?_0x196d7f['brighten'](_0x296abd-varyBrightness):_0x196d7f[_0x2a41d4(0x11f)](_0x296abd);return _0x4397ca[_0x2a41d4(0x12f)]();},makeBrush=_0x35a95a=>{const _0xdaabe5=_0x3f6769,_0x18ef69=[];let _0x363129=Math[_0xdaabe5(0x127)](_0x35a95a/0x3);const _0x13b964=strokeWidth/_0x363129;for(let _0x2ca280=0x0;_0x2ca280<_0x363129;_0x2ca280++){const _0x1c38d2=_0x2ca280===0x0?0x0:_0x13b964*_0x2ca280+Math[_0xdaabe5(0x132)]()*_0x13b964/0x2-_0x13b964/0x2;_0x18ef69[_0xdaabe5(0x11e)]({'distance':_0x1c38d2,'thickness':Math[_0xdaabe5(0x132)]()*0x2+0x2,'colour':varyColour(colour)});}return _0x18ef69;};let currentBrush=makeBrush(strokeWidth);const rotatePoint=(_0x323ac7,_0xd9e430,_0x3e0c60)=>[_0x3e0c60[0x0]+_0x323ac7*Math['cos'](_0xd9e430),_0x3e0c60[0x1]+_0x323ac7*Math[_0x3f6769(0x152)](_0xd9e430)],getBearing=(_0x2d9158,_0x5a5642)=>(Math[_0x3f6769(0x148)](_0x5a5642[0x1]-_0x2d9158[0x1],_0x5a5642[0x0]-_0x2d9158[0x0])-Math['PI']/0x2)%(Math['PI']*0x2),getNewAngle=(_0x273bfa,_0x1ec074,_0x4a7bac)=>{const _0x4f1df5=_0x3f6769,_0x355b26=getBearing(_0x273bfa,_0x1ec074);if(typeof _0x4a7bac==='undefined')return console[_0x4f1df5(0x136)](_0x355b26),_0x355b26;return _0x4a7bac-angleDiff(_0x4a7bac,_0x355b26);},angleDiff=(_0x4efc4d,_0x1a40b5)=>{const _0x4b7bd0=Math['PI']*0x2,_0x142d18=(_0x4efc4d-(_0x1a40b5>0x0?_0x1a40b5:_0x1a40b5+_0x4b7bd0)+Math['PI'])%_0x4b7bd0-Math['PI'];return _0x142d18<-Math['PI']?_0x142d18+_0x4b7bd0:_0x142d18;},strokeBristle=(_0xb0ab71,_0x467039,_0x1190ce,_0x19451f)=>{const _0x2b2413=_0x3f6769;context[_0x2b2413(0x13e)](),context[_0x2b2413(0x12e)](_0xb0ab71[0x0],_0xb0ab71[0x1]),context[_0x2b2413(0x147)]=_0x1190ce[_0x2b2413(0x14d)],context[_0x2b2413(0x154)]=_0x1190ce[_0x2b2413(0x128)],context[_0x2b2413(0x146)]=_0x2b2413(0x127),context[_0x2b2413(0x14e)]=_0x2b2413(0x127),context[_0x2b2413(0x141)]=_0x1190ce['colour'],context[_0x2b2413(0x122)]=_0x1190ce['thickness']/0x2,context['quadraticCurveTo'](_0x19451f[0x0],_0x19451f[0x1],_0x467039[0x0],_0x467039[0x1]),context['lineTo'](_0x467039[0x0],_0x467039[0x1]),context[_0x2b2413(0x11c)]();},drawStroke=(_0x522269,_0x4a1f87,_0x2cdc88,_0x3769d3,_0x3b786b)=>{const _0x16b716=_0x3f6769;_0x522269[_0x16b716(0x135)](_0x2cb531=>{const _0x1c3912=_0x16b716;context['beginPath']();const _0x10d388=rotatePoint(_0x2cb531[_0x1c3912(0x158)]-strokeWidth/0x2,_0x3769d3,_0x4a1f87),_0x519033=rotatePoint(_0x2cb531[_0x1c3912(0x158)]-strokeWidth/0x2,_0x3b786b,_0x2cdc88),_0x38519c=rotatePoint(_0x2cb531[_0x1c3912(0x158)]-strokeWidth/0x2,_0x3b786b,_0x4a1f87);strokeBristle(_0x10d388,_0x519033,_0x2cb531,_0x38519c);});},continueStroke=_0xcfaa01=>{const _0x4960aa=getNewAngle(latestPoint,_0xcfaa01,currentAngle);drawStroke(currentBrush,latestPoint,_0xcfaa01,currentAngle,_0x4960aa),currentAngle=_0x4960aa%(Math['PI']*0x2),latestPoint=_0xcfaa01;},startStroke=_0x2b2e06=>{currentAngle=undefined,currentBrush=makeBrush(strokeWidth),drawing=!![],latestPoint=_0x2b2e06;},getTouchPoint=_0x1644ea=>{const _0x311c3f=_0x3f6769;if(!_0x1644ea[_0x311c3f(0x156)])return[0x0,0x0];const _0x574c36=_0x1644ea[_0x311c3f(0x156)][_0x311c3f(0x134)](),_0x277cf8=_0x1644ea[_0x311c3f(0x121)][0x0];return[_0x277cf8['clientX']-_0x574c36['left'],_0x277cf8[_0x311c3f(0x117)]-_0x574c36[_0x311c3f(0x15a)]];},BUTTON=0x1,mouseButtonIsDown=_0x816710=>(BUTTON&_0x816710)===BUTTON,mouseMove=_0x3f4ddb=>{const _0x4e3b18=_0x3f6769;if(!drawing)return;continueStroke([_0x3f4ddb['offsetX'],_0x3f4ddb[_0x4e3b18(0x150)]]);},mouseDown=_0x23b360=>{const _0x4834d5=_0x3f6769;if(drawing)return;_0x23b360[_0x4834d5(0x14a)](),canvas[_0x4834d5(0x139)](_0x4834d5(0x14b),mouseMove,![]),startStroke([_0x23b360[_0x4834d5(0x138)],_0x23b360[_0x4834d5(0x150)]]);},mouseEnter=_0x36deb8=>{const _0x1613c3=_0x3f6769;if(!mouseButtonIsDown(_0x36deb8[_0x1613c3(0x151)])||drawing)return;mouseDown(_0x36deb8);},endStroke=_0xe55af5=>{const _0x3fc7ce=_0x3f6769;if(!drawing)return;drawing=![],_0xe55af5[_0x3fc7ce(0x156)][_0x3fc7ce(0x142)](_0x3fc7ce(0x14b),mouseMove,![]);},touchStart=_0x53d7c5=>{const _0xaaeae7=_0x3f6769;if(drawing)return;_0x53d7c5[_0xaaeae7(0x14a)](),startStroke(getTouchPoint(_0x53d7c5));},touchMove=_0xf8dd2e=>{if(!drawing)return;continueStroke(getTouchPoint(_0xf8dd2e));},touchEnd=_0x48c69d=>{drawing=![];};canvas[_0x3f6769(0x139)]('touchstart',touchStart,![]),canvas[_0x3f6769(0x139)](_0x3f6769(0x129),touchEnd,![]),canvas[_0x3f6769(0x139)](_0x3f6769(0x12d),touchEnd,![]),canvas[_0x3f6769(0x139)]('touchmove',touchMove,![]),canvas[_0x3f6769(0x139)](_0x3f6769(0x145),mouseDown,![]),canvas['addEventListener'](_0x3f6769(0x15b),endStroke,![]),canvas[_0x3f6769(0x139)](_0x3f6769(0x15d),endStroke,![]),canvas[_0x3f6769(0x139)]('mouseenter',mouseEnter,![]);
+//import tinycolor from "tinycolor2";
+// Brush colour and size
+// Set up our drawing context
+var canvas = document.getElementById("canvas");
+var divcanvas = document.getElementById("divCanvas");
+const context = canvas.getContext("2d");
+var contorno = document.getElementById("contornodesenho");
+var cores = document.querySelectorAll(".lapis");
+
+const slider = document.querySelector(".sliderPincel");
+var strokeWidth = 10;
+
+slider.addEventListener("input", function() {
+  const sliderVal = this.value;
+  strokeWidth = sliderVal;
+
+});
+
+
+cores.forEach(element => {
+  element.addEventListener("click", function () {
+    
+
+    if(element.classList.contains("borracha")){
+      context.clearRect(0, 0, rectcanvas.largura, rectcanvas.altura);
+    }else{
+      colour = element.getAttribute("data-cor");
+      cores.forEach(element => {
+        element.classList.remove("active");
+      });
+      element.classList.add("active");
+    }
+
+
+
+  });
+});
+
+let colour = "#e286ae";
+
+const varyBrightness = 5;
+
+var rectcanvas = { largura: window.innerWidth, altura: window.innerHeight };
+
+let latestPoint;
+let drawing = false;
+let currentAngle;
+
+function resizeCanvas() {
+  rectcanvas = { largura: window.innerWidth, altura: window.innerHeight };
+  canvas.width = rectcanvas.largura;
+  canvas.height = rectcanvas.altura;
+}
+
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+/*
+var aspect = window.innerWidth / window.innerHeight;
+console.log(aspect)
+
+if (aspect < 1) {
+  canvas.width = rectcanvas.largura * aspect;
+  canvas.height = rectcanvas.altura * aspect;
+  contorno.style.width = rectcanvas.largura * aspect + "px";
+  contorno.style.height = rectcanvas.altura * aspect + "px";
+  divcanvas.style.left ="calc(50% - " +(rectcanvas.largura * aspect)/2 + "px)";
+} else {
+  canvas.width = rectcanvas.largura;
+  canvas.height = rectcanvas.altura;
+  contorno.style.width = rectcanvas.largura + "px";
+  contorno.style.height = rectcanvas.altura + "px";
+
+  divcanvas.style.left ="calc(50% - " +rectcanvas.largura/2 + "px)";
+
+}
+*/
+
+const varyColour = sourceColour => {
+  const amount = Math.round(Math.random() * 2 * varyBrightness);
+  const c = tinycolor(sourceColour);
+  const varied =
+  amount > varyBrightness
+  ? c.brighten(amount - varyBrightness)
+  : c.darken(amount);
+  return varied.toHexString();
+};
+
+const makeBrush = size => {
+  const brush = [];
+  let bristleCount = Math.round(size / 3);
+  const gap = strokeWidth / bristleCount;
+  for (let i = 0; i < bristleCount; i++) {
+    const distance =
+    i === 0 ? 0 : gap * i + (Math.random() * gap) / 2 - gap / 2;
+    brush.push({
+      distance,
+      thickness: Math.random() * 2 + 2,
+      colour: varyColour(colour)
+    });
+  }
+  return brush;
+};
+
+let currentBrush = makeBrush(strokeWidth);
+
+// Geometry
+
+const rotatePoint = (distance, angle, origin) => [
+origin[0] + distance * Math.cos(angle),
+origin[1] + distance * Math.sin(angle)
+];
+
+const getBearing = (origin, destination) =>
+(Math.atan2(destination[1] - origin[1], destination[0] - origin[0]) -
+  Math.PI / 2) %
+(Math.PI * 2);
+
+const getNewAngle = (origin, destination, oldAngle) => {
+  const bearing = getBearing(origin, destination);
+  if (typeof oldAngle === "undefined") {
+    console.log(bearing);
+
+    return bearing;
+  }
+  return oldAngle - angleDiff(oldAngle, bearing);
+};
+
+const angleDiff = (angleA, angleB) => {
+  const twoPi = Math.PI * 2;
+  const diff =
+  ((angleA - (angleB > 0 ? angleB : angleB + twoPi) + Math.PI) % twoPi) -
+  Math.PI;
+  return diff < -Math.PI ? diff + twoPi : diff;
+};
+
+// Drawing functions
+
+const strokeBristle = (origin, destination, bristle, controlPoint) => {
+  context.beginPath();
+  context.moveTo(origin[0], origin[1]);
+  context.strokeStyle = bristle.colour;
+  context.lineWidth = bristle.thickness;
+  context.lineCap = "round";
+  context.lineJoin = "round";
+  context.shadowColor = bristle.colour;
+  context.shadowBlur = bristle.thickness / 2;
+  context.quadraticCurveTo(
+    controlPoint[0],
+    controlPoint[1],
+    destination[0],
+    destination[1]
+    );
+  context.lineTo(destination[0], destination[1]);
+  context.stroke();
+};
+
+const drawStroke = (bristles, origin, destination, oldAngle, newAngle) => {
+  bristles.forEach(bristle => {
+    context.beginPath();
+    const bristleOrigin = rotatePoint(
+      bristle.distance - strokeWidth / 2,
+      oldAngle,
+      origin
+      );
+
+    const bristleDestination = rotatePoint(
+      bristle.distance - strokeWidth / 2,
+      newAngle,
+      destination
+      );
+    const controlPoint = rotatePoint(
+      bristle.distance - strokeWidth / 2,
+      newAngle,
+      origin
+      );
+
+    strokeBristle(bristleOrigin, bristleDestination, bristle, controlPoint);
+  });
+};
+const continueStroke = newPoint => {
+  const newAngle = getNewAngle(latestPoint, newPoint, currentAngle);
+  drawStroke(currentBrush, latestPoint, newPoint, currentAngle, newAngle);
+  currentAngle = newAngle % (Math.PI * 2);
+  latestPoint = newPoint;
+};
+// Event helpers
+
+const startStroke = point => {
+  //colour = document.getElementById("colourInput").value;
+  currentAngle = undefined;
+  currentBrush = makeBrush(strokeWidth);
+  drawing = true;
+  latestPoint = point;
+};
+
+const getTouchPoint = evt => {
+  if (!evt.currentTarget) {
+    return [0, 0];
+  }
+  const rect = evt.currentTarget.getBoundingClientRect();
+  const touch = evt.targetTouches[0];
+  return [touch.clientX - rect.left, touch.clientY - rect.top];
+};
+
+const BUTTON = 0b01;
+const mouseButtonIsDown = buttons => (BUTTON & buttons) === BUTTON;
+
+// Event handlers
+
+const mouseMove = evt => {
+  if (!drawing) {
+    return;
+  }
+  continueStroke([evt.offsetX, evt.offsetY]);
+};
+
+const mouseDown = evt => {
+  if (drawing) {
+    return;
+  }
+  evt.preventDefault();
+  canvas.addEventListener("mousemove", mouseMove, false);
+  startStroke([evt.offsetX, evt.offsetY]);
+};
+
+const mouseEnter = evt => {
+  if (!mouseButtonIsDown(evt.buttons) || drawing) {
+    return;
+  }
+  mouseDown(evt);
+};
+
+const endStroke = evt => {
+  if (!drawing) {
+    return;
+  }
+  drawing = false;
+  evt.currentTarget.removeEventListener("mousemove", mouseMove, false);
+};
+
+const touchStart = evt => {
+  if (drawing) {
+    return;
+  }
+  evt.preventDefault();
+  startStroke(getTouchPoint(evt));
+};
+
+const touchMove = evt => {
+  if (!drawing) {
+    return;
+  }
+  continueStroke(getTouchPoint(evt));
+};
+
+const touchEnd = evt => {
+  drawing = false;
+};
+
+// Register event handlers
+canvas.addEventListener("touchstart", touchStart, false);
+canvas.addEventListener("touchend", touchEnd, false);
+canvas.addEventListener("touchcancel", touchEnd, false);
+canvas.addEventListener("touchmove", touchMove, false);
+
+canvas.addEventListener("mousedown", mouseDown, false);
+canvas.addEventListener("mouseup", endStroke, false);
+canvas.addEventListener("mouseout", endStroke, false);
+canvas.addEventListener("mouseenter", mouseEnter, false);
+
+
+
+/*
+var $divCanvas = $('#divCanvas');
+retornaOrientacaoVideo($divCanvas);
+function resizeGame() {
+    retornaOrientacaoVideo($divCanvas);
+}
+window.addEventListener('resize', resizeGame, false);
+window.addEventListener('orientationchange', resizeGame, false);
+
+function retornaOrientacaoVideo(_this) {
+    var widthToHeight = 800 / 600;
+    var newWidth = window.innerWidth - 75;
+    var newHeight = window.innerHeight - 75;
+    var newWidthToHeight = newWidth / newHeight;
+    $imgAtual = $(_this);
+
+    if (newWidthToHeight > widthToHeight) {
+        newWidth = newHeight * widthToHeight;
+        $imgAtual.css("marginLeft", (window.innerWidth - newWidth) / 2 + 'px');
+        $imgAtual.css("marginTop", (window.innerHeight - newHeight) / 2 + 'px');
+    } else {
+        newHeight = newWidth / widthToHeight;
+        $imgAtual.css("marginLeft", (window.innerWidth - newWidth) / 2 + 'px');
+        $imgAtual.css("marginTop", (window.innerHeight - newHeight) / 2 + 'px');
+    }
+    $imgAtual.css("width", newWidth + 'px');
+    $imgAtual.css("height", newHeight + 'px');
+}
+*/
