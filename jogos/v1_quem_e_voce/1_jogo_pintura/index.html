@@ -45,11 +45,12 @@
 			height: 80vh;
 		}
 		.imglapis {
-			width: 50%;
+			width: 100%;
 		}
 		.lapis {
 			max-width: 20%;
 			transform: rotate(-90deg);
+			height: 5vw;
 		}
 		.divSlider{
 			width: 100px;
@@ -59,6 +60,14 @@
 			top: 20px;
 			bottom:initial;
 		}
+		.divReiniciar{
+			width: 13vw;
+			height:6vw;
+			position: absolute; 
+			right: 25px;
+			bottom: 20px;
+			top:initial;
+		}
 		#contornodesenho {
 			pointer-events: none;
 			position: relative;	
@@ -67,6 +76,10 @@
 		@media only screen and (max-width: 600px) {
 			.lapis {
 				max-width: 15%;
+				transform: rotate(0deg);
+			}
+			.imglapis {
+				width: 60%;
 			}
 			#contornodesenho {
 				align-self: center; 
@@ -81,12 +94,16 @@
 				width: 85%;
 				height: auto;
 			}
-			.lapis {
-				transform: rotate(0deg);
-			}
 			.divSlider{
 				width: 100px;
 				height:100px;
+				bottom:60px;
+				right: initial;
+				top: initial;
+			}
+			.divReiniciar{
+				width: 30vw;
+				height:15vw;
 				bottom:0px;
 				right: initial;
 				top: initial;
@@ -176,9 +193,7 @@
 			<div class="lapis" data-cor="#f7e528"><img src="assets/lapis4.png" class="imglapis"></div>
 			<div class="lapis" data-cor="#4aaa40"><img src="assets/lapis5.png" class="imglapis"></div>
 			<div class="lapis" data-cor="#51a5dc"><img src="assets/lapis6.png" class="imglapis"></div>
-			<div class="lapis borracha" data-cor="#ffffff"><img src="assets/eraser.png" class="imglapis"></div>
-			
-			
+			<!--<div class="lapis borracha" data-cor="#ffffff"><img src="assets/eraser.png" class="imglapis"></div>-->
 		</div>
 		<div id="divCanvas">
 			<canvas id="canvas" height="621" width="800"></canvas>
@@ -189,6 +204,9 @@
 		<div class="divSlider">
 			<input type="range" min="5" max="100" value="10" class="sliderPincel" style="width: 100px">
 		</div>
+		<div class="divReiniciar">
+			<img src="assets/jogarnovamente.png"  onClick="location.reload()" style="width: 100%">
+		</div>
 	</div>
 	<script type="text/javascript">
 		var tela1=document.querySelector(".telaInicial");
@@ -198,8 +216,6 @@
 			tela2.style.display="flex";
 		}
 	</script>
-
-
 </body>
 
 </html>
