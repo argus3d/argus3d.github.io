@@ -6,102 +6,34 @@
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
-
+	<link href="https://db.onlinewebfonts.com/c/d29e5b2a70883f04b6d8cce692f3616b?family=Marvin+W01+Regular"
+	rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="estilo.css">
 
 	<script src="jogoquiz.js"></script>
 	<style type="text/css">
-		*{
-			margin: 0;
-			left: 0;
-			top:0;
-		}
-		body{
-			background-color: lightblue;
-			background: url(resources/image/fundo.jpg) no-repeat center center fixed;
-			-webkit-background-size: cover;
-			-moz-background-size: cover;
-			-o-background-size: cover;
-			background-size: cover;
-			width: 100%;
-			height: 100%;
-			padding: 0;
-			margin: 0;
-			top:0;
-			left: 0;
-			position: absolute;
-			float: left;
-			font-family: "Segoe WP", "Segoe UI", Verdana, Arial,dtjakob,pinkchicken;
-			touch-action: none;
-			-ms-touch-action: none;
-			font-family: dtjakobLeve;
-		}
-		.s80{
-			width: 80%;
-		}
-		.s70{
-			width: 70%;
-		}
-		.s60{
-			width: 60%;
-		}
-		.s50{
-			width: 50%;
-		}
-		.s20{
-			width: 20%;
-		}
-		.s10{
-			width: 10%;
-			height: auto;
-		}
-		.telaInicial{
-			width: 100%;
-			height:100vh;
-			display:flex;
-			flex-direction: column; 
-			align-items: center; 
-
-		}
-		.telaInicioTitulo{
-			width: 100%;
-			display:flex;
-			flex-direction: column; 
-			align-items: center; 
-			justify-content: center;
-			flex-grow: 4;
-		}
-		.telaInicioBottom{
-			width: 100%;
-			display:flex;
-			flex-direction: row; 
-			justify-content: space-between;
-
-		}
-		@font-face {
-			font-family: Lilita;
-			src: url(resources/image/LilitaOne-Regular.ttf);
-		}
-		canvas{
-			top: 0;left: 0;width: 100%;height: 100%;
-		}
 
 	</style>
 </head>
 <body>
 	<div class="telaInicial">
 		<div class="telaInicioTitulo">
-			<img class="s80" src="resources/image/titulo.png">
-			<img class="s20" src="resources/image/bt_inicio.png" onClick="iniciaJogo();">
+			<img class="titulo" src="resources/image/titulo.png">
+			<h1 class="subtitulo">TESTE SEUS CONHECIMENTOS, CLICANDO EM VERDADEIRO OU FALSO.</h1>
+			<img class="s10" src="resources/image/bt_inicio.png" onClick="iniciaJogo();">
 		</div>
 		<div class="telaInicioBottom">
-			<img class="s10" src="resources/image/ico1.png">
-			<img class="s10" src="resources/image/ico2.png">
+			<img class="logo1" src="resources/image/ico1.png">
+			<img class="logo2" src="resources/image/ico2.png">
 		</div>
 	</div>
 
 	<div id="divCanvas"  style="display: none">
 		<canvas id="quiz" width="1280" height="720"></canvas>
 
+	</div>
+	<div class="telaParabens" style="display: none">
+		<img class="s30" src="resources/image/parabens.png" onClick="location.reload();">
 	</div>
 	<script type="text/javascript">
 		var tela1=document.querySelector(".telaInicial");
@@ -189,28 +121,28 @@
 			];
 
 			AppQuiz(
-				'quiz', /*canvasID*/
-				'fundo.png', /*fundoID*/
-				[217,84], /*tamanho bt*/
-				[550,550], /*margem botoes*/
-				50, /*espaco entre botoes*/
-				1280, /*area para os botoes antes de quebrar pra outra linha*/
-				[980,340], /*posicaoIconeCertoErrado*/
-				[680,390], /*posicao da pergunta*/
-				3000, /*tempo em milisegundos antes de passar pra proxima pergunta */
-				800, /*largura da pergunta caso seja texto*/
-				35, /*tamanho da fonte da pergunta*/
-				35, /*tamanho da fonte dos botoes*/
-				false, /*respostaCerta*/
-				true, /*mostra imagem certa no final da pergunta*/
-				itens_associar, /*_itens*/
-				true, /*respostas diferentes pra cada pergunta*/
-				false, /*esconde pontos no fim do jogo*/
-				"gui_associar.png", /*imagem de fundo dos pontos*/
-				false, /*nao embaralhar respostas*/
-				null, /*audio do enunciado*/
-				'bt_iniciar.png', /*_btiniciar*/
-				true /*para nao embaralhar a ordem das perguntas colocar true*/
+				'quiz',
+				'fundo.png', 
+				[217,84], 
+				[550,550], 
+				50,
+				1280, 
+				[980,340], 
+				[680,390], 
+				3000, 
+				800, 
+				35, 
+				35, 
+				false, 
+				true, 
+				itens_associar,
+				true,
+				false, 
+				"gui_associar.png", 
+				false, 
+				null, 
+				'bt_iniciar.png', 
+				true 
 				);
 		}
 	</script>
