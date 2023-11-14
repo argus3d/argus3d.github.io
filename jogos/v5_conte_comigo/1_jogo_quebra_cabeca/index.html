@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Quebra-cabeça</title>
+
+    <script src="https://d309knd7es5f10.cloudfront.net/createjs_1.1_min.js"></script>
+    <script>
+        var zon = true;
+        var zns = false; 
+    </script>
+    <script src="https://d309knd7es5f10.cloudfront.net/zim_6.9.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="estilo.css">
+    
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+
+    <style type="text/css">
+       
+        .container{
+            width: 100%;
+            height:100%;
+            display:flex;
+            align-items: center; 
+            justify-content: center;
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <div class="telaInicial">
+        <div class="telaInicioTitulo">
+            <img class="titulo" src="assets/titulo.png">
+            <h1 class="subtitulo">ARRASTE AS PEÇAS PARA MONTAR O QUEBRA-CABEÇA</h1>
+            <img class="s10" src="assets/bt_inicio.png" onClick="iniciaJogo();">
+        </div>
+        <div class="telaInicioBottom">
+            <img class="logo1" src="assets/ico1.png">
+            <img class="logo2" src="assets/ico2.png">
+        </div>
+    </div>
+    <div class="container" style="display: none">
+
+
+    </div>
+    <div class="telaParabens" style="display: none">
+        <img class="s30" src="assets/parabens.png" onClick="location.reload();">
+        <img class="s20" src="assets/jogarnovamente.png" onClick="location.reload();">
+    </div>
+    <script type="text/javascript">
+        var desenho=["v1_rot1_qc.jpg",1280,897];
+
+    </script>
+    <script src="quebracabeca.js"></script>
+</body>
+
+</html>

@@ -6,76 +6,84 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
 
+	<link href="https://db.onlinewebfonts.com/c/d29e5b2a70883f04b6d8cce692f3616b?family=Marvin+W01+Regular"
+	rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="estilo.css">
 	<script src="jogoSeteErros.js"></script>
-	<style type="text/css">
-		*{
-			margin: 0;
-			left: 0;
-			top:0;
-		}
-		@font-face {
-			font-family: Lilita;
-			src: url(resources/image/LilitaOne-Regular.ttf);
-		}
-		canvas{
-			top: 0;left: 0;width: 100%;height: 100%;
-		}
-		body  {
-			background-image: url("resources/image/AdobeStock_254406875.jpeg");
-			background-color: #cccccc;
-			background-repeat: repeat;
-			background-position: right top;
-		}
-	</style>
+
 </head>
 <body>
-	<div id="divCanvas">
+	<div class="telaInicial">
+		<div class="telaInicioTitulo">
+			<img class="titulo" src="resources/image/titulo.png">
+			<h1 class="subtitulo">CLIQUE NA SEGUNDA IMAGEM PARA ACHAR OS ERROS.</h1>
+			<img class="s10" src="resources/image/bt_inicio.png" onClick="iniciaJogo();">
+		</div>
+		<div class="telaInicioBottom">
+			<img class="logo1" src="resources/image/ico1.png">
+			<img class="logo2" src="resources/image/ico2.png">
+		</div>
+	</div>
+
+	<div id="divCanvas"  style="display: none">
 		<canvas id="canvasjogo" width="1280" height="720"></canvas>
+
+	</div>
+	<div class="telaParabens" style="display: none">
+		<img class="s30" src="resources/image/parabens.png" onClick="location.reload();">
+		<img class="s20" src="resources/image/jogarnovamente.png" onClick="location.reload();">
 	</div>
 	<script>
+		var tela1=document.querySelector(".telaInicial");
+		var tela2=document.querySelector("#divCanvas");
 		var posX=[411,1068,222,865,377,1026,120,765,365,1024,288,939,452,1110]; 
 		var posY=[301,299,459,461,365,371,467,472,484,483,536,529,433,432];
 		var escalas = [0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.75, 0.75, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25];
-		Jogo("canvasjogo", 
-			posX, 
-			posY, 
-			escalas, 
-			null, 
-			false,
-			"bt_iniciar_od1.png",
-			"fundo_od1.png",
-			"img.png",
-			false);
-		</script>
+		function iniciaJogo(){
+			tela1.style.display="none";
+			tela2.style.display="flex";
+			
+			Jogo("canvasjogo", 
+				posX, 
+				posY, 
+				escalas, 
+				null, 
+				false,
+				"bt_iniciar_od1.png",
+				"fundo_od1.png",
+				"img.png",
+				false);
+		}
+	</script>
 
-		<script type="text/javascript">
-			var $divCanvas = $('#divCanvas');
+	<script type="text/javascript">
+		var $divCanvas = $('#divCanvas');
+		retornaOrientacaoVideo($divCanvas);
+		function resizeGame() {
 			retornaOrientacaoVideo($divCanvas);
-			function resizeGame() {
-				retornaOrientacaoVideo($divCanvas);
-			}
-			window.addEventListener('resize', resizeGame, false);
-			window.addEventListener('orientationchange', resizeGame, false);
+		}
+		window.addEventListener('resize', resizeGame, false);
+		window.addEventListener('orientationchange', resizeGame, false);
 
-			function retornaOrientacaoVideo(_this) {
-				var widthToHeight = 16 / 9;
-				var newWidth = window.innerWidth - 75;
-				var newHeight = window.innerHeight - 75;
-				var newWidthToHeight = newWidth / newHeight;
-				$imgAtual = $(_this);
+		function retornaOrientacaoVideo(_this) {
+			var widthToHeight = 16 / 9;
+			var newWidth = window.innerWidth - 75;
+			var newHeight = window.innerHeight - 75;
+			var newWidthToHeight = newWidth / newHeight;
+			$imgAtual = $(_this);
 
-				if (newWidthToHeight > widthToHeight) {
-					newWidth = newHeight * widthToHeight;
-					$imgAtual.css("marginLeft", (window.innerWidth - newWidth) / 2 + 'px');
-					$imgAtual.css("marginTop", (window.innerHeight - newHeight) / 2 + 'px');
-				} else {
-					newHeight = newWidth / widthToHeight;
-					$imgAtual.css("marginLeft", (window.innerWidth - newWidth) / 2 + 'px');
-					$imgAtual.css("marginTop", (window.innerHeight - newHeight) / 2 + 'px');
-				}
-				$imgAtual.css("width", newWidth + 'px');
-				$imgAtual.css("height", newHeight + 'px');
+			if (newWidthToHeight > widthToHeight) {
+				newWidth = newHeight * widthToHeight;
+				$imgAtual.css("marginLeft", (window.innerWidth - newWidth) / 2 + 'px');
+				$imgAtual.css("marginTop", (window.innerHeight - newHeight) / 2 + 'px');
+			} else {
+				newHeight = newWidth / widthToHeight;
+				$imgAtual.css("marginLeft", (window.innerWidth - newWidth) / 2 + 'px');
+				$imgAtual.css("marginTop", (window.innerHeight - newHeight) / 2 + 'px');
 			}
-		</script>
-	</body>
-	</html>
+			$imgAtual.css("width", newWidth + 'px');
+			$imgAtual.css("height", newHeight + 'px');
+		}
+	</script>
+</body>
+</html>
