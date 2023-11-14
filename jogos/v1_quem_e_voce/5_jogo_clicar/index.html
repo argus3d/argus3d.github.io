@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8" />
+	<title>Jogo Quiz</title>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+	<link href="https://db.onlinewebfonts.com/c/d29e5b2a70883f04b6d8cce692f3616b?family=Marvin+W01+Regular"
+	rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="estilo.css">
+
+	<script src="jogoquiz.js"></script>
+	<style type="text/css">
+
+	</style>
+</head>
+<body>
+	<div class="telaInicial">
+		<div class="telaInicioTitulo">
+			<img class="titulo" src="resources/image/titulo.png">
+			<h1 class="subtitulo">TESTE SEUS CONHECIMENTOS.</h1>
+			<img class="s10" src="resources/image/bt_inicio.png" onClick="iniciaJogo();">
+		</div>
+		<div class="telaInicioBottom">
+			<img class="logo1" src="resources/image/ico1.png">
+			<img class="logo2" src="resources/image/ico2.png">
+		</div>
+	</div>
+
+	<div id="divCanvas"  style="display: none">
+		<canvas id="quiz" width="1280" height="720"></canvas>
+
+	</div>
+	<div class="telaParabens" style="display: none">
+		<img class="s30" src="resources/image/parabens.png" onClick="location.reload();">
+		<img class="s20" src="resources/image/jogarnovamente.png" onClick="location.reload();">
+	</div>
+	<script type="text/javascript">
+		var tela1=document.querySelector(".telaInicial");
+		var tela2=document.querySelector("#divCanvas");
+		function iniciaJogo(){
+			tela1.style.display="none";
+			tela2.style.display="flex";
+			var	itens_associar=[
+			{
+				botao:['A MÃE DELE NÃO TEM DINHEIRO.','ELE SE VESTE DE UM JEITO SIMPLES.','ELE DORME O DIA INTEIRO.'],
+				botaoCerto:'ELE SE VESTE DE UM JEITO SIMPLES.',
+				pergunta:'JUCA COELHO SOFRE BULLYING PORQUE:',
+				resposta: 'ELE SE VESTE DE UM JEITO SIMPLES.'
+			},{
+				botao:['CARINHO, POIS RECONHECE O QUE ELA FAZ POR ELE.','MÁGOA, POIS QUERIA PODER TER ROUPAS BONITAS.','RAIVA, POIS ACHA QUE ELA DEVERIA SE ESFORÇAR MAIS.'],
+				botaoCerto:'CARINHO, POIS RECONHECE O QUE ELA FAZ POR ELE.',
+				pergunta:'JUCA COELHO PROCURA TRATAR A MÃE COM:',
+				resposta: 'CARINHO, POIS RECONHECE O QUE ELA FAZ POR ELE.'
+			},{
+				botao:['LEGAIS, POIS SE IMPORTAM COM ELE.','INDIFERENTES, POIS NÃO DÃO ATENÇÃO A ELE.','CRUÉIS, POIS ZOMBAM DA SUA APARÊNCIA.'],
+				botaoCerto:'CRUÉIS, POIS ZOMBAM DA SUA APARÊNCIA.',
+				pergunta:'OS COLEGAS DE JUCA COELHO DEMONSTRAM QUE SÃO:',
+				resposta: 'CRUÉIS, POIS ZOMBAM DA SUA APARÊNCIA.'
+			},{
+				botao:['LEGAIS, POIS SE IMPORTAM COM ELE.','INDIFERENTES, POIS NÃO DÃO ATENÇÃO A ELE.','CRUÉIS, POIS ZOMBAM DA SUA APARÊNCIA.'],
+				botaoCerto:'CRUÉIS, POIS ZOMBAM DA SUA APARÊNCIA.',
+				pergunta:'OS COLEGAS DE JUCA COELHO DEMONSTRAM QUE SÃO:',
+				resposta: 'CRUÉIS, POIS ZOMBAM DA SUA APARÊNCIA.'
+			},{
+				pergunta:'POR CAUSA DAS ATITUDES DOS COLEGAS, JUCA COELHO FICA:',
+				botao:['BRAVO COM A MÃE POR NÃO TER BOAS ROUPAS.','COM INVEJA DAS ROUPAS DOS COLEGAS.','TRISTE POR NÃO SER ACEITO COMO É.'],
+				botaoCerto: 'TRISTE POR NÃO SER ACEITO COMO É.',
+				resposta: 'TRISTE POR NÃO SER ACEITO COMO É.'
+			},{
+				pergunta:'JUCA DEMONSTRA SER UM COELHO:',
+				botao:['CONSCIENTE QUE NÃO SE PODE TER TUDO.','INCONFORMADO POR NÃO TER TUDO.','INJUSTIÇADO PORQUE OS OUTROS TÊM MAIS.'],
+				botaoCerto: 'CONSCIENTE QUE NÃO SE PODE TER TUDO.',
+				resposta: 'CONSCIENTE QUE NÃO SE PODE TER TUDO.'
+			},{
+				pergunta:'OS COLEGAS DE JUCA DÃO MAIS IMPORTÂNCIA PARA O FATO DE ELE:',
+				botao:['SER UM COLEGA LEGAL.','TER ROUPAS FORA DE MODA.','QUERER DORMIR O TEMPO TODO.'],
+				botaoCerto: 'TER ROUPAS FORA DE MODA.',
+				resposta: 'TER ROUPAS FORA DE MODA.'
+			},{
+				pergunta:'POR NÃO QUERER GASTAR MAIS DO QUE PODE, JUCA DEMONSTRA:',
+				botao:['SER UM CONSUMIDOR CONSCIENTE.','SER CONSUMISTA.','SER INDIFERENTE AO DINHEIRO.'],
+				botaoCerto: 'SER UM CONSUMIDOR CONSCIENTE.',
+				resposta: 'SER UM CONSUMIDOR CONSCIENTE.'
+			},{
+				pergunta:'JUCA COELHO OUVE SEUS COLEGAS E DECIDE:',
+				botao:['COMPRAR ROUPAS NOVAS.','AFASTAR-SE DOS COLEGAS.','BRIGAR COM DONA COELHA.'],
+				botaoCerto: 'AFASTAR-SE DOS COLEGAS.',
+				resposta: 'AFASTAR-SE DOS COLEGAS.'
+			},{
+				pergunta:'SER CONSUMISTA SIGNIFICA:',
+				botao:['COMPRAR COM PLANEJAMENTO.','NÃO COMPRAR NADA E ECONOMIZAR.','COMPRAR POR IMPULSO, SEM PENSAR.'],
+				botaoCerto: 'COMPRAR POR IMPULSO, SEM PENSAR.',
+				resposta: 'COMPRAR POR IMPULSO, SEM PENSAR.'
+			},{
+				pergunta:'UM CONSUMIDOR CONSCIENTE:',
+				botao:['COMPRA TUDO O QUE QUER.','AVALIA SE PRECISA DO PRODUTO.','GASTA MAIS DO QUE GANHA.'],
+				botaoCerto: 'AVALIA SE PRECISA DO PRODUTO.',
+				resposta: 'AVALIA SE PRECISA DO PRODUTO.'
+			}
+			];
+
+			AppQuiz(
+				'quiz',
+				'fundo.png', 
+				[265,84], 
+				[500,550], 
+				50,
+				1280, 
+				[0,340], 
+				[640,350], 
+				3000, 
+				800, 
+				35, 
+				35, 
+				false, 
+				true, 
+				itens_associar,
+				true,
+				false, 
+				"gui_associar.png", 
+				false, 
+				null, 
+				'bt_iniciar.png', 
+				true 
+				);
+		}
+	</script>
+
+	<script type="text/javascript">
+		var $divCanvas = $('#divCanvas');
+		retornaOrientacaoVideo($divCanvas);
+		function resizeGame() {
+			retornaOrientacaoVideo($divCanvas);
+		}
+		window.addEventListener('resize', resizeGame, false);
+		window.addEventListener('orientationchange', resizeGame, false);
+
+		function retornaOrientacaoVideo(_this) {
+			var widthToHeight = 16 / 9;
+			var newWidth = window.innerWidth - 75;
+			var newHeight = window.innerHeight - 75;
+			var newWidthToHeight = newWidth / newHeight;
+			$imgAtual = $(_this);
+
+			if (newWidthToHeight > widthToHeight) {
+				newWidth = newHeight * widthToHeight;
+				$imgAtual.css("marginLeft", (window.innerWidth - newWidth) / 2 + 'px');
+				$imgAtual.css("marginTop", (window.innerHeight - newHeight) / 2 + 'px');
+			} else {
+				newHeight = newWidth / widthToHeight;
+				$imgAtual.css("marginLeft", (window.innerWidth - newWidth) / 2 + 'px');
+				$imgAtual.css("marginTop", (window.innerHeight - newHeight) / 2 + 'px');
+			}
+			$imgAtual.css("width", newWidth + 'px');
+			$imgAtual.css("height", newHeight + 'px');
+		}
+	</script>
+</body>
+</html>

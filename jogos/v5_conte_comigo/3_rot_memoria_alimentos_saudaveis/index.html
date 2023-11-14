@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+
+	<script src="jogoquiz.js"></script>
+	<link href="https://db.onlinewebfonts.com/c/d29e5b2a70883f04b6d8cce692f3616b?family=Marvin+W01+Regular"
+	rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="estilo.css">
+</head>
+
+<body>
+	<div class="telaInicial">
+		<div class="telaInicioTitulo">
+			<img class="titulo" src="assets/titulo.png">
+			<!--<h1 class="subtitulo" style="color: white">TESTE SEUS CONHECIMENTOS SOBRE RAÇAS CANINAS, CLICANDO EM VERDADEIRO OU EM FALSO.</h1>-->
+			<img class="s10" src="assets/bt_inicio.png" onClick="iniciaJogo();">
+		</div>
+		<div class="telaInicioBottom">
+			<img class="logo1" src="assets/ico1.png">
+			<img class="logo2" src="assets/ico2.png">
+		</div>
+	</div>
+	<div class="telaParabens" style="display: none">
+		<img class="s30" src="assets/parabens.png" onClick="location.reload();">
+		<img class="s20" src="assets/jogarnovamente.png" onClick="location.reload();">
+	</div>
+	<div id="divCanvas">
+		<canvas id="canvasjogo" width="800" height="1100"></canvas>
+
+	</div>
+	<div class="telaParabens creditos" style="display: none">
+		Créditos das imagens<br>
+		Morangos - Freepik<br>
+		Queijos - Racool_studio/Freepik<br>
+		Leite - Freepik<br>
+		Peixe - KamranAydinov/Freepik<br>
+		Carne vermelha - timolina on Freepik<br>
+		Suco de laranja - Jcomp/Freepik<br>
+		Feijão - Jcomp/Freepik<br>
+		Brócoli - Freepik. <br>
+
+	</div>
+	<div class="btCreditos"  onClick="mostraCreditos()" style="color: white">CREDITOS</div>
+	<script src="jogoMemoria.js"></script>
+	<script>
+		var tela1=document.querySelector(".telaInicial");
+		var tela2=document.querySelector("#divCanvas");
+		function mostraCreditos(){
+			var bt = document.querySelector(".btCreditos");
+			var x = document.querySelector(".creditos");
+			if (x.style.display === "none") {
+				x.style.display = "flex";
+				bt.innerText="X";
+			} else {
+				x.style.display = "none";
+				bt.innerText="CREDITOS";
+			}
+		}
+		function iniciaJogo(){
+			tela1.style.display="none";
+			tela2.style.display="flex";
+		}
+
+	</script>
+	<script type="text/javascript">
+		var $divCanvas = $('#divCanvas');
+		retornaOrientacaoVideo($divCanvas);
+		function resizeGame() {
+			retornaOrientacaoVideo($divCanvas);
+		}
+		window.addEventListener('resize', resizeGame, false);
+		window.addEventListener('orientationchange', resizeGame, false);
+
+		function retornaOrientacaoVideo(_this) {
+			var widthToHeight = 800 / 1100;
+			var newWidth = window.innerWidth - 75;
+			var newHeight = window.innerHeight - 75;
+			var newWidthToHeight = newWidth / newHeight;
+			$imgAtual = $(_this);
+
+			if (newWidthToHeight > widthToHeight) {
+				newWidth = newHeight * widthToHeight;
+				$imgAtual.css("marginLeft", (window.innerWidth - newWidth) / 2 + 'px');
+				$imgAtual.css("marginTop", (window.innerHeight - newHeight) / 2 + 'px');
+			} else {
+				newHeight = newWidth / widthToHeight;
+				$imgAtual.css("marginLeft", (window.innerWidth - newWidth) / 2 + 'px');
+				$imgAtual.css("marginTop", (window.innerHeight - newHeight) / 2 + 'px');
+			}
+			$imgAtual.css("width", newWidth + 'px');
+			$imgAtual.css("height", newHeight + 'px');
+		}
+	</script>
+</body>
+
+</html>
