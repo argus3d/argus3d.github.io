@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8" />
+	<title>Jogo Quiz</title>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+
+	<script src="jogoquiz.js"></script>
+	<link href="https://db.onlinewebfonts.com/c/d29e5b2a70883f04b6d8cce692f3616b?family=Marvin+W01+Regular"
+	rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="estilo.css">
+
+</head>
+
+<body>
+	<div class="telaInicial">
+		<div class="telaInicioTitulo">
+			<img class="titulo" src="resources/image/titulo.png">
+			<h1 class="subtitulo" style="color: black">PARA CADA IMAGEM QUE SURGIR, CLIQUE NO SENTIDO CORRESPONDENTE:</h1>
+			<img class="s10" src="resources/image/bt_inicio.png" onClick="iniciaJogo();">
+		</div>
+		<div class="telaInicioBottom">
+			<img class="logo1" src="resources/image/ico1.png">
+			<img class="logo2" src="resources/image/ico2.png">
+		</div>
+	</div>
+
+	<div id="divCanvas"  style="display: none">
+		<canvas id="quiz" width="1280" height="770"></canvas>
+
+	</div>
+	<div class="telaParabens" style="display: none">
+		<img class="s30" src="resources/image/parabens.png" onClick="location.reload();">
+		<img class="s20" src="resources/image/jogarnovamente.png" onClick="location.reload();">
+	</div>
+	<div class="telaParabens creditos" style="display: none;width:90%;left:5%;top:5%;height: 90%;flex-wrap: wrap;flex-direction: row;justify-content: space-evenly; overflow-y: scroll">
+		<div style="width: 40%">
+			<p style="font-size: 32px">Créditos:</p>
+
+			Ícones 5 sentidos<br>
+			Freepik<br>
+
+			Menina com lupa<br>
+			Freepik<br>
+
+			Homem com binóculos<br>
+			Freepik<br>
+
+			Moça olhando no celular<br>
+			wayhomestudio/Freepik<br>
+
+			Moça comendo<br>
+			Freepik<br>
+
+			Mãe dando iogurte para menina<br>
+			Freepik<br>
+			Menina tomando suco<br>
+			Freepik<br>
+
+			Menino com dois gatos<br>
+			freepic.diller/Freepik<br>
+
+			
+		</div>
+		<div style="width: 40%">
+
+			
+			Mulher com creme no rosto<br>
+			kroshka__nastya/Freepik<br>
+			Três pessoas se abraçando<br>
+			Freepik<br>
+
+			Menina cheirando flor<br>
+			Freepik<br>
+
+			Mulher cheirando perfume<br>
+			katemangostar/Freepik<br>
+
+			Moça cheirando ervas<br>
+			Freepik<br>
+
+			Rapaz no celular<br>
+			wayhomestudio/Freepik<br>
+
+			Meninas ouvindo música<br>
+			nensuria/Freepik<br>
+
+			Menino falando no ouvido do outro<br>
+			master1305/Freepik<br>
+		</div>
+
+	</div>
+	<div class="btCreditos"  onClick="mostraCreditos()" style="color: black;text-align: center;right: 10px;top:10px">CREDITOS</div>
+	<script>
+		function mostraCreditos(){
+			var bt = document.querySelector(".btCreditos");
+			var x = document.querySelector(".creditos");
+			if (x.style.display === "none") {
+				x.style.display = "flex";
+				bt.innerText="X";
+			} else {
+				x.style.display = "none";
+				bt.innerText="CREDITOS";
+			}
+		}
+
+
+		var tela1=document.querySelector(".telaInicial");
+		var tela2=document.querySelector("#divCanvas");
+		function iniciaJogo(){
+			tela1.style.display="none";
+			tela2.style.display="flex";
+			var itens_associar = [
+			{
+				botao:['bt1.png','bt2.png','bt3.png','bt4.png','bt5.png'],
+				botaoCerto:'bt5.png',
+				pergunta:'a1.png',
+				resposta: null
+			},
+			{
+				botao:['bt1.png','bt2.png','bt3.png','bt4.png','bt5.png'],
+				botaoCerto:'bt5.png',
+				pergunta:'a2.png',
+				resposta: null
+			},
+			{
+				botao:['bt1.png','bt2.png','bt3.png','bt4.png','bt5.png'],
+				botaoCerto:'bt5.png',
+				pergunta:'a3.png',
+				resposta: null
+			},{
+				botao:['bt1.png','bt2.png','bt3.png','bt4.png','bt5.png'],
+				botaoCerto:'bt4.png',
+				pergunta:'o1.png',
+				resposta: null
+			},
+			{
+				botao:['bt1.png','bt2.png','bt3.png','bt4.png','bt5.png'],
+				botaoCerto:'bt4.png',
+				pergunta:'o2.png',
+				resposta: null
+			},
+			{
+				botao:['bt1.png','bt2.png','bt3.png','bt4.png','bt5.png'],
+				botaoCerto:'bt4.png',
+				pergunta:'o3.png',
+				resposta: null
+			},{
+				botao:['bt1.png','bt2.png','bt3.png','bt4.png','bt5.png'],
+				botaoCerto:'bt1.png',
+				pergunta:'v1.png',
+				resposta: null
+			},
+			{
+				botao:['bt1.png','bt2.png','bt3.png','bt4.png','bt5.png'],
+				botaoCerto:'bt1.png',
+				pergunta:'v2.png',
+				resposta: null
+			},
+			{
+				botao:['bt1.png','bt2.png','bt3.png','bt4.png','bt5.png'],
+				botaoCerto:'bt1.png',
+				pergunta:'v3.png',
+				resposta: null
+			},{
+				botao:['bt1.png','bt2.png','bt3.png','bt4.png','bt5.png'],
+				botaoCerto:'bt3.png',
+				pergunta:'t1.png',
+				resposta: null
+			},
+			{
+				botao:['bt1.png','bt2.png','bt3.png','bt4.png','bt5.png'],
+				botaoCerto:'bt3.png',
+				pergunta:'t2.png',
+				resposta: null
+			},
+			{
+				botao:['bt1.png','bt2.png','bt3.png','bt4.png','bt5.png'],
+				botaoCerto:'bt2.png',
+				pergunta:'p3.png',
+				resposta: null
+			},
+			{
+				botao:['bt1.png','bt2.png','bt3.png','bt4.png','bt5.png'],
+				botaoCerto:'bt2.png',
+				pergunta:'p2.png',
+				resposta: null
+			},
+			{
+				botao:['bt1.png','bt2.png','bt3.png','bt4.png','bt5.png'],
+				botaoCerto:'bt2.png',
+				pergunta:'p3.png',
+				resposta: null
+			}
+			];
+
+			AppQuiz(
+				'quiz', /*canvasID*/
+				'fundo.png', /*fundoID*/
+				[400, 300], /*tamanho bt*/
+				[220, 570], /*margem botoes*/
+				-180, /*espaco entre botoes*/
+				1280, /*area para os botoes antes de quebrar pra outra linha*/
+				[980, 340], /*posicaoIconeCertoErrado*/
+				[250, 10], /*posicao da pergunta*/
+				3000, /*tempo em milisegundos antes de passar pra proxima pergunta */
+				800, /*largura da pergunta caso seja texto*/
+				35, /*tamanho da fonte da pergunta*/
+				35, /*tamanho da fonte dos botoes*/
+				false, /*respostaCerta*/
+				true, /*mostra imagem certa no final da pergunta*/
+				itens_associar, /*_itens*/
+				true, /*respostas diferentes pra cada pergunta*/
+				false, /*esconde pontos no fim do jogo*/
+				"gui_associar.png", /*imagem de fundo dos pontos*/
+				false, /*nao embaralhar respostas*/
+				null, /*audio do enunciado*/
+				'bt_iniciar2.png', /*_btiniciar*/
+				false /*para nao embaralhar a ordem das perguntas colocar true*/
+				);
+		}
+	</script>
+	<script type="text/javascript">
+		var $divCanvas = $('#divCanvas');
+		retornaOrientacaoVideo($divCanvas);
+		function resizeGame() {
+			retornaOrientacaoVideo($divCanvas);
+		}
+		window.addEventListener('resize', resizeGame, false);
+		window.addEventListener('orientationchange', resizeGame, false);
+
+		function retornaOrientacaoVideo(_this) {
+			var widthToHeight = 1280 / 770;
+			var newWidth = window.innerWidth;
+			var newHeight = window.innerHeight;
+			var newWidthToHeight = newWidth / newHeight;
+			$imgAtual = $(_this);
+
+			if (newWidthToHeight > widthToHeight) {
+				newWidth = newHeight * widthToHeight;
+				$imgAtual.css("marginLeft", (window.innerWidth - newWidth) / 2 + 'px');
+				$imgAtual.css("marginTop", (window.innerHeight - newHeight) / 2 + 'px');
+			} else {
+				newHeight = newWidth / widthToHeight;
+				$imgAtual.css("marginLeft", (window.innerWidth - newWidth) / 2 + 'px');
+				$imgAtual.css("marginTop", (window.innerHeight - newHeight) / 2 + 'px');
+			}
+			$imgAtual.css("width", newWidth + 'px');
+			$imgAtual.css("height", newHeight + 'px');
+		}
+	</script>
+</body>
+
+</html>

@@ -19,7 +19,7 @@
 	<div class="telaInicial">
 		<div class="telaInicioTitulo">
 			<img class="titulo" src="resources/image/titulo.png">
-			<h1 class="subtitulo" style="color: black">TESTE SEUS CONHECIMENTOS SOBRE RAÇAS CANINAS, CLICANDO EM VERDADEIRO OU EM FALSO.</h1>
+			<h1 class="subtitulo" style="color: white">TESTE SEUS CONHECIMENTOS SOBRE RAÇAS CANINAS, CLICANDO EM VERDADEIRO OU EM FALSO.</h1>
 			<img class="s10" src="resources/image/bt_inicio.png" onClick="iniciaJogo();">
 		</div>
 		<div class="telaInicioBottom">
@@ -36,7 +36,31 @@
 		<img class="s30" src="resources/image/parabens.png" onClick="location.reload();">
 		<img class="s20" src="resources/image/jogarnovamente.png" onClick="location.reload();">
 	</div>
+	<div class="telaParabens creditos" style="display: none">
+		Créditos das imagens:<br>
+		Freepik<br>
+		kues1/Freepik<br>
+		Counselling/Pixabay<br>
+		LauraTara/Pixabay<br>
+		master1305/Freepik<br>
+		efe_madrid/Freepik
+
+	</div>
+	<div class="btCreditos"  onClick="mostraCreditos()" style="color: white">CREDITOS</div>
 	<script>
+		function mostraCreditos(){
+			var bt = document.querySelector(".btCreditos");
+			var x = document.querySelector(".creditos");
+			if (x.style.display === "none") {
+				x.style.display = "flex";
+				bt.innerText="X";
+			} else {
+				x.style.display = "none";
+				bt.innerText="CREDITOS";
+			}
+		}
+
+
 		var tela1=document.querySelector(".telaInicial");
 		var tela2=document.querySelector("#divCanvas");
 		function iniciaJogo(){

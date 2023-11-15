@@ -28,7 +28,7 @@
 		<img class="s20" src="assets/jogarnovamente.png" onClick="location.reload();">
 	</div>
 	<div id="divCanvas">
-		<canvas id="canvasjogo" width="720" height="1280"></canvas>
+		<canvas id="canvasjogo" width="770" height="1280"></canvas>
 	</div>
 	<script src="jogoMemoria.js"></script>
 	<script>
@@ -51,8 +51,8 @@
 
 		function retornaOrientacaoVideo(_this) {
 			var widthToHeight = 720 / 1280;
-			var newWidth = window.innerWidth - 75;
-			var newHeight = window.innerHeight - 75;
+			var newWidth = window.innerWidth;
+			var newHeight = window.innerHeight;
 			var newWidthToHeight = newWidth / newHeight;
 			$imgAtual = $(_this);
 
