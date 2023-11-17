@@ -55,7 +55,7 @@ function iniciaJogo() {
     tela2.style.display = "flex";
     //animaCartas();
     formulaPerg();
-
+    //requestFullscreen();
 
 }
 var som = new Audio('assets/triangle.aac');
@@ -69,7 +69,7 @@ function formulaPerg() {
     tela3.style.display = "none";
     var perg = document.querySelector(".pergunta");
     var mid = document.querySelector(".mid");
-    mid.innerHTML='';
+    mid.innerHTML = '';
 
     perg.innerHTML = fases[fase].pergunta;
 
@@ -77,7 +77,7 @@ function formulaPerg() {
     for (let i = 0; i < fases[fase].opcoes.length; i++) {
         var img = document.createElement("img");
         img.className = "imagem";
-        img.src='assets/' + fases[fase].opcoes[i][0];
+        img.src = 'assets/' + fases[fase].opcoes[i][0];
         mid.appendChild(img);
 
         img.setAttribute("data-resp", fases[fase].opcoes[i][1]);
@@ -120,7 +120,7 @@ function formulaPerg() {
         duration: 3000
     });
 }
-function pulaPergunta(){
+function pulaPergunta() {
     fase++;
     console.log(fase)
     if (fase >= fases.length) {
@@ -135,5 +135,19 @@ function pulaPergunta(){
         });
     } else {
         formulaPerg();
+    }
+}
+
+var body = document.body;
+
+function requestFullscreen() {
+    if (body.requestFullscreen) {
+        body.requestFullscreen();
+    } else if (body.mozRequestFullScreen) { // Firefox
+        body.mozRequestFullScreen();
+    } else if (body.webkitRequestFullscreen) { // Chrome, Safari and Opera
+        body.webkitRequestFullscreen();
+    } else if (body.msRequestFullscreen) { // IE/Edge
+        body.msRequestFullscreen();
     }
 }
