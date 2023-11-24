@@ -6,8 +6,6 @@
 	<title></title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
-
-	<script src="jogoquiz.js"></script>
 	<link href="https://db.onlinewebfonts.com/c/d29e5b2a70883f04b6d8cce692f3616b?family=Marvin+W01+Regular"
 	rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="estilo.css">
@@ -29,7 +27,7 @@
 		<img class="s30" src="assets/parabens.png" onClick="location.reload();">
 		<img class="s20" src="assets/jogarnovamente.png" onClick="location.reload();">
 	</div>
-	<div id="divCanvas">
+	<div id="divCanvas"  style="display: none">
 		<canvas id="canvasjogo" width="800" height="1100"></canvas>
 	</div>
 	<script src="jogoMemoria.js"></script>
@@ -39,6 +37,53 @@
 		function iniciaJogo(){
 			tela1.style.display="none";
 			tela2.style.display="flex";
+
+
+			var parametros = [
+			[6000, 4000, 2000], /*tempos das cartas para cada fase, caso tenha fases*/
+			4, /*linha*/
+			4, /*colunas*/
+			375, /*width em px da carta*/
+			500, /*height em px da carta*/
+			0.5, /*escala das cartas*/
+			5, /*espacamento entre as cartas*/
+			[110], /*offset x*/
+			[150] /*offset y*/
+			];
+			var cartas = [[
+			"c6.jpg",
+			"c6.jpg",
+			"c7.jpg",
+			"c7.jpg",
+			"c8.jpg",
+			"c8.jpg",
+			"c1.jpg",
+			"c1.jpg",
+			"c2.jpg",
+			"c2.jpg",
+			"c3.jpg",
+			"c3.jpg",
+			"c4.jpg",
+			"c4.jpg",
+			"c5.jpg",
+			"c5.jpg"
+			]];
+
+
+			var titulosFases = ["", "", "", "", ""];
+
+
+			AppJogoMemoria(
+				'canvasjogo',
+				cartas,
+				"fundo_od1.png",
+				"bt_iniciar.png",
+				parametros,
+				titulosFases,
+				null,
+				"v2_memoria_verso.jpg",
+				"gui_od1.png"
+				);
 		}
 
 	</script>
@@ -53,8 +98,8 @@
 
 		function retornaOrientacaoVideo(_this) {
 			var widthToHeight = 800 / 1100;
-			var newWidth = window.innerWidth - 75;
-			var newHeight = window.innerHeight - 75;
+			var newWidth = window.innerWidth;
+			var newHeight = window.innerHeight;
 			var newWidthToHeight = newWidth / newHeight;
 			$imgAtual = $(_this);
 

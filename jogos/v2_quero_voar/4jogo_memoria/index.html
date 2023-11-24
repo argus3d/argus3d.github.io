@@ -27,7 +27,7 @@
 		<img class="s30" src="assets/parabens.png" onClick="location.reload();">
 		<img class="s20" src="assets/jogarnovamente.png" onClick="location.reload();">
 	</div>
-	<div id="divCanvas">
+	<div id="divCanvas"  style="display: none">
 		<canvas id="canvasjogo" width="770" height="1280"></canvas>
 	</div>
 	<script src="jogoMemoria.js"></script>
@@ -37,6 +37,48 @@
 		function iniciaJogo(){
 			tela1.style.display="none";
 			tela2.style.display="flex";
+
+			var parametros = [
+			[6000, 4000, 2000], /*tempos das cartas para cada fase, caso tenha fases*/
+			6, /*linha*/
+			2, /*colunas*/
+			500, /*width em px da carta*/
+			333, /*height em px da carta*/
+			0.6, /*escala das cartas*/
+			5, /*espacamento entre as cartas*/
+			[200], /*offset x*/
+			[130] /*offset y*/
+			];
+
+			var cartas = [[
+			'v2_memoria_foto1.jpg',
+			'v2_memoria_foto1.jpg',
+			'v2_memoria_foto2.jpg',
+			'v2_memoria_foto2.jpg',
+			'v2_memoria_foto3.jpg',
+			'v2_memoria_foto3.jpg',
+			'v2_memoria_foto4.jpg',
+			'v2_memoria_foto4.jpg',
+			'v2_memoria_foto5.jpg',
+			'v2_memoria_foto5.jpg',
+			'v2_memoria_foto6.jpg',
+			'v2_memoria_foto6.jpg'
+			]];
+
+			var titulosFases = ["", "", "", "", ""];
+
+
+			AppJogoMemoria(
+				'canvasjogo',
+				cartas,
+				"fundo_od1.png",
+				"bt_iniciar.png",
+				parametros,
+				titulosFases,
+				null,
+				"v2_memoria_verso.jpg",
+				"gui_od1.png"
+				);
 		}
 
 	</script>

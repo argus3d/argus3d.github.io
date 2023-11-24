@@ -44,7 +44,7 @@
 	<div id="telaInicio">
 		<div class="telaInicioTitulo">
 			<img class="titulo" src="assets/titulo.png">
-			<h1 class="subtitulo" style="color: white">ACHE AS PALAVRAS DO QUADRO. CLIQUE NA PRIMEIRA LETRA E ARRASTE ATÉ A ÚLTIMA.</h1>
+			<h1 class="subtitulo" style="color: white">CLIQUE NA PRIMEIRA LETRA E ARRASTE ATÉ A ÚLTIMA PARA DESTACAR A PALAVRA.</h1>
 			<img class="s10" src="assets/bt_inicio.png" onClick="trocaTela('divCanvas','telaInicio');">
 		</div>
 		<div class="telaInicioBottom">
@@ -59,37 +59,13 @@
 		<img class="s30" src="assets/parabens.png" onClick="location.reload();">
 		<img class="s20" src="assets/jogarnovamente.png" onClick="location.reload();">
 	</div>
-	<div class="orientation-warning" id="orientationWarning">
-		<p>Para uma melhor visualização rotacione o celular no modo retrato!</p>
-	</div>
+
 	<script>
 		function trocaTela(mostra, esconde) {
 			document.getElementById(mostra).style.display = 'flex';
 			document.getElementById(esconde).style.display = 'none';
 		}
 
-		document.addEventListener('DOMContentLoaded', function () {
-			const orientationWarning = document.getElementById('orientationWarning');
-
-
-			checkOrientation();
-
-
-			window.addEventListener('orientationchange', checkOrientation);
-
-			function checkOrientation() {
-
-				const isLandscape = window.matchMedia('(orientation: landscape)').matches;
-				const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-				const isiPhone = /iPhone/i.test(navigator.userAgent);
-
-				if (isLandscape && isMobile || isiPhone) {
-					orientationWarning.style.display = 'block';
-				} else {
-					orientationWarning.style.display = 'none';
-				}
-			}
-		});
 	</script>
 
 	<script src="cacapalavras2.js"></script>
