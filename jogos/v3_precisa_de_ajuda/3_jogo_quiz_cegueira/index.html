@@ -3,6 +3,7 @@
 
 <head>
 	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width" />
 	<title>Jogo Quiz</title>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -27,7 +28,34 @@
 			<img class="logo2" src="resources/image/ico2.png">
 		</div>
 	</div>
+	<div id="myModal" class="modal creditos">
+		<!-- Modal content -->
+		<div class="modal-content">
+			<span class="close">&times;</span>
+			<p>		
+				<h3>Créditos:</h3>
 
+				Homem cego sendo conduzido: AndreyPopov/iStock - 
+				Mulher cega sendo conduzida: Chansom Pantip/iStock - 
+				Mulher lendo livro em braille: Freepik - 
+				Mulher lendo livro: jcomp/Freepik - 
+				Gato: Freepik - 
+				Cachorro labrador: master1305 on Freepik - 
+				Pessoa idosa com bengala: Oleg Elkov/iStock - 
+				Homem usando bengala para cego: Prostock-Studio/iStock - 
+				Pessoa com bengala branca e vermelha: Freepik - 
+				Homem idoso com bengala branca: Ljupco/iStock - 
+				Chihuahua: HG-Fotografie/Pixabay - 
+				Pastor-alemão: domeckopol/Pixabay - 
+				Piso tátil: TRAVELARIUM/iStock - 
+				Piso normal: onlyyouqj on Freepik - 
+				Desenho de margaridas: rawpixel.com/Freepik - 
+				Vaso com margaridas: haritanita/Freepik - 
+			</p>
+		</div>
+
+	</div>
+	<div class="btCreditos" style="color: black">CRÉDITOS</div>
 	<div id="divCanvas"  style="display: none">
 		<canvas id="quiz" width="1280" height="720"></canvas>
 
@@ -37,6 +65,23 @@
 		<img class="s20" src="resources/image/jogarnovamente.png" onClick="location.reload();">
 	</div>
 	<script>
+		var modal = document.getElementById("myModal");
+		var btn = document.querySelector(".btCreditos");
+		var span = document.getElementsByClassName("close")[0];
+		btn.onclick = function() {
+			console.log("click")
+			modal.style.display = "block";
+		}
+		span.onclick = function() {
+			modal.style.display = "none";
+		}
+		window.onclick = function(event) {
+			if (event.target == modal) {
+				modal.style.display = "none";
+			}
+		} 
+
+
 		var tela1=document.querySelector(".telaInicial");
 		var tela2=document.querySelector("#divCanvas");
 		function iniciaJogo(){
@@ -77,7 +122,7 @@
 				botao: ['g1.jpg', 'g2.jpg'],
 				botaoCerto: 'g1.jpg',
 				pergunta: 'QUAL DAS IMAGENS MOSTRA UM PISO TÁTIL?',
-				resposta: 'PARABÉNS, VOCÊ ACERTOU! O piso tátil é um piso com relevos que  forma um caminho para pessoas com deficiência visual.'
+				resposta: 'PARABÉNS, VOCÊ ACERTOU! O PISO TÁTIL É UM PISO COM RELEVOS QUE  FORMA UM CAMINHO PARA PESSOAS COM DEFICIÊNCIA VISUAL.'
 			}, {
 				botao: ['h1.jpg', 'h2.jpg'],
 				botaoCerto: 'h2.jpg',

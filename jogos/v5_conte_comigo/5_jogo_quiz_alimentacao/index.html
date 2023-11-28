@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8" />
+	<title>Jogo Quiz</title>
+	<meta name="viewport" content="width=device-width" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+	<link href="https://db.onlinewebfonts.com/c/d29e5b2a70883f04b6d8cce692f3616b?family=Marvin+W01+Regular"
+	rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="estilo.css">
+
+	<script src="jogoquiz.js"></script>
+	<style type="text/css">
+
+	</style>
+</head>
+<body>
+	<div class="telaInicial">
+		<div class="telaInicioTitulo">
+			<img class="titulo" src="resources/image/titulo.png">
+			<h1 class="subtitulo">TESTE SEUS CONHECIMENTOS SOBRE SAÚDE, CLICANDO EM VERDADEIRO OU EM FALSO.</h1>
+			<img class="s10" src="resources/image/bt_inicio.png" onClick="iniciaJogo();">
+		</div>
+		<div class="telaInicioBottom">
+			<img class="logo1" src="resources/image/ico1.png">
+			<img class="logo2" src="resources/image/ico2.png">
+		</div>
+	</div>
+
+	<div id="divCanvas"  style="display: none">
+		<canvas id="quiz" width="1280" height="720"></canvas>
+
+	</div>
+	<div class="telaParabens" style="display: none">
+		<img class="s30" src="resources/image/parabens.png" onClick="location.reload();">
+		<img class="s20" src="resources/image/jogarnovamente.png" onClick="location.reload();">
+	</div>
+	<script type="text/javascript">
+		var tela1=document.querySelector(".telaInicial");
+		var tela2=document.querySelector("#divCanvas");
+		function iniciaJogo(){
+			tela1.style.display="none";
+			tela2.style.display="flex";
+			var	itens_associar=[
+			{
+				botao:['bt1.png','bt2.png'],
+				botaoCerto:'bt2.png',
+				pergunta:'PARA TER UMA ALIMENTAÇÃO SAUDÁVEL, BASTA COMER FRUTAS E VERDURAS.',
+				resposta: 'PARABÉNS, VOCÊ ACERTOU! UMA ALIMENTAÇÃO SAUDÁVEL DEVE SER VARIADA E EQUILIBRADA. É PRECISO COMER, ALÉM DE FRUTAS E VERDURAS, CEREAIS INTEGRAIS, CARNES, OVOS E PEIXES, GORDURAS SAUDÁVEIS, COMO O AZEITE E O ÓLEO DE COCO, E TOMAR BASTANTE ÁGUA. '
+			},{
+				botao:['bt1.png','bt2.png'],
+				botaoCerto:'bt1.png',
+				pergunta:'ALIMENTOS INDUSTRIALIZADOS, COMO BISCOITOS E SALGADINHOS, DEVEM SER INGERIDOS EM POUCA QUANTIDADE. ',
+				resposta:'PARABÉNS, VOCÊ ACERTOU! ALIMENTOS INDUSTRIALIZADOS FAZEM MAL À SAÚDE. ELES SÃO FEITOS COM MUITO AÇÚCAR, SAL E GORDURAS, QUE AUMENTAM O SABOR, MAS, POR OUTRO LADO, PODEM PROVOCAR DOENÇAS COMO A DIABETES E A PRESSÃO ALTA.'
+			},{
+				botao:['bt1.png','bt2.png'],
+				botaoCerto:'bt2.png',
+				pergunta:'ALIMENTOS INDUSTRIALIZADOS SÃO SAUDÁVEIS E CONTÊM POUCOS ADITIVOS, CONSERVANTES E GORDURAS. ',
+				resposta:'PARABÉNS, VOCÊ ACERTOU! ALIMENTOS INDUSTRIALIZADOS SÃO CHEIOS DE CONSERVANTES, PARA QUE NÃO ESTRAGUEM RAPIDAMENTE, E DE CORANTES, PARA QUE PAREÇAM MAIS BONITOS. MAS TUDO ISSO FAZ MAL À SAÚDE E SE ACUMULA NO ORGANISMO.'
+			},{
+				botao:['bt1.png','bt2.png'],
+				botaoCerto:'bt1.png',
+				pergunta:'UMA ALIMENTAÇÃO SAUDÁVEL É, TAMBÉM, UMA ALIMENTAÇÃO NATURAL. ',
+				resposta:'PARABÉNS, VOCÊ ACERTOU! OS ALIMENTOS NATURAIS CONTÊM OS NUTRIENTES ESSENCIAIS PARA NOS MANTER FORTES, SAUDÁVEIS E COM ENERGIA.'
+			},{
+				botao:['bt1.png','bt2.png'],
+				botaoCerto:'bt2.png',
+				pergunta:'UMA ALIMENTAÇÃO SAUDÁVEL É FUNDAMENTAL PARA O FUNCIONAMENTO CORRETO DO NOSSO ORGANISMO.',
+				resposta:'PARABÉNS, VOCÊ ACERTOU! ESSAS SUBSTÂNCIAS FAZEM MAL À SAÚDE, PODEM PROVOCAR OU AGRAVAR DOENÇAS, COMO AS CARDÍACAS, E AINDA FAZEM COM QUE AS PESSOAS COMAM MAIS DO QUE DEVERIAM.'
+			},{
+				botao:['bt1.png','bt2.png'],
+				botaoCerto:'bt1.png',
+				pergunta:'PARA UMA ALIMENTAÇÃO SAUDÁVEL, É PRECISO VARIEDADE, QUALIDADE E MODERAÇÃO (COMER NA QUANTIDADE CERTA).',
+				resposta:'PARABÉNS, VOCÊ ACERTOU! AQUILO QUE  COMEMOS ACABA FAZENDO PARTE DE NÓS. POR ISSO, PRECISAMOS ESCOLHER BEM AQUILO QUE VAMOS COMER, E VARIAR BASTANTE, POIS CADA ALIMENTO TEM VITAMINAS E OUTROS NUTRIENTES, COMO CÁLCIO, FERRO ETC., QUE SERVEM PARA AUXILIAR NO FUNCIONAMENTO DO NOSSO CORPO.'
+			},{
+				botao:['bt1.png','bt2.png'],
+				botaoCerto:'bt1.png',
+				pergunta:'O CONSUMO EXCESSIVO DE AÇÚCAR CONTRIBUI PARA A OBESIDADE.',
+				resposta:'PARABÉNS, VOCÊ ACERTOU! O AÇÚCAR FORNECE MUITA ENERGIA E PRECISAMOS DELE PARA NOS MOVIMENTAR E PARA PENSAR. MAS, MUITAS VEZES, NÃO GASTAMOS TODA ESSA ENERGIA NAS NOSSAS ATIVIDADES COTIDIANAS E NOSSO CORPO GUARDA O EXCESSO DE AÇÚCAR NA FORMA DE GORDURA.'
+			},{
+				botao:['bt1.png','bt2.png'],
+				botaoCerto:'bt2.png',
+				pergunta:'ASSISTIR À TV OU ACESSAR O CELULAR ENQUANTO SE ESTÁ COMENDO NÃO FAZ MAL À SAÚDE.',
+				resposta:'PARABÉNS, VOCÊ ACERTOU! QUANDO NÓS COMEMOS ENQUANTO VEMOS TV OU USAMOS O CELULAR, NÃO ESCOLHEMOS DIREITO O QUE ESTAMOS COMENDO, COMEMOS MUITO E NEM PERCEBEMOS QUE CONTINUAMOS COMENDO MESMO SEM ESTAR COM FOME.'
+			},{
+				botao:['bt1.png','bt2.png'],
+				botaoCerto:'bt1.png',
+				pergunta:'UM CAFÉ DA MANHÃ SAUDÁVEL FAZ BEM PARA O CÉREBRO E DÁ ENERGIA.',
+				resposta:'PARABÉNS, VOCÊ ACERTOU! AO ACORDAR, ESTAMOS HÁ VÁRIAS HORAS SEM BEBER ÁGUA NEM INGERIR ALIMENTOS. POR ISSO, É IMPORTANTE COMER LOGO DE MANHÃ, PARA AJUDAR O CÉREBRO A COMEÇAR BEM O DIA. VOCÊ VAI SE SENTIR MELHOR E ATÉ PENSAR DE FORMA MAIS CLARA!'
+			},{
+				botao:['bt1.png','bt2.png'],
+				botaoCerto:'bt2.png',
+				pergunta:'A ÁGUA É SAUDÁVEL, OS REFRIGERANTES CONTÊM ÁGUA E SÃO SAUDÁVEIS TAMBÉM',
+				resposta:'PARABÉNS, VOCÊ ACERTOU! ÁGUA É MUITO IMPORTANTE, SEM ELA NÃO CONSEGUIMOS VIVER. MAS OS REFRIGERANES TÊM MUITO MAIS DO QUE APENAS ÁGUA. TÊM EXCESSO DE AÇÚCAR, CONSERVANTES, QUE TAMBÉM ATACAM OS DENTES E PROVOCAM CÁRIES, E ATÉ SAL!'
+			}
+			];
+
+			AppQuiz(
+				'quiz',
+				'fundo.png', 
+				[217,84], 
+				[550,550], 
+				50,
+				1280, 
+				[980,340], 
+				[680,390], 
+				3000, 
+				800, 
+				35, 
+				35, 
+				false, 
+				true, 
+				itens_associar,
+				true,
+				false, 
+				"gui_associar.png", 
+				false, 
+				null, 
+				'bt_iniciar.png', 
+				true 
+				);
+		}
+	</script>
+
+	<script type="text/javascript">
+		var $divCanvas = $('#divCanvas');
+		retornaOrientacaoVideo($divCanvas);
+		function resizeGame() {
+			retornaOrientacaoVideo($divCanvas);
+		}
+		window.addEventListener('resize', resizeGame, false);
+		window.addEventListener('orientationchange', resizeGame, false);
+
+		function retornaOrientacaoVideo(_this) {
+			var widthToHeight = 16 / 9;
+			var newWidth = window.innerWidth;
+			var newHeight = window.innerHeight;
+			var newWidthToHeight = newWidth / newHeight;
+			$imgAtual = $(_this);
+
+			if (newWidthToHeight > widthToHeight) {
+				newWidth = newHeight * widthToHeight;
+				$imgAtual.css("marginLeft", (window.innerWidth - newWidth) / 2 + 'px');
+				$imgAtual.css("marginTop", (window.innerHeight - newHeight) / 2 + 'px');
+			} else {
+				newHeight = newWidth / widthToHeight;
+				$imgAtual.css("marginLeft", (window.innerWidth - newWidth) / 2 + 'px');
+				$imgAtual.css("marginTop", (window.innerHeight - newHeight) / 2 + 'px');
+			}
+			$imgAtual.css("width", newWidth + 'px');
+			$imgAtual.css("height", newHeight + 'px');
+		}
+	</script>
+</body>
+</html>

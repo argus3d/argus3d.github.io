@@ -3,6 +3,7 @@
 
 <head>
 	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width" />
 	<title></title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
@@ -32,12 +33,11 @@
 
 	</div>
 	<div id="myModal" class="modal creditos">
-
 		<!-- Modal content -->
 		<div class="modal-content">
 			<span class="close">&times;</span>
 			<p>		
-				Créditos das imagens<br>
+				<h3>Créditos:</h3>
 				Morangos - Freepik<br>
 				Queijos - Racool_studio/Freepik<br>
 				Leite - Freepik<br>
@@ -50,16 +50,9 @@
 		</div>
 
 	</div>
-	<div class="telaParabens creditos" style="display: none">
-
-
-	</div>
 	<div class="btCreditos" style="color: white">CRÉDITOS</div>
 	<script src="jogoMemoria.js"></script>
 	<script>
-		var tela1=document.querySelector(".telaInicial");
-		var tela2=document.querySelector("#divCanvas");
-
 		var modal = document.getElementById("myModal");
 		var btn = document.querySelector(".btCreditos");
 		var span = document.getElementsByClassName("close")[0];
@@ -75,6 +68,9 @@
 				modal.style.display = "none";
 			}
 		} 
+
+		var tela1=document.querySelector(".telaInicial");
+		var tela2=document.querySelector("#divCanvas");
 
 		function iniciaJogo(){
 			tela1.style.display="none";

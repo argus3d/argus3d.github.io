@@ -101,6 +101,7 @@ body{
 	align-items: center; 
 	justify-content: center;
 	flex-grow: 4;
+	gap: 20px;
 }
 .telaInicioBottom{
 	width: 100%;
