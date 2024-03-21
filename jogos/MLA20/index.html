@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset="utf-8">
+	<title>objeto digital</title>
+	<script src="js/jquery-1.11.3.min.js"></script>
+	<script src="js/jquery.lib.min.js"></script>
+	<script src="js/jquery.lib.ods.min.js"></script>
+	<script src="js/jquery.geral.init.js"></script>
+	<style>
+		body {
+			background-color: lightblue;
+			background: url(resources/image/fundo_inicio.jpg) no-repeat center center fixed;
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
+			width: 100%;
+			height: 100%;
+			padding: 0;
+			margin: 0;
+			top: 0;
+			left: 0;
+			position: absolute;
+			float: left;
+			touch-action: none;
+			-ms-touch-action: none;
+			font-family: "Marvin W01 Regular";
+		}
+
+		.telaInicio {
+			position: absolute;
+			top: 0;
+			left: 0;
+			display: flex;
+			width: 100%;
+			height: 100%;
+			z-index: 10;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.telaFinal {
+			position: absolute;
+			top: 0;
+			left: 0;
+			display: flex;
+			width: 100%;
+			height: 100%;
+			z-index: 10;
+			background-color: white
+		}
+
+		.telasAjuda {
+			position: absolute;
+			top: 0;
+			left: 0;
+			display: flex;
+			width: 100%;
+			height: 100%;
+			z-index: 10;
+			background-color: rgba(0, 0, 0, 0.5)
+		}
+
+		.telasProxima {
+			position: absolute;
+			top: 0;
+			left: 0;
+			display: flex;
+			width: 100%;
+			height: 100%;
+			z-index: 10;
+			background-color: white
+		}
+
+		.escondido {
+			display: none;
+		}
+	</style>
+</head>
+
+<body lang="pt-BR">
+	<div class="telaInicio">
+		<img src="resources/image/telainicio.png" onclick="iniciaJogo()" style="height: 100%">
+	</div>
+	<div id="divCanvas" class="escondido">
+		<canvas id="canvas_od" width="1920" height="1080" style="top: 0;left: 0;width: 100%;height: 100%;"></canvas>
+	</div>
+	<div class="telasProxima proxima0 escondido">
+		Proxima fase 1
+		<button onclick="proximaFase()">fechar</button>
+	</div>
+	<div class="telasProxima proxima1 escondido">
+		Proxima fase 2
+		<button onclick="proximaFase()">fechar</button>
+	</div>
+	<div class="telasProxima proxima2 escondido">
+		Proxima fase 3
+		<button onclick="proximaFase()">fechar</button>
+	</div>
+	<div class="telasAjuda ajuda0 escondido">
+		<img src="resources/image/ajuda1.png" onclick="fechaAjuda()" style="height: 100%">
+	</div>
+	<div class="telasAjuda ajuda1 escondido">
+		<img src="resources/image/ajuda1.png" onclick="fechaAjuda()" style="height: 100%">
+	</div>
+	<div class="telasAjuda ajuda2 escondido">
+		<img src="resources/image/ajuda1.png" onclick="fechaAjuda()" style="height: 100%">
+	</div>
+	<div class="telaFinal escondido">
+		tela de fim de jogo
+		<button onclick="reiniciajogo()">reiniciar</button>
+	</div>
+	<script type="text/javascript">
+
+		var fases = [{
+			titulo: "titulo1",
+			fundo: "fase1.jpg",
+			fundoBody: "#96bd55",
+			inicioPos: [210, 600],
+			fundoColisao: "fundo_colisao.png",
+			checkpoints: [{ imagem: "areacol.png", x: 1400, y: 850 }],
+			telaFinal: "telafimparabens.png",
+			ajuda: false
+		},
+		{
+			titulo: "titulo2",
+			fundo: "fase2.jpg",
+			fundoBody: "#edc570",
+			inicioPos: [210, 500],
+			fundoColisao: "fundo_colisao2.png",
+			checkpoints: [{ imagem: "areacol.png", x: 350, y: 800 }],
+			telaFinal: "telafimparabens.png",
+			ajuda: true
+		}
+			,
+		{
+			titulo: "titulo2",
+			fundo: "fase3.jpg",
+			fundoBody: "#96bd55",
+			inicioPos: [230, 700],
+			fundoColisao: "fundo_colisao3.png",
+			checkpoints: [{ imagem: "areacol.png", x: 460, y: 300 }, { imagem: "areacol.png", x: 1200, y: 170 }],
+			telaFinal: "telafimparabens.png",
+			ajuda: true
+		},
+		{
+			titulo: "fim"
+		}]
+
+		var canvas;
+		var stage;
+		var fase = 0;
+		var fundo;
+		var fundohit;
+		var conta;
+		var jogavel = false;
+		var clicavel = false;
+		var cenaAtual = 0;
+		var btFull;
+		var container_cenas;
+		var container_carro;
+		var container_tracos;
+		var container_icos;
+		var checks = [];
+		var btContinuasp;
+		var itemDistance = 0;
+		var posicoes = [];
+		var mousePositions = [];
+		var totalDistance = 0;
+		var loaded1 = false;
+		var loaded2 = true;
+		var carro;
+		var chkCount = 0;
+		var local = { x: 0, y: 0 };
+		var caminho = "resources/image/";
+		var textDistance;
+
+		loaded2 = true;
+		canvas = document.getElementById("canvas_od");
+		stage = new createjs.Stage(canvas);
+		container_cenas = new createjs.Container();
+		container_carro = new createjs.Container();
+		container_tracos = new createjs.Container();
+		container_icos = new createjs.Container();
+		container_placa = new createjs.Container();
+		createjs.Touch.enable(stage);
+		stage.enableMouseOver();
+		stage.mouseMoveOutside = true;
+		stage.addChild(container_cenas);
+		stage.addChild(container_tracos);
+		stage.addChild(container_placa);
+
+		stage.addChild(container_icos);
+		stage.addChild(container_carro);
+
+		container_cenas.visible = false;
+		container_icos.visible = false;
+
+		var btAjuda = new createjs.Bitmap(caminho + "btajuda.png");
+		btAjuda.image.onload = function () {
+			stage.addChild(btAjuda);
+			btAjuda.x = 1800;
+			btAjuda.y = 930;
+			btAjuda.on("click", function () {
+				document.querySelector(".ajuda" + fase).classList.remove("escondido");
+			});
+		};
+
+
+		const itemImage = new Image();
+		itemImage.src = caminho + "traco.png";
+
+
+
+		criafase();
+		criaCarro();
+
+		setInterval(() => {
+			if (jogavel) {
+				var fropa = true;
+				for (var i = 0; i < container_tracos.numChildren; i++) {
+					var child = container_tracos.getChildAt(i);
+
+					var colisaoErro = ndgmr.checkPixelCollision(child, carro, 0.1, true);
+					if (colisaoErro) {
+						fropa = false;
+					}
+				}
+				if (fropa) {
+					dropItem(carro.x, carro.y);
+				}
+			}
+		}, 100);
+
+
+		createjs.Ticker.setFPS(30);
+		createjs.Ticker.addEventListener("tick", ticker);
+		function iniciaJogo() {
+			document.querySelector(".telaInicio").classList.add("escondido");
+			document.querySelector("#divCanvas").classList.remove("escondido");
+			jogavel = true;
+			container_cenas.visible = true;
+			container_icos.visible = true;
+			carro.x = -300;
+			createjs.Tween.get(carro).to({ x: container_carro.x }, 1000, createjs.Ease.backOut);
+
+			document.body.style.background = "none";
+			document.body.style.backgroundColor = fases[fase].fundoBody;
+		}
+		function fechaAjuda() {
+			document.querySelector(".ajuda" + fase).classList.add("escondido");
+
+		}
+		function criaCarro() {
+			let placa = new createjs.Bitmap(caminho + "placa.png");
+			carro = new createjs.Bitmap(caminho + "carro.png");
+			carro.image.onload = function () {
+				carro.regX = 90;
+				carro.regY = 60;
+			};
+			container_placa.addChild(placa);
+			textDistance = new createjs.Text("0m", "30px Arial Narrow", "#000000");
+			textDistance.textAlign = "center";
+			textDistance.textBaseline = "middle";
+			textDistance.x = 70;
+			textDistance.y = 35;
+			container_placa.addChild(textDistance);
+			container_placa.x = 200;
+			container_placa.y = 300;
+
+
+
+			stage.addChild(carro);
+			//carro.visible = false;
+			carro.scaleX = 0.7;
+			carro.scaleY = 0.7;
+			container_carro.on("mousedown", function (evt) {
+				if (jogavel) {
+					clicavel = true;
+					var global = stage.localToGlobal(this.x, this.y);
+					container_carro.offset = { 'x': global.x - evt.stageX, 'y': global.y - evt.stageY };
+				}
+			});
+			container_carro.on("pressmove", function (evt) {
+				if (jogavel && clicavel) {
+					var newlocal = stage.globalToLocal(evt.stageX + this.offset.x, evt.stageY + this.offset.y);
+					var difx = newlocal.x - local.x;
+					var dify = newlocal.y - local.y;
+
+
+
+					local = stage.globalToLocal(evt.stageX + this.offset.x, evt.stageY + this.offset.y);
+					container_carro.x = local.x;
+					container_carro.y = local.y;
+					var posAtual = [local.x, local.y];
+					posicoes.push(posAtual);
+
+					var colisaoErro = ndgmr.checkPixelCollision(fundohit, carro, 0.1, true);
+
+					var chkTotal = fases[fase].checkpoints.length;
+					for (let i = 0; i < checks.length; i++) {
+						if (checks[i].colidivel) {
+							var colisao2 = ndgmr.checkPixelCollision(checks[i], carro, 0.1, true);
+							if (colisao2) {
+								chkCount += 1;
+								checks[i].colidivel = false;
+							}
+						}
+					}
+
+					if (colisaoErro) {
+						jogavel = false;
+						clicavel = false;
+						rebobinar(container_carro);
+					} else if (chkCount >= chkTotal) {
+						jogavel = false;
+						clicavel = false;
+						chkCount = 0;
+						posicoes = [];
+						mousePositions = [];
+						totalDistance = 0;
+						textDistance.text = "0m";
+						container_tracos.removeAllChildren();
+						document.querySelector(".proxima" + fase).classList.remove("escondido");
+					}else{
+						calculaMouse(evt);
+					}
+					
+				}
+
+			});
+			container_carro.on("pressup", function (evt) {
+				clicavel = true;
+			});
+
+			var col = new createjs.Bitmap(caminho + "areacol.png");
+			container_carro.addChild(col);
+			col.alpha = 0.01;
+			col.scaleX = 2;
+			col.scaleY = 2;
+			col.image.onload = function () {
+				col.regX = 25;
+				col.regY = 25;
+			};
+			container_carro.x = fases[fase].inicioPos[0];
+			container_carro.y = fases[fase].inicioPos[1];
+			carro.x = -300;
+			carro.y = container_carro.y;
+		}
+		function proximaFase() {
+			document.querySelector(".proxima" + fase).classList.add("escondido");
+			fase += 1;
+			if (fases[fase].titulo == "fim") {
+				console.log("final do jogo", fase);
+				document.querySelector(".telaFinal").classList.remove("escondido")
+				return;
+			}
+			criafase();
+			jogavel = true;
+			clicavel = true;
+
+			document.body.style.background = "none";
+			document.body.style.backgroundColor = fases[fase].fundoBody;
+			container_carro.x = fases[fase].inicioPos[0];
+			container_carro.y = fases[fase].inicioPos[1];
+			carro.x = container_carro.x;
+			carro.y = container_carro.y;
+		}
+		function criaCheckPoints() {
+			checks = [];
+			for (let i = 0; i < fases[fase].checkpoints.length; i++) {
+				var chk = new createjs.Bitmap(caminho + fases[fase].checkpoints[i].imagem);
+				chk.image.onload = function () { };
+				container_icos.addChild(chk);
+				chk.x = fases[fase].checkpoints[i].x;
+				chk.y = fases[fase].checkpoints[i].y;
+				chk.scaleX = 3;
+				chk.scaleY = 3;
+				chk.colidivel = true;
+				checks.push(chk)
+				chk.alpha = 0.01;
+
+			}
+		}
+		function criafase() {
+			console.log(fases[fase].ajuda)
+			btAjuda.visible = fases[fase].ajuda;
+			container_icos.removeAllChildren();
+			container_cenas.removeAllChildren();
+			container_tracos.removeAllChildren();
+			criaCheckPoints();
+
+
+			fundo = new createjs.Bitmap(caminho + fases[fase].fundo);
+			fundo.image.onload = function () { };
+			container_cenas.addChild(fundo);
+
+			fundohit = new createjs.Bitmap(caminho + fases[fase].fundoColisao);
+			fundohit.image.onload = function () { };
+			container_cenas.addChild(fundohit);
+			fundohit.visible = false;
+
+		}
+		function calculaMouse(event) {
+
+			if (mousePositions.length > 0) {
+				var lastPosition = mousePositions[mousePositions.length - 1];
+				var distance = Math.sqrt((event.stageX - lastPosition.x) ** 2 + (event.stageY - lastPosition.y) ** 2);
+				totalDistance += distance;
+				textDistance.text = Math.round(totalDistance) + "m"
+				itemDistance += distance;
+			}
+			mousePositions.push({ x: event.stageX, y: event.stageY });
+
+			if (itemDistance >= 90) {
+				itemDistance -= 90;
+			}
+
+			if (mousePositions.length > 10) {
+				mousePositions.shift();
+			}
+
+		}
+		function dropItem(x, y) {
+			var item = new createjs.Bitmap(itemImage);
+			item.regX = item.image.width / 2;
+			item.regY = item.image.height / 2;
+			item.scaleX = item.scaleY = 0.5;
+			item.x = x;
+			item.y = y;
+			container_tracos.addChild(item);
+		}
+		function reiniciajogo() {
+			location.reload()
+		}
+		function rebobinar(_oque) {
+
+			container_tracos.removeAllChildren();
+			carro.visible = true;
+
+			for (var i = posicoes.length - 1, j = 0; i >= 0; i--, j++) {
+				setTimeout(function (index) {
+					_oque.x = posicoes[index][0];
+					_oque.y = posicoes[index][1];
+					calculaRotCarro(_oque, carro);
+					carro.x = _oque.x;
+					carro.y = _oque.y;
+
+
+				}, j * 2, i);
+			}
+			setTimeout(function () {
+				jogavel = true;
+				posicoes = [];
+				mousePositions = [];
+				totalDistance = 0;
+				textDistance.text = "0m";
+			}, posicoes.length * 3);
+		}
+		function ticker(event) {
+			stage.update();
+			if (jogavel) {
+				dX = container_carro.x - carro.x;
+				dY = container_carro.y - carro.y;
+				carro.x += (dX / 10);
+				carro.y += (dY / 10);
+				calculaRotCarro(container_carro, carro);
+				container_placa.x = carro.x - 80;
+				container_placa.y = carro.y - 160;
+			}
+
+		}
+		function calculaRotCarro(de, para) {
+			var angle = Math.atan2(de.y - para.y, de.x - para.x);
+			angle = angle * (180 / Math.PI);
+			para.rotation = angle;
+		}
+
+	</script>
+
+
+	<script type="text/javascript">
+		/*
+		Redimensionamento de tela para 16:9
+		sempre mantendo o canvas centralizado e ocupando o maximo da tela
+
+		IMPORTANTE:
+		criar uma div <div id="divCanvas"> 
+		e colocar o esilo do Canvas
+
+		*/
+		$divCanvas = $('#divCanvas');
+		retornaOrientacaoVideo($divCanvas);
+		function resizeGame() {
+			retornaOrientacaoVideo($divCanvas);
+		}
+		window.addEventListener('resize', resizeGame, false);
+		window.addEventListener('orientationchange', resizeGame, false);
+	</script>
+
+</body>
+
+</html>
