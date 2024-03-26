@@ -85,10 +85,12 @@
 			z-index: 10;
 			background-color: white
 		}
+
 		.rotacione {
 			z-index: 100;
 			background-color: rgba(0, 0, 0, 0.75);
 		}
+
 		.escondido {
 			display: none;
 		}
@@ -327,10 +329,28 @@
 		createjs.Ticker.setFPS(30);
 		createjs.Ticker.addEventListener("tick", ticker);
 
-		if(window.innerWidth/window.innerHeight<1){
-			document.querySelector(".rotacione").classList.remove("escondido");
-		}
+		window.addEventListener("resize", handleOrientationChange);
+		function handleOrientationChange() {
+			var telas=document.querySelectorAll("img");
+			if (window.innerWidth / window.innerHeight < 1) {
+				document.querySelector(".rotacione").classList.remove("escondido");
+				
+				telas.forEach(element => {
+					console.log("telas");
+					
 
+					element.style.width="100%";
+					element.style.height="auto";
+				});
+			} else {
+				document.querySelector(".rotacione").classList.add("escondido");
+				telas.forEach(element => {
+					console.log("telas");
+					element.style.width="auto";
+					element.style.height="100%";
+				});
+			}
+		}
 
 		function iniciaTuto() {
 			document.querySelector(".telaInicio").classList.add("escondido");
@@ -450,7 +470,7 @@
 						lastname = this.nome;
 						if (this.clicavel) {
 							chkCount += 1;
-							if(chkCount>fases[fase].countMoves){
+							if (chkCount > fases[fase].countMoves) {
 								document.querySelector(".erro").classList.remove("escondido");
 							}
 							calculaRotCarro(carro, this);
