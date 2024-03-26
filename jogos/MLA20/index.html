@@ -9,6 +9,14 @@
 	<script src="js/jquery.lib.ods.min.js"></script>
 	<script src="js/jquery.geral.init.js"></script>
 	<style>
+		html,
+		body {
+			overflow: hidden;
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		}
+
 		body {
 			background-color: lightblue;
 			background: url(resources/image/fundo_inicio.jpg) no-repeat center center fixed;
@@ -29,7 +37,7 @@
 			font-family: "Marvin W01 Regular";
 		}
 
-		.telaInicio {
+		.telas {
 			position: absolute;
 			top: 0;
 			left: 0;
@@ -39,6 +47,10 @@
 			z-index: 10;
 			align-items: center;
 			justify-content: center;
+		}
+
+		.fundoEscuro {
+			background-color: rgba(0, 0, 0, 0.5);
 		}
 
 		.telaFinal {
@@ -60,7 +72,7 @@
 			width: 100%;
 			height: 100%;
 			z-index: 10;
-			background-color: rgba(0, 0, 0, 0.5)
+			background-color: rgba(0, 0, 0, 0.5);
 		}
 
 		.telasProxima {
@@ -73,7 +85,10 @@
 			z-index: 10;
 			background-color: white
 		}
-
+		.rotacione {
+			z-index: 100;
+			background-color: rgba(0, 0, 0, 0.75);
+		}
 		.escondido {
 			display: none;
 		}
@@ -81,32 +96,39 @@
 </head>
 
 <body lang="pt-BR">
-	<div class="telaInicio">
-		<img src="resources/image/telainicio.png" onclick="iniciaJogo()" style="height: 100%">
+	<div class="telas rotacione escondido">
+		<img src="resources/image/rotate.png" onclick="iniciaTuto()" style="width: 100%">
+	</div>
+	<div class="telas telaInicio">
+		<img src="resources/image/telainicio.png" onclick="iniciaTuto()" style="width: 100%">
+	</div>
+	<div class="telas telaTutorial escondido">
+		<img id="t1" src="resources/image/tuto1.png" onclick="iniciaJogo()" style="width: 100%">
+		<img id="t2" src="resources/image/tuto2.png" onclick="iniciaJogo()" style="width: 100%">
 	</div>
 	<div id="divCanvas" class="escondido">
 		<canvas id="canvas_od" width="1920" height="1080" style="top: 0;left: 0;width: 100%;height: 100%;"></canvas>
 	</div>
-	<div class="telasProxima proxima0 escondido">
-		Proxima fase 1
-		<button onclick="proximaFase()">fechar</button>
+	<div class="telas proxima0 escondido fundoEscuro">
+		<img src="resources/image/parabens1.png" onclick="proximaFase()" style="width: 100%">
 	</div>
-	<div class="telasProxima proxima1 escondido">
-		Proxima fase 2
-		<button onclick="proximaFase()">fechar</button>
+	<div class="telas proxima1 escondido fundoEscuro">
+		<img src="resources/image/parabens1.png" onclick="proximaFase()" style="width: 100%">
 	</div>
-	<div class="telasProxima proxima2 escondido">
-		Proxima fase 3
-		<button onclick="proximaFase()">fechar</button>
+	<div class="telas proxima2 escondido fundoEscuro">
+		<img src="resources/image/parabens3.png" onclick="location.reload()" style="width: 100%">
 	</div>
-	<div class="telasAjuda ajuda0 escondido">
-		<img src="resources/image/ajuda1.png" onclick="fechaAjuda()" style="height: 100%">
+	<div class="telas erro escondido fundoEscuro">
+		<img src="resources/image/telaerro1.png" onclick="location.reload()" style="width: 100%">
 	</div>
-	<div class="telasAjuda ajuda1 escondido">
-		<img src="resources/image/ajuda1.png" onclick="fechaAjuda()" style="height: 100%">
+	<div class="telas ajuda0 escondido fundoEscuro">
+		<img src="resources/image/ajuda1.png" onclick="fechaAjuda()" style="width: 100%">
 	</div>
-	<div class="telasAjuda ajuda2 escondido">
-		<img src="resources/image/ajuda1.png" onclick="fechaAjuda()" style="height: 100%">
+	<div class="telas ajuda1 escondido fundoEscuro">
+		<img src="resources/image/ajuda1.png" onclick="fechaAjuda()" style="width: 100%">
+	</div>
+	<div class="telas ajuda2 escondido fundoEscuro">
+		<img src="resources/image/ajuda2.png" onclick="fechaAjuda()" style="width: 100%">
 	</div>
 	<div class="telaFinal escondido">
 		tela de fim de jogo
@@ -118,10 +140,27 @@
 			titulo: "titulo1",
 			fundo: "fase1.jpg",
 			fundoBody: "#96bd55",
-			inicioPos: [210, 600],
+			inicioPos: [250, 600],
 			fundoColisao: "fundo_colisao.png",
 			checkpoints: [{ imagem: "areacol.png", x: 1400, y: 850 }],
-			telaFinal: "telafimparabens.png",
+			resposta: ["l"],
+			caminhosBloqueados: [],
+			countMoves: 100,
+			bolas: [
+				{ nome: "a", imagem: "target.png", x: 430, y: 270, clik: false, chekfim: false },
+				{ nome: "b", imagem: "target.png", x: 550, y: 270, clik: false, chekfim: false },
+				{ nome: "c", imagem: "target.png", x: 960, y: 270, clik: false, chekfim: false },
+				{ nome: "d", imagem: "target.png", x: 1360, y: 270, clik: false, chekfim: false },
+				{ nome: "e", imagem: "target.png", x: 1700, y: 270, clik: false, chekfim: false },
+				{ nome: "f", imagem: "target.png", x: 550, y: 600, clik: false, chekfim: false },
+				{ nome: "g", imagem: "target.png", x: 960, y: 600, clik: false, chekfim: false },
+				{ nome: "h", imagem: "target.png", x: 1360, y: 600, clik: false, chekfim: false },
+				{ nome: "i", imagem: "target.png", x: 200, y: 930, clik: false, chekfim: false },
+				{ nome: "j", imagem: "target.png", x: 550, y: 930, clik: false, chekfim: false },
+				{ nome: "k", imagem: "target.png", x: 960, y: 930, clik: false, chekfim: false },
+				{ nome: "l", imagem: "target.png", x: 1360, y: 930, clik: true, chekfim: true },
+			],
+			telaFinal: "telafimparabens1.png",
 			ajuda: false
 		},
 		{
@@ -132,7 +171,27 @@
 			fundoColisao: "fundo_colisao2.png",
 			checkpoints: [{ imagem: "areacol.png", x: 350, y: 800 }],
 			telaFinal: "telafimparabens.png",
-			ajuda: true
+			ajuda: true,
+			resposta: ["fbcjml", "fbcml"],
+			caminhosBloqueados: ["ab", "cd"],
+			countMoves: 6,
+			bolas: [
+				{ nome: "a", imagem: "target.png", x: 330, y: 270, clik: false, chekfim: false },
+				{ nome: "b", imagem: "target.png", x: 550, y: 270, clik: true, chekfim: false },
+				{ nome: "c", imagem: "target.png", x: 830, y: 270, clik: true, chekfim: false },
+				{ nome: "d", imagem: "target.png", x: 1370, y: 270, clik: false, chekfim: false },
+				{ nome: "e", imagem: "target.png", x: 1495, y: 270, clik: false, chekfim: false },
+				{ nome: "f", imagem: "target.png", x: 550, y: 495, clik: true, chekfim: false },
+				{ nome: "g", imagem: "target.png", x: 1110, y: 495, clik: false, chekfim: false },
+				{ nome: "h", imagem: "target.png", x: 1360, y: 495, clik: false, chekfim: false },
+				{ nome: "i", imagem: "target.png", x: 1700, y: 495, clik: false, chekfim: false },
+				{ nome: "j", imagem: "target.png", x: 830, y: 730, clik: true, chekfim: false },
+				{ nome: "k", imagem: "target.png", x: 1090, y: 730, clik: false, chekfim: false },
+				{ nome: "l", imagem: "target.png", x: 400, y: 930, clik: true, chekfim: true },
+				{ nome: "m", imagem: "target.png", x: 830, y: 930, clik: true, chekfim: false },
+				{ nome: "n", imagem: "target.png", x: 1360, y: 930, clik: false, chekfim: false },
+				{ nome: "o", imagem: "target.png", x: 1590, y: 930, clik: false, chekfim: false },
+			]
 		}
 			,
 		{
@@ -143,11 +202,39 @@
 			fundoColisao: "fundo_colisao3.png",
 			checkpoints: [{ imagem: "areacol.png", x: 460, y: 300 }, { imagem: "areacol.png", x: 1200, y: 170 }],
 			telaFinal: "telafimparabens.png",
-			ajuda: true
+			ajuda: true,
+			resposta: ["bd"],
+			caminhosBloqueados: ["je", "ej", "fg", "gf"],
+			countMoves: 25,
+			bolas: [
+				{ nome: "b", imagem: "target.png", x: 550, y: 270, clik: true, chekfim: false },
+				{ nome: "c", imagem: "target.png", x: 960, y: 270, clik: false, chekfim: false },
+				{ nome: "d", imagem: "target.png", x: 1250, y: 270, clik: true, chekfim: true },
+				{ nome: "e", imagem: "target.png", x: 550, y: 495, clik: false, chekfim: false },
+				{ nome: "f", imagem: "target.png", x: 740, y: 495, clik: false, chekfim: false },
+				{ nome: "g", imagem: "target.png", x: 960, y: 495, clik: false, chekfim: false },
+				{ nome: "h", imagem: "target.png", x: 1370, y: 495, clik: false, chekfim: false },
+				{ nome: "i", imagem: "target.png", x: 1590, y: 495, clik: false, chekfim: false },
+				{ nome: "j", imagem: "target.png", x: 550, y: 720, clik: false, chekfim: false },
+				{ nome: "k", imagem: "target.png", x: 750, y: 720, clik: false, chekfim: false },
+				{ nome: "l", imagem: "target.png", x: 960, y: 720, clik: false, chekfim: false },
+				{ nome: "m", imagem: "target.png", x: 220, y: 930, clik: false, chekfim: false },
+				{ nome: "n", imagem: "target.png", x: 550, y: 930, clik: false, chekfim: false },
+				{ nome: "o", imagem: "target.png", x: 1370, y: 930, clik: false, chekfim: false },
+				{ nome: "p", imagem: "target.png", x: 1590, y: 930, clik: false, chekfim: false },
+			]
 		},
 		{
 			titulo: "fim"
-		}]
+		}];
+
+		if (isMobileDevice()) {
+			document.querySelector("#t2").classList.remove("escondido");
+			document.querySelector("#t1").classList.add("escondido");
+		} else {
+			document.querySelector("#t2").classList.add("escondido");
+			document.querySelector("#t1").classList.remove("escondido");
+		}
 
 		var canvas;
 		var stage;
@@ -176,6 +263,8 @@
 		var local = { x: 0, y: 0 };
 		var caminho = "resources/image/";
 		var textDistance;
+		var resposta = "";
+		var lastname = "";
 
 		loaded2 = true;
 		canvas = document.getElementById("canvas_od");
@@ -216,29 +305,39 @@
 
 		criafase();
 		criaCarro();
-
-		setInterval(() => {
-			if (jogavel) {
-				var fropa = true;
-				for (var i = 0; i < container_tracos.numChildren; i++) {
-					var child = container_tracos.getChildAt(i);
-
-					var colisaoErro = ndgmr.checkPixelCollision(child, carro, 0.1, true);
-					if (colisaoErro) {
-						fropa = false;
+		/*
+				setInterval(() => {
+					if (jogavel) {
+						var fropa = true;
+						for (var i = 0; i < container_tracos.numChildren; i++) {
+							var child = container_tracos.getChildAt(i);
+		
+							var colisaoErro = ndgmr.checkPixelCollision(child, carro, 0.1, true);
+							if (colisaoErro) {
+								fropa = false;
+							}
+						}
+						if (fropa) {
+							dropItem(carro.x, carro.y);
+						}
 					}
-				}
-				if (fropa) {
-					dropItem(carro.x, carro.y);
-				}
-			}
-		}, 100);
-
+				}, 100);
+		*/
 
 		createjs.Ticker.setFPS(30);
 		createjs.Ticker.addEventListener("tick", ticker);
-		function iniciaJogo() {
+
+		if(window.innerWidth/window.innerHeight<1){
+			document.querySelector(".rotacione").classList.remove("escondido");
+		}
+
+
+		function iniciaTuto() {
 			document.querySelector(".telaInicio").classList.add("escondido");
+			document.querySelector(".telaTutorial").classList.remove("escondido");
+		}
+		function iniciaJogo() {
+			document.querySelector(".telaTutorial").classList.add("escondido");
 			document.querySelector("#divCanvas").classList.remove("escondido");
 			jogavel = true;
 			container_cenas.visible = true;
@@ -269,71 +368,12 @@
 			container_placa.addChild(textDistance);
 			container_placa.x = 200;
 			container_placa.y = 300;
-
-
+			container_placa.alpha = 0;
 
 			stage.addChild(carro);
 			//carro.visible = false;
-			carro.scaleX = 0.7;
-			carro.scaleY = 0.7;
-			container_carro.on("mousedown", function (evt) {
-				if (jogavel) {
-					clicavel = true;
-					var global = stage.localToGlobal(this.x, this.y);
-					container_carro.offset = { 'x': global.x - evt.stageX, 'y': global.y - evt.stageY };
-				}
-			});
-			container_carro.on("pressmove", function (evt) {
-				if (jogavel && clicavel) {
-					var newlocal = stage.globalToLocal(evt.stageX + this.offset.x, evt.stageY + this.offset.y);
-					var difx = newlocal.x - local.x;
-					var dify = newlocal.y - local.y;
-
-
-
-					local = stage.globalToLocal(evt.stageX + this.offset.x, evt.stageY + this.offset.y);
-					container_carro.x = local.x;
-					container_carro.y = local.y;
-					var posAtual = [local.x, local.y];
-					posicoes.push(posAtual);
-
-					var colisaoErro = ndgmr.checkPixelCollision(fundohit, carro, 0.1, true);
-
-					var chkTotal = fases[fase].checkpoints.length;
-					for (let i = 0; i < checks.length; i++) {
-						if (checks[i].colidivel) {
-							var colisao2 = ndgmr.checkPixelCollision(checks[i], carro, 0.1, true);
-							if (colisao2) {
-								chkCount += 1;
-								checks[i].colidivel = false;
-							}
-						}
-					}
-
-					if (colisaoErro) {
-						jogavel = false;
-						clicavel = false;
-						rebobinar(container_carro);
-					} else if (chkCount >= chkTotal) {
-						jogavel = false;
-						clicavel = false;
-						chkCount = 0;
-						posicoes = [];
-						mousePositions = [];
-						totalDistance = 0;
-						textDistance.text = "0m";
-						container_tracos.removeAllChildren();
-						document.querySelector(".proxima" + fase).classList.remove("escondido");
-					}else{
-						calculaMouse(evt);
-					}
-					
-				}
-
-			});
-			container_carro.on("pressup", function (evt) {
-				clicavel = true;
-			});
+			carro.scaleX = 0.57;
+			carro.scaleY = 0.57;
 
 			var col = new createjs.Bitmap(caminho + "areacol.png");
 			container_carro.addChild(col);
@@ -350,6 +390,7 @@
 			carro.y = container_carro.y;
 		}
 		function proximaFase() {
+			resposta = "";
 			document.querySelector(".proxima" + fase).classList.add("escondido");
 			fase += 1;
 			if (fases[fase].titulo == "fim") {
@@ -370,22 +411,94 @@
 		}
 		function criaCheckPoints() {
 			checks = [];
-			for (let i = 0; i < fases[fase].checkpoints.length; i++) {
-				var chk = new createjs.Bitmap(caminho + fases[fase].checkpoints[i].imagem);
-				chk.image.onload = function () { };
-				container_icos.addChild(chk);
-				chk.x = fases[fase].checkpoints[i].x;
-				chk.y = fases[fase].checkpoints[i].y;
-				chk.scaleX = 3;
-				chk.scaleY = 3;
-				chk.colidivel = true;
-				checks.push(chk)
-				chk.alpha = 0.01;
+			for (let i = 0; i < fases[fase].bolas.length; i++) {
+				var bola = new createjs.Bitmap(caminho + fases[fase].bolas[i].imagem);
+				bola.image.onload = function () { };
+				container_icos.addChild(bola);
+				bola.x = fases[fase].bolas[i].x;
+				bola.y = fases[fase].bolas[i].y;
+				bola.regX = 34;
+				bola.regY = 34;
+				bola.clicavel = true;
+				bola.chekfim = fases[fase].bolas[i].chekfim;
+				bola.nome = fases[fase].bolas[i].nome;
+				bola.colidivel = fases[fase].bolas[i].clik;
+				bola.scaleX = 3;
+				bola.scaleX = 3;
+				bola.on("mousedown", function (evt) {
+					if (jogavel) {
+						let diffX = this.x - carro.x;
+						let diffY = this.y - carro.y;
+						//console.log("clica", diffX, diffY, this.colidivel);
+						var pula = true;
+
+
+						if (Math.abs(diffX) > 30 && Math.abs(diffY) > 30) {
+							return;
+						}
+
+						fases[fase].caminhosBloqueados.forEach(element => {
+							let comp = lastname + this.nome;
+							console.log("comp ", comp, element);
+							if (element == comp) {
+								console.log("BLOQUEIA ", comp, element);
+								pula = false;
+								return;
+							}
+						});
+
+						lastname = this.nome;
+						if (this.clicavel) {
+							chkCount += 1;
+							if(chkCount>fases[fase].countMoves){
+								document.querySelector(".erro").classList.remove("escondido");
+							}
+							calculaRotCarro(carro, this);
+							if (this.colidivel) {
+								resposta += this.nome;
+								//console.log("resp ", resposta);
+
+								this.colidivel = false;
+								if (this.chekfim) {
+									if (resposta == fases[fase].resposta[0] || resposta == fases[fase].resposta[1]) {
+										//console.log("FIM");
+										jogavel = false;
+										clicavel = false;
+
+										setTimeout(() => {
+											chkCount = 0;
+											posicoes = [];
+											mousePositions = [];
+											totalDistance = 0;
+											textDistance.text = "0m";
+											container_tracos.removeAllChildren();
+											document.querySelector(".proxima" + fase).classList.remove("escondido");
+										}, 1200);
+									} else {
+										//console.log("FIM erro");
+										document.querySelector(".erro").classList.remove("escondido");
+									}
+								}
+
+							}
+							if (pula) {
+								createjs.Tween.get(carro).to({ x: this.x, y: this.y }, 300, createjs.Ease.linear);
+							}
+
+						}
+
+
+					}
+
+				});
+				createjs.Tween.get(bola).to({ scaleX: 1, scaleY: 1, alpha: 0.5 }, 200, createjs.Ease.backOut);
+				//checks.push(bola)
+				//chk.alpha = 0.01;
 
 			}
 		}
 		function criafase() {
-			console.log(fases[fase].ajuda)
+			//console.log(fases[fase].ajuda)
 			btAjuda.visible = fases[fase].ajuda;
 			container_icos.removeAllChildren();
 			container_cenas.removeAllChildren();
@@ -414,6 +527,7 @@
 			}
 			mousePositions.push({ x: event.stageX, y: event.stageY });
 
+
 			if (itemDistance >= 90) {
 				itemDistance -= 90;
 			}
@@ -435,49 +549,23 @@
 		function reiniciajogo() {
 			location.reload()
 		}
-		function rebobinar(_oque) {
 
-			container_tracos.removeAllChildren();
-			carro.visible = true;
-
-			for (var i = posicoes.length - 1, j = 0; i >= 0; i--, j++) {
-				setTimeout(function (index) {
-					_oque.x = posicoes[index][0];
-					_oque.y = posicoes[index][1];
-					calculaRotCarro(_oque, carro);
-					carro.x = _oque.x;
-					carro.y = _oque.y;
-
-
-				}, j * 2, i);
-			}
-			setTimeout(function () {
-				jogavel = true;
-				posicoes = [];
-				mousePositions = [];
-				totalDistance = 0;
-				textDistance.text = "0m";
-			}, posicoes.length * 3);
-		}
 		function ticker(event) {
 			stage.update();
 			if (jogavel) {
-				dX = container_carro.x - carro.x;
-				dY = container_carro.y - carro.y;
-				carro.x += (dX / 10);
-				carro.y += (dY / 10);
-				calculaRotCarro(container_carro, carro);
-				container_placa.x = carro.x - 80;
-				container_placa.y = carro.y - 160;
-			}
 
+			}
 		}
 		function calculaRotCarro(de, para) {
-			var angle = Math.atan2(de.y - para.y, de.x - para.x);
-			angle = angle * (180 / Math.PI);
-			para.rotation = angle;
-		}
 
+			var angle = Math.atan2(de.y - para.y, de.x - para.x);
+			//console.log(angle);
+			angle = angle * (180 / Math.PI);
+			carro.rotation = angle + 180;
+		}
+		function isMobileDevice() {
+			return /Mobi|Android/i.test(navigator.userAgent);
+		}
 	</script>
 
 
@@ -498,6 +586,9 @@
 		}
 		window.addEventListener('resize', resizeGame, false);
 		window.addEventListener('orientationchange', resizeGame, false);
+
+
+
 	</script>
 
 </body>
