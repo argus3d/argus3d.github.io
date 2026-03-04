@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BabylonJS Scene</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #0a0a0f;
+      overflow: hidden;
+      font-family: 'Space Mono', monospace;
+    }
+
+    #renderCanvas {
+      width: 100vw;
+      height: 100vh;
+      display: block;
+      touch-action: none;
+    }
+
+    /* HUD overlay */
+    #hud {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    /* Top-left label */
+    .label-tl {
+      position: absolute;
+      top: 28px; left: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .label-tl .tag {
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      color: rgba(255,255,255,0.3);
+      text-transform: uppercase;
+    }
+    .label-tl .title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.04em;
+    }
+    .label-tl .subtitle {
+      font-size: 10px;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.12em;
+    }
+
+    /* Bottom controls */
+    .controls {
+      position: absolute;
+      bottom: 28px; left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+    .ctrl-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .ctrl-icon {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,0.04);
+    }
+    .ctrl-icon svg { width: 15px; height: 15px; stroke: rgba(255,255,255,0.5); fill: none; stroke-width: 1.5; }
+    .ctrl-label {
+      font-size: 8px;
+      letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.25);
+      text-transform: uppercase;
+    }
+
+    /* Top-right env badge */
+    .env-badge {
+      position: absolute;
+      top: 28px; right: 32px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 6px 14px;
+    }
+    .env-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #4fffb0;
+      box-shadow: 0 0 8px #4fffb0;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    .env-text {
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* Loading screen */
+    #loading {
+      position: fixed;
+      inset: 0;
+      background: #0a0a0f;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      z-index: 100;
+      transition: opacity 0.8s ease;
+    }
+    #loading.hidden { opacity: 0; pointer-events: none; }
+    .loader-ring {
+      width: 52px; height: 52px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-top-color: #4fffb0;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loader-text {
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      color: rgba(255,255,255,0.25);
+      text-transform: uppercase;
+    }
+
+    /* Corner crosshairs */
+    .corner {
+      position: absolute;
+      width: 16px; height: 16px;
+    }
+    .corner::before, .corner::after {
+      content: '';
+      position: absolute;
+      background: rgba(255,255,255,0.2);
+    }
+    .corner::before { width: 100%; height: 1px; top: 0; left: 0; }
+    .corner::after  { width: 1px; height: 100%; top: 0; left: 0; }
+    .corner.br { bottom: 28px; right: 32px; transform: rotate(180deg); }
+    .corner.bl { bottom: 28px; left: 32px;  transform: rotate(90deg); }
+  </style>
+</head>
+<body>
+
+<div id="loading">
+  <div class="loader-ring"></div>
+  <div class="loader-text">Iniciando cena</div>
+</div>
+
+<canvas id="renderCanvas"></canvas>
+
+<div id="hud">
+  <div class="label-tl">
+    <span class="tag">BabylonJS · Template</span>
+    <span class="title">3D Viewer</span>
+    <span class="subtitle">Substitua o GLB pela sua linha 97</span>
+  </div>
+
+  <div class="env-badge">
+    <div class="env-dot"></div>
+    <span class="env-text">ENV · HDR Ativo</span>
+  </div>
+
+  <div class="controls">
+    <div class="ctrl-item">
+      <div class="ctrl-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+      </div>
+      <span class="ctrl-label">Scroll · Zoom</span>
+    </div>
+    <div class="ctrl-item">
+      <div class="ctrl-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M20 12a8 8 0 11-16 0 8 8 0 0116 0z"/></svg>
+      </div>
+      <span class="ctrl-label">Click · Orbit</span>
+    </div>
+    <div class="ctrl-item">
+      <div class="ctrl-icon">
+        <svg viewBox="0 0 24 24"><path d="M5 9l-3 3 3 3M19 9l3 3-3 3M9 5l3-3 3 3M9 19l3 3 3-3"/></svg>
+      </div>
+      <span class="ctrl-label">Right · Pan</span>
+    </div>
+  </div>
+
+  <div class="corner br"></div>
+  <div class="corner bl"></div>
+</div>
+
+<!-- BabylonJS CDN -->
+<script src="https://cdn.babylonjs.com/babylon.js"></script>
+<script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+<script src="https://cdn.babylonjs.com/materialsLibrary/babylonjs.materials.min.js"></script>
+
+<script>
+(async () => {
+
+  const canvas  = document.getElementById('renderCanvas');
+  const loading = document.getElementById('loading');
+
+  // ─── Engine & Scene ────────────────────────────────────────────────────────
+  const engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
+  const scene  = new BABYLON.Scene(engine);
+  scene.clearColor = new BABYLON.Color4(0.04, 0.04, 0.06, 1);
+
+  // ─── Camera ────────────────────────────────────────────────────────────────
+  const camera = new BABYLON.ArcRotateCamera('cam', -Math.PI / 4, Math.PI / 3, 4, BABYLON.Vector3.Zero(), scene);
+  camera.lowerRadiusLimit  = 0.5;
+  camera.upperRadiusLimit  = 20;
+  camera.wheelDeltaPercentage = 0.01;
+  camera.attachControl(canvas, true);
+  camera.useAutoRotationBehavior = true;
+  camera.autoRotationBehavior.idleRotationSpeed = 0.3;
+
+  // ─── Environment HDR ───────────────────────────────────────────────────────
+  // Usando environment da CDN pública do BabylonJS (studio HDR bonito)
+  const envTexture = BABYLON.CubeTexture.CreateFromPrefilteredData(
+    'https://assets.babylonjs.com/environments/environmentSpecular.env',
+    scene
+  );
+  scene.environmentTexture = envTexture;
+  scene.environmentIntensity = 1.2;
+
+  // Skybox
+  const skybox = scene.createDefaultSkybox(envTexture, true, 1000, 0.1);
+
+  // ─── Iluminação Padrão ─────────────────────────────────────────────────────
+  // Luz hemisférica (ambient suave)
+  const hemi = new BABYLON.HemisphericLight('hemi', new BABYLON.Vector3(0, 1, 0), scene);
+  hemi.intensity   = 0.4;
+  hemi.diffuse     = new BABYLON.Color3(0.9, 0.95, 1.0);
+  hemi.groundColor = new BABYLON.Color3(0.15, 0.12, 0.2);
+
+  // Luz direcional principal (key light)
+  const keyLight = new BABYLON.DirectionalLight('key', new BABYLON.Vector3(-1, -2, -1), scene);
+  keyLight.position  = new BABYLON.Vector3(5, 10, 5);
+  keyLight.intensity = 1.8;
+  keyLight.diffuse   = new BABYLON.Color3(1.0, 0.97, 0.92);
+
+  // Sombras da key light
+  const shadowGen = new BABYLON.ShadowGenerator(2048, keyLight);
+  shadowGen.useBlurExponentialShadowMap = true;
+  shadowGen.blurKernel = 32;
+
+  // Luz de preenchimento (fill light) — lado oposto, azulada
+  const fillLight = new BABYLON.DirectionalLight('fill', new BABYLON.Vector3(1, -0.5, 1), scene);
+  fillLight.position  = new BABYLON.Vector3(-5, 4, -5);
+  fillLight.intensity = 0.6;
+  fillLight.diffuse   = new BABYLON.Color3(0.5, 0.7, 1.0);
+
+  // Rim light — de trás para contorno
+  const rimLight = new BABYLON.DirectionalLight('rim', new BABYLON.Vector3(0, -1, 1), scene);
+  rimLight.position  = new BABYLON.Vector3(0, 5, -8);
+  rimLight.intensity = 0.8;
+  rimLight.diffuse   = new BABYLON.Color3(0.8, 0.9, 1.0);
+
+
+
+  // ─── MODELO 3D ─────────────────────────────────────────────────────────────
+  // ↓↓↓  SUBSTITUA AQUI pelo caminho do seu arquivo GLB  ↓↓↓
+  const GLB_URL    = 'teste/'; // pasta base
+  const GLB_FILE   = 'livro3.glb';                         // ← seu arquivo
+  // ──────────────────────────────────────────────────────────────────────────
+
+  let currentMeshes = [];
+
+  try {
+    const result = await BABYLON.SceneLoader.ImportMeshAsync('', GLB_URL, GLB_FILE, scene);
+    currentMeshes = result.meshes;
+
+    // Centralizar e escalar automaticamente
+    const root = new BABYLON.Mesh('root', scene);
+    result.meshes.forEach(m => { if (!m.parent) m.parent = root; });
+
+    // Calcular bounds para normalizar tamanho
+    const bounds = root.getHierarchyBoundingVectors(true);
+    const size   = bounds.max.subtract(bounds.min);
+    const maxDim = Math.max(size.x, size.y, size.z);
+    const scale  = maxDim > 0 ? 2 / maxDim : 1;
+    root.scaling = new BABYLON.Vector3(scale, scale, scale);
+
+    // Centralizar verticalmente
+    const center = bounds.min.add(size.scale(0.5));
+    root.position.y = -center.y * scale;
+
+    // Adicionar às sombras
+    result.meshes.forEach(m => {
+      if (m.getTotalVertices() > 0) {
+        shadowGen.addShadowCaster(m, true);
+        m.receiveShadows = true;
+      }
+    });
+
+    // Animar suave de entrada
+    root.scaling = BABYLON.Vector3.Zero();
+    const scaleAnim = new BABYLON.Animation('scaleIn', 'scaling', 60,
+      BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+      BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+    scaleAnim.setKeys([
+      { frame: 0,  value: BABYLON.Vector3.Zero() },
+      { frame: 30, value: new BABYLON.Vector3(scale, scale, scale) }
+    ]);
+    const ease = new BABYLON.BackEase(0.5);
+    ease.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEOUT);
+    scaleAnim.setEasingFunction(ease);
+    root.animations = [scaleAnim];
+    scene.beginAnimation(root, 0, 30, false);
+
+  } catch (e) {
+    // Fallback: esfera PBR para demonstrar a iluminação
+    console.warn('GLB não carregado, usando fallback:', e.message);
+    const sphere = BABYLON.MeshBuilder.CreateSphere('sphere', { diameter: 1.5, segments: 64 }, scene);
+    sphere.position.y = 0.75;
+
+    const mat = new BABYLON.PBRMaterial('fallback', scene);
+    mat.albedoColor = new BABYLON.Color3(0.8, 0.82, 0.85);
+    mat.metallic    = 0.9;
+    mat.roughness   = 0.1;
+    sphere.material = mat;
+
+    shadowGen.addShadowCaster(sphere);
+    sphere.receiveShadows = true;
+    currentMeshes = [sphere];
+  }
+
+  // ─── Pós-processamento ────────────────────────────────────────────────────
+  const pipeline = new BABYLON.DefaultRenderingPipeline('pipe', true, scene, [camera]);
+  pipeline.bloomEnabled    = true;
+  pipeline.bloomThreshold  = 0.7;
+  pipeline.bloomWeight     = 0.35;
+  pipeline.bloomKernel     = 64;
+  pipeline.bloomScale      = 0.5;
+
+  pipeline.fxaaEnabled = true;
+
+  pipeline.imageProcessingEnabled = true;
+  pipeline.imageProcessing.toneMappingEnabled = true;
+  pipeline.imageProcessing.toneMappingType    = BABYLON.ImageProcessingConfiguration.TONEMAPPING_ACES;
+  pipeline.imageProcessing.exposure           = 1.1;
+  pipeline.imageProcessing.contrast           = 1.1;
+
+  // Vignet sutil
+  pipeline.imageProcessing.vignetteEnabled  = true;
+  pipeline.imageProcessing.vignetteWeight   = 2.5;
+  pipeline.imageProcessing.vignetteCameraFov = 0.5;
+  pipeline.imageProcessing.vignetteColor    = new BABYLON.Color4(0, 0, 0, 0);
+  pipeline.imageProcessing.vignetteBlendMode = BABYLON.ImageProcessingConfiguration.VIGNETTEMODE_MULTIPLY;
+
+  // ─── Render loop ──────────────────────────────────────────────────────────
+  engine.runRenderLoop(() => scene.render());
+  window.addEventListener('resize', () => engine.resize());
+
+  // Ocultar loading
+  setTimeout(() => loading.classList.add('hidden'), 800);
+
+})();
+</script>
+</body>
+</html>
