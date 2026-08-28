@@ -1,0 +1,23 @@
+{
+  "type": "PLANAR",
+  "properties": {
+    "top": 0,
+    "left": 6,
+    "width": 751,
+    "height": 1002,
+    "isRotated": false,
+    "originalWidth": 765,
+    "originalHeight": 1002
+  },
+  "imagePath": "image-targets/vlcsnap-2026-02-26-16h26m18s277crop_luminance.png",
+  "metadata": null,
+  "name": "vlcsnap-2026-02-26-16h26m18s277crop",
+  "resources": {
+    "originalImage": "vlcsnap-2026-02-26-16h26m18s277crop_original.png",
+    "croppedImage": "vlcsnap-2026-02-26-16h26m18s277crop_cropped.png",
+    "thumbnailImage": "vlcsnap-2026-02-26-16h26m18s277crop_thumbnail.png",
+    "luminanceImage": "vlcsnap-2026-02-26-16h26m18s277crop_luminance.png"
+  },
+  "created": 1787923976474,
+  "updated": 1787923976474
+}
