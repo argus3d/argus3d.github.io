@@ -1,0 +1,23 @@
+{
+  "type": "PLANAR",
+  "properties": {
+    "top": 49,
+    "left": 0,
+    "width": 1050,
+    "height": 1400,
+    "isRotated": false,
+    "originalWidth": 1050,
+    "originalHeight": 1498
+  },
+  "imagePath": "image-targets/professora1_luminance.png",
+  "metadata": null,
+  "name": "professora1",
+  "resources": {
+    "originalImage": "professora1_original.png",
+    "croppedImage": "professora1_cropped.png",
+    "thumbnailImage": "professora1_thumbnail.png",
+    "luminanceImage": "professora1_luminance.png"
+  },
+  "created": 1787930187074,
+  "updated": 1787930187074
+}
