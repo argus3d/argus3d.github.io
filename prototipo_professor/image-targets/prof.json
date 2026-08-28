@@ -1,0 +1,23 @@
+{
+  "type": "PLANAR",
+  "properties": {
+    "top": 0,
+    "left": 6,
+    "width": 751,
+    "height": 1002,
+    "isRotated": false,
+    "originalWidth": 765,
+    "originalHeight": 1002
+  },
+  "imagePath": "image-targets/prof_luminance.png",
+  "metadata": null,
+  "name": "prof",
+  "resources": {
+    "originalImage": "prof_original.png",
+    "croppedImage": "prof_cropped.png",
+    "thumbnailImage": "prof_thumbnail.png",
+    "luminanceImage": "prof_luminance.png"
+  },
+  "created": 1787927459970,
+  "updated": 1787927459970
+}
