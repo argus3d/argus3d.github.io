@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>IESDE</title>
+<title>IESDE Tour</title>
 <script>
 
 /**
@@ -54,15 +54,23 @@ html,body{height:100%;margin:0;background:#0E1014}#tour{position:absolute;inset:
 .tv-ctl{position:absolute;right:12px;bottom:12px;display:grid;grid-template-columns:repeat(3,40px);gap:4px;z-index:4}
 .tv-ctl button{width:40px;height:40px;border-radius:8px;border:1px solid rgba(255,255,255,.14);background:rgba(14,16,20,.7);color:#E9E7E1;backdrop-filter:blur(6px);display:grid;place-items:center;padding:0;cursor:pointer}
 .tv-ctl button:hover{border-color:rgba(255,255,255,.45)}.tv-ctl button:empty{visibility:hidden}.tv-ctl svg{width:16px;height:16px}
-.tv-map{position:absolute;left:12px;bottom:80px;width:240px;max-width:50%;background:rgba(14,16,20,.8);border-radius:8px;padding:6px;z-index:4;backdrop-filter:blur(6px)}.tv-map[hidden]{display:none}
-.tv-map .in{position:relative}.tv-map img{width:100%;display:block;border-radius:4px}
-.tv-pin{position:absolute;width:16px;height:16px;border-radius:50%;background:#E8A33D;border:2px solid #fff;transform:translate(-50%,-50%);cursor:pointer;padding:0;box-shadow:0 1px 4px rgba(0,0,0,.5)}.tv-pin.cur{background:#fff;border-color:#E8A33D;width:20px;height:20px}
+.tv-map{position:absolute;left:12px;bottom:12px;width:200px;max-width:46%;background:rgba(14,16,20,.82);border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:6px;z-index:5;backdrop-filter:blur(8px);box-shadow:0 6px 24px rgba(0,0,0,.45)}.tv-map[hidden]{display:none}
+.tv-map .in{position:relative;overflow:hidden;border-radius:6px}.tv-map img{width:100%;display:block}
+.tv-map .in::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);background:repeating-linear-gradient(0deg,transparent 0 23px,rgba(255,255,255,.04) 23px 24px),repeating-linear-gradient(90deg,transparent 0 23px,rgba(255,255,255,.04) 23px 24px)}
+.tv-map-cap{display:flex;align-items:center;gap:6px;padding:5px 4px 1px;font-size:11px;color:#E9E7E1;letter-spacing:.02em;text-transform:uppercase;overflow:hidden;white-space:nowrap}.tv-map-cap i{width:8px;height:8px;border-radius:50%;background:#FFD23F;flex:none;box-shadow:0 0 6px #FFD23F}.tv-map-cap span{overflow:hidden;text-overflow:ellipsis}
+.tv-pin{position:absolute;width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.75);border:1px solid rgba(0,0,0,.4);transform:translate(-50%,-50%);cursor:pointer;padding:0;z-index:1}.tv-pin:hover{background:#fff;transform:translate(-50%,-50%) scale(1.3)}.tv-pin.cur{background:#FFD23F;border-color:#FFD23F;width:16px;height:16px}
+.tv-me{position:absolute;width:0;height:0;transform:translate(-50%,-50%);z-index:3;pointer-events:none;transition:left .6s cubic-bezier(.4,0,.2,1),top .6s cubic-bezier(.4,0,.2,1)}.tv-me[hidden]{display:none}
+.tv-me .cone{position:absolute;left:-30px;top:-30px;width:60px;height:60px;border-radius:50%;background:conic-gradient(from -30deg,rgba(255,210,63,.55) 0 60deg,transparent 60deg);transform-origin:50% 50%;opacity:.9}
+.tv-me .ring{position:absolute;left:-14px;top:-14px;width:28px;height:28px;border-radius:50%;border:2px solid #FFD23F;animation:tvPulse 1.6s ease-out infinite}
+.tv-me .dot{position:absolute;left:-7px;top:-7px;width:14px;height:14px;border-radius:50%;background:#FFD23F;border:2px solid #1B1E25;box-shadow:0 0 10px #FFD23F}
+@keyframes tvPulse{0%{transform:scale(.5);opacity:1}100%{transform:scale(1.6);opacity:0}}
+.tv.has-map .tv-strip{left:224px}
 .tv-hint{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(14,16,20,.8);color:#E9E7E1;padding:12px 18px;border-radius:999px;pointer-events:none;z-index:5;white-space:nowrap;display:flex;gap:10px;align-items:center}
 .tv-help{position:absolute;inset:0;background:rgba(0,0,0,.6);display:grid;place-items:center;z-index:8;padding:20px}
 .tv-help div{background:#23272F;border-radius:12px;padding:20px 24px;max-width:380px;width:100%}.tv-help h3{margin:0 0 10px;font-size:16px}.tv-help table{border-collapse:collapse;width:100%;font-size:13px}.tv-help td{padding:4px 0;vertical-align:top}.tv-help td:first-child{width:46%;color:#B8BCC6}
 .tv-kbd{display:inline-block;border:1px solid #4A5160;border-bottom-width:2px;border-radius:4px;padding:0 6px;font-size:12px;background:#2C313B;margin-right:2px}
-@media (max-width:600px){.tv-title{max-width:38%}.tv-strip{right:12px;bottom:64px}.tv-map{bottom:130px}}
-@media (prefers-reduced-motion:reduce){.tv-h.dragging .tv-dot{transform:none}}
+@media (max-width:600px){.tv-title{max-width:38%}.tv-strip{right:12px;bottom:64px}.tv.has-map .tv-strip{left:12px;bottom:140px}.tv-map{width:150px}}
+@media (prefers-reduced-motion:reduce){.tv-h.dragging .tv-dot{transform:none}.tv-me{transition:none}.tv-me .ring{animation:none;opacity:.8}}
 </style>
 </head>
 <body>
@@ -77,24 +85,25 @@ function TourViewer(opts){
   root.classList.add('tv');
   root.innerHTML='<div class="tv-view"></div><div class="tv-hs"></div>'+
     '<div class="tv-top"><div class="tv-title"></div><div class="tv-tools"></div></div>'+
-    '<div class="tv-map" hidden><div class="in"><img alt="Planta baixa"><div class="tv-pins"></div></div></div>'+
+    '<div class="tv-map" hidden role="region" aria-label="Mapa"><div class="in"><img alt="Planta baixa"><div class="tv-pins"></div><div class="tv-me" hidden role="img"><div class="cone"></div><div class="ring"></div><div class="dot"></div></div></div><div class="tv-map-cap"><i aria-hidden="true"></i><span></span></div></div>'+
     '<div class="tv-strip" role="list"></div>'+
     '<div class="tv-ctl"><button></button><button data-m="up" aria-label="Olhar para cima">'+ic('up')+'</button><button></button><button data-m="left" aria-label="Olhar para a esquerda">'+ic('left')+'</button><button data-m="in" aria-label="Aproximar">'+ic('plus')+'</button><button data-m="right" aria-label="Olhar para a direita">'+ic('right')+'</button><button></button><button data-m="down" aria-label="Olhar para baixo">'+ic('down')+'</button><button data-m="out" aria-label="Afastar">'+ic('minus')+'</button></div>';
   var $=function(s){return root.querySelector(s)};
   var wrap=$('.tv-view'), hsRoot=$('.tv-hs'), tools=$('.tv-tools'), title=$('.tv-title'), strip=$('.tv-strip'), mapEl=$('.tv-map');
   /* tools */
   function pill(label,icon,aria){var b=document.createElement('button');b.className='tv-pill';b.innerHTML=ic(icon)+'<span>'+label+'</span>';if(aria)b.setAttribute('aria-label',aria);tools.appendChild(b);return b}
-  (opts.extraTools||[]).forEach(function(t){var b=pill(t.label,t.icon);b.addEventListener('click',t.onClick);if(t.onHover){b.addEventListener('mouseenter',function(){t.onHover(true)});b.addEventListener('mouseleave',function(){t.onHover(false)});b.addEventListener('focus',function(){t.onHover(true)});b.addEventListener('blur',function(){t.onHover(false)})}});
+  (opts.extraTools||[]).forEach(function(t){var b=pill(t.label,t.icon);b.dataset.tool=t.label;b.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();t.onClick(e)});if(t.onHover){b.addEventListener('mouseenter',function(){t.onHover(true)});b.addEventListener('mouseleave',function(){t.onHover(false)});b.addEventListener('focus',function(){t.onHover(true)});b.addEventListener('blur',function(){t.onHover(false)})}});
   var bRot=pill('Girar','rot');bRot.setAttribute('aria-pressed',String(autorotate));bRot.classList.toggle('on',autorotate);
   bRot.addEventListener('click',function(){setAutorotate(!autorotate)});
-  var bMap=pill('Mapa','map');bMap.hidden=true;bMap.addEventListener('click',function(){mapEl.hidden=!mapEl.hidden;bMap.classList.toggle('on',!mapEl.hidden)});
+  var bMap=pill('Mapa','map');bMap.hidden=true;bMap.setAttribute('aria-pressed','false');var mapHidden=false;try{mapHidden=localStorage.getItem('tv-map-hidden')==='1'}catch(e){}
+  bMap.addEventListener('click',function(){mapHidden=!mapHidden;try{localStorage.setItem('tv-map-hidden',mapHidden?'1':'0')}catch(e){}renderMap()});
   var bFs=pill('Tela cheia','fs');bFs.addEventListener('click',function(){if(document.fullscreenElement)document.exitFullscreen();else if(root.requestFullscreen)root.requestFullscreen()});
   var bHelp=pill('','help','Atalhos de teclado');bHelp.addEventListener('click',showHelp);
   if(S.fs===false)bFs.hidden=true; if(S.viewctl===false)$('.tv-ctl').hidden=true;
   function setAutorotate(b){autorotate=b;bRot.classList.toggle('on',b);bRot.setAttribute('aria-pressed',String(b));if(opts.onSettingsChange)opts.onSettingsChange()}
   /* help */
   function showHelp(){var h=document.createElement('div');h.className='tv-help';h.setAttribute('role','dialog');var k=function(x){return '<span class="tv-kbd">'+x+'</span>'};
-    h.innerHTML='<div><h3>Atalhos</h3><table><tr><td>Arrastar / '+k('←')+k('→')+k('↑')+k('↓')+'</td><td>olhar ao redor</td></tr><tr><td>Rolar / pinça / '+k('+')+k('−')+'</td><td>zoom</td></tr><tr><td>'+k('1')+'…'+k('9')+'</td><td>ir para a cena</td></tr><tr><td>'+k('R')+'</td><td>girar automaticamente</td></tr><tr><td>'+k('F')+'</td><td>tela cheia</td></tr>'+(editor?'<tr><td>'+k('Shift')+' + clique</td><td>criar hotspot de link</td></tr><tr><td>'+k('Delete')+'</td><td>remover hotspot selecionado</td></tr><tr><td>Arrastar hotspot</td><td>reposicionar</td></tr>':'')+'<tr><td>'+k('Esc')+'</td><td>fechar</td></tr></table><p style="margin:12px 0 0;text-align:right"><button class="tv-pill">Fechar</button></p></div>';
+    h.innerHTML='<div><h3>Atalhos</h3><table><tr><td>Arrastar / '+k('←')+k('→')+k('↑')+k('↓')+'</td><td>olhar ao redor</td></tr><tr><td>Rolar / pinça / '+k('+')+k('−')+'</td><td>zoom</td></tr><tr><td>'+k('1')+'…'+k('9')+'</td><td>ir para a cena</td></tr><tr><td>'+k('R')+'</td><td>girar automaticamente</td></tr><tr><td>'+k('F')+'</td><td>tela cheia</td></tr>'+(editor?'<tr><td>'+k('I')+'</td><td>gravar vista inicial</td></tr><tr><td>'+k('Shift')+' + clique</td><td>criar hotspot de link</td></tr><tr><td>'+k('Delete')+'</td><td>remover hotspot selecionado</td></tr><tr><td>Arrastar hotspot</td><td>reposicionar</td></tr>':'')+'<tr><td>'+k('Esc')+'</td><td>fechar</td></tr></table><p style="margin:12px 0 0;text-align:right"><button class="tv-pill">Fechar</button></p></div>';
     root.appendChild(h);h.querySelector('button').focus();h.addEventListener('click',function(e){if(e.target===h||e.target.closest('button'))h.remove()})}
   /* three */
   var renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));wrap.appendChild(renderer.domElement);
@@ -106,7 +115,7 @@ function TourViewer(opts){
   function goTo(id,h){var s=sceneById(id);if(!s||trans)return;if(!cur||S.transition===false||reduce||!h){show(id);return}
     closePops();hsRoot.innerHTML='';var loading=true;
     getTex(s,function(tex){if(!loading)return;loading=false;mat2.map=tex;mat2.opacity=0;mat2.needsUpdate=true;mesh2.visible=true;
-      trans={t0:performance.now(),dur:1000,from:{lon:view.lon,lat:view.lat,fov:view.fov},to:{lon:h.lon,lat:h.lat*0.3,fov:s.initial.fov},dir:dir(h.lon,h.lat,1),target:s}})}
+      trans={t0:performance.now(),dur:1000,from:{lon:view.lon,lat:view.lat,fov:view.fov},to:s.initialSet?{lon:s.initial.lon,lat:s.initial.lat,fov:s.initial.fov}:{lon:h.lon,lat:h.lat*0.3,fov:s.initial.fov},dir:dir(h.lon,h.lat,1),target:s}})}
   function finishTrans(){var s=trans.target;trans=null;cur=s;mat.map=mat2.map;mat.color.set(0xffffff);mat.needsUpdate=true;mesh1.position.set(0,0,0);mesh2.visible=false;mat2.opacity=0;mesh2.position.set(0,0,0);title.textContent=s.name;renderHotspots();renderStrip();renderMap();if(opts.onShow)opts.onShow(s)}
   function resize(){var w=wrap.clientWidth,h=wrap.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}
   window.addEventListener('resize',resize);if(window.ResizeObserver)new ResizeObserver(resize).observe(wrap);resize();
@@ -126,7 +135,9 @@ function TourViewer(opts){
     if(autorotate&&!drag.on&&!placing&&!hsDrag&&!trans)view.lon+=0.04;
     var ks=view.fov*0.025;if(keys.ArrowUp)view.lat+=ks;if(keys.ArrowDown)view.lat-=ks;if(keys.ArrowLeft)view.lon-=ks;if(keys.ArrowRight)view.lon+=ks;
     view.lat=Math.max(-85,Math.min(85,view.lat));view.fov=Math.max(30,Math.min(100,view.fov));
-    cam.fov=view.fov;cam.updateProjectionMatrix();cam.lookAt(dir(view.lon,view.lat,500));renderer.render(sc,cam);projectHotspots();if(opts.onFrame)opts.onFrame()}
+    cam.fov=view.fov;cam.updateProjectionMatrix();cam.lookAt(dir(view.lon,view.lat,500));renderer.render(sc,cam);projectHotspots();
+    if(cur&&cur.mapX!=null&&!mapEl.hidden)meCone.style.transform='rotate('+(view.lon-(cur.mapHeading||0))+'deg)';
+    if(opts.onFrame)opts.onFrame()}
   loop();
   /* hint */
   var hint=null;try{if(!localStorage.getItem('tv-hint')){hint=document.createElement('div');hint.className='tv-hint';hint.innerHTML=ic('eye')+'<span>Arraste para olhar ao redor · role para dar zoom</span>';hint.hidden=true;root.appendChild(hint)}}catch(e){}
@@ -148,6 +159,7 @@ function TourViewer(opts){
   function typing(e){var t=e.target;return t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.tagName==='SELECT'||t.isContentEditable)}
   window.addEventListener('keydown',function(e){if(typing(e))return;if(e.key.indexOf('Arrow')===0){keys[e.key]=true;e.preventDefault()}
     else if(e.key==='+'||e.key==='=')view.fov-=3;else if(e.key==='-')view.fov+=3;else if(e.key==='r'||e.key==='R')setAutorotate(!autorotate);else if(e.key==='f'||e.key==='F')bFs.click();else if(e.key==='?')showHelp();
+    else if((e.key==='i'||e.key==='I')&&editor){var bi=tools.querySelector('[data-tool="Vista inicial"]');if(bi)bi.click()}
     else if(e.key==='Escape'){var hp=root.querySelector('.tv-help');if(hp)hp.remove();closePops()}
     else if(/^[1-9]$/.test(e.key)&&scenes[+e.key-1]&&!e.ctrlKey&&!e.metaKey)show(scenes[+e.key-1].id)});
   window.addEventListener('keyup',function(e){delete keys[e.key]});
@@ -186,8 +198,10 @@ function TourViewer(opts){
   function renderStrip(){strip.innerHTML='';var r=reachable();scenes.forEach(function(s,i){var b=document.createElement('button');b.setAttribute('role','listitem');b.className=cur&&s.id===cur.id?'cur':'';var orphan=editor&&!r[s.id];b.setAttribute('aria-label',(i+1)+'. '+s.name+(orphan?' (sem link que chegue até ela)':''));b.title=orphan?'Nenhum link leva a esta cena':s.name;
       b.innerHTML='<img alt="" src="'+(s.thumb||s.image)+'"><span></span>'+(orphan?'<i aria-hidden="true"></i>':'');b.querySelector('span').textContent=(i+1)+'. '+s.name;b.addEventListener('click',function(){show(s.id)});strip.appendChild(b)});
     strip.hidden=scenes.length<2}
-  function renderMap(){var pins=$('.tv-pins');pins.innerHTML='';bMap.hidden=!mapUrl;if(!mapUrl){mapEl.hidden=true;bMap.classList.remove('on');return}
-    scenes.forEach(function(s){if(s.mapX==null)return;var p=document.createElement('button');p.className='tv-pin'+(cur&&s.id===cur.id?' cur':'');p.style.left=(s.mapX*100)+'%';p.style.top=(s.mapY*100)+'%';p.setAttribute('aria-label',s.name);p.title=s.name;p.addEventListener('click',function(){show(s.id)});pins.appendChild(p)})}
+  function renderMap(){var pins=$('.tv-pins');pins.innerHTML='';bMap.hidden=!mapUrl;var on=!!mapUrl&&!mapHidden;root.classList.toggle('has-map',on);mapEl.hidden=!on;bMap.classList.toggle('on',on);bMap.setAttribute('aria-pressed',String(on));if(!mapUrl)return;
+    scenes.forEach(function(s){if(s.mapX==null||(cur&&s.id===cur.id))return;var p=document.createElement('button');p.className='tv-pin';p.style.left=(s.mapX*100)+'%';p.style.top=(s.mapY*100)+'%';p.setAttribute('aria-label','Ir para '+s.name);p.title=s.name;p.addEventListener('click',function(){show(s.id)});pins.appendChild(p)});
+    var cap=$('.tv-map-cap span');if(cur&&cur.mapX!=null){meEl.hidden=false;meEl.style.left=(cur.mapX*100)+'%';meEl.style.top=(cur.mapY*100)+'%';meEl.setAttribute('aria-label','Você está aqui: '+cur.name);cap.textContent=cur.name}else{meEl.hidden=true;cap.textContent=cur?'Sem posição no mapa':''}}
+  var meEl=$('.tv-me'),meCone=$('.tv-me .cone');
   function show(id){var s=sceneById(id);if(!s)return;if(trans)finishTrans();cur=s;view.lon=s.initial.lon;view.lat=s.initial.lat;view.fov=s.initial.fov;title.textContent=s.name;
     getTex(s,function(){});mat.map=cache[s.id].tex;mat.color.set(0xffffff);mat.needsUpdate=true;
     renderHotspots();renderStrip();renderMap();if(hint)hint.hidden=false;if(opts.onShow)opts.onShow(s)}
